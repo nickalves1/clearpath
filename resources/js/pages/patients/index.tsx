@@ -1,7 +1,7 @@
 import { Head } from '@inertiajs/react';
 import Heading from '@/components/heading';
 import { PatientForm, PatientsTable, usePatients } from '@/features/patients';
-import { dashboard } from '@/routes';
+//import { dashboard } from '@/routes';
 
 /**
  * A "page" é intencionalmente burra: ela só junta o hook (dados + ações)
@@ -30,7 +30,7 @@ export default function PatientsIndex() {
 // Segue o mesmo padrão que você já tem em dashboard.tsx / profile.tsx
 PatientsIndex.layout = {
     breadcrumbs: [
-        { title: 'Dashboard', href: dashboard() },
+        //{ title: 'Dashboard', href: dashboard() },
         { title: 'Pacientes', href: '/patients' },
     ],
 };
