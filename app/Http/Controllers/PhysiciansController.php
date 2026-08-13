@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\physicians;
-use App\Http\Requests\StorephysiciansRequest;
-use App\Http\Requests\UpdatephysiciansRequest;
+use App\Http\Requests\StorePhysicianRequest;
+use App\Http\Requests\UpdatePhysicianRequest;
+use App\Models\Physician;
 
 class PhysiciansController extends Controller
 {
@@ -27,7 +27,7 @@ class PhysiciansController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorephysiciansRequest $request)
+    public function store(StorePhysicianRequest $request)
     {
         //
     }
@@ -35,7 +35,7 @@ class PhysiciansController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(physicians $physicians)
+    public function show(Physician $physician)
     {
         //
     }
@@ -43,7 +43,7 @@ class PhysiciansController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(physicians $physicians)
+    public function edit(Physician $physician)
     {
         //
     }
@@ -51,7 +51,7 @@ class PhysiciansController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatephysiciansRequest $request, physicians $physicians)
+    public function update(UpdatePhysicianRequest $request, Physician $physician)
     {
         //
     }
@@ -59,7 +59,7 @@ class PhysiciansController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(physicians $physicians)
+    public function destroy(Physician $physician)
     {
         //
     }

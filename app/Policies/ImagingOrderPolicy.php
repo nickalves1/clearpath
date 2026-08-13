@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
+use App\Models\ImagingOrder;
 use App\Models\User;
-use App\Models\physicians;
 use Illuminate\Auth\Access\Response;
 
-class PhysiciansPolicy
+class ImagingOrderPolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -19,7 +19,7 @@ class PhysiciansPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, physicians $physicians): bool
+    public function view(User $user, ImagingOrder $imagingOrder): bool
     {
         return false;
     }
@@ -35,7 +35,7 @@ class PhysiciansPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, physicians $physicians): bool
+    public function update(User $user, ImagingOrder $imagingOrder): bool
     {
         return false;
     }
@@ -43,7 +43,7 @@ class PhysiciansPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, physicians $physicians): bool
+    public function delete(User $user, ImagingOrder $imagingOrder): bool
     {
         return false;
     }
@@ -51,7 +51,7 @@ class PhysiciansPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, physicians $physicians): bool
+    public function restore(User $user, ImagingOrder $imagingOrder): bool
     {
         return false;
     }
@@ -59,7 +59,7 @@ class PhysiciansPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, physicians $physicians): bool
+    public function forceDelete(User $user, ImagingOrder $imagingOrder): bool
     {
         return false;
     }

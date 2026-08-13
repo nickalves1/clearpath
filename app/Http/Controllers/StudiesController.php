@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\studies;
-use App\Http\Requests\StorestudiesRequest;
-use App\Http\Requests\UpdatestudiesRequest;
+use App\Http\Requests\StoreStudyRequest;
+use App\Http\Requests\UpdateStudyRequest;
+use App\Models\Study;
 
 class StudiesController extends Controller
 {
@@ -27,7 +27,7 @@ class StudiesController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorestudiesRequest $request)
+    public function store(StoreStudyRequest $request)
     {
         //
     }
@@ -35,7 +35,7 @@ class StudiesController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(studies $studies)
+    public function show(Study $study)
     {
         //
     }
@@ -43,7 +43,7 @@ class StudiesController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(studies $studies)
+    public function edit(Study $study)
     {
         //
     }
@@ -51,7 +51,7 @@ class StudiesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatestudiesRequest $request, studies $studies)
+    public function update(UpdateStudyRequest $request, Study $study)
     {
         //
     }
@@ -59,7 +59,7 @@ class StudiesController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(studies $studies)
+    public function destroy(Study $study)
     {
         //
     }

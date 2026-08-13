@@ -141,7 +141,7 @@ store.form = storeForm
 * @see app/Http/Controllers/ImagingOrdersController.php:38
 * @route '/api/imaging-orders/{imaging_order}'
 */
-export const show = (args: { imaging_order: string | number } | [imaging_order: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+export const show = (args: { imaging_order: number | { id: number } } | [imaging_order: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: show.url(args, options),
     method: 'get',
 })
@@ -156,9 +156,13 @@ show.definition = {
 * @see app/Http/Controllers/ImagingOrdersController.php:38
 * @route '/api/imaging-orders/{imaging_order}'
 */
-show.url = (args: { imaging_order: string | number } | [imaging_order: string | number ] | string | number, options?: RouteQueryOptions) => {
+show.url = (args: { imaging_order: number | { id: number } } | [imaging_order: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { imaging_order: args }
+    }
+
+    if (typeof args === 'object' && !Array.isArray(args) && 'id' in args) {
+        args = { imaging_order: args.id }
     }
 
     if (Array.isArray(args)) {
@@ -170,7 +174,9 @@ show.url = (args: { imaging_order: string | number } | [imaging_order: string | 
     args = applyUrlDefaults(args)
 
     const parsedArgs = {
-        imaging_order: args.imaging_order,
+        imaging_order: typeof args.imaging_order === 'object'
+        ? args.imaging_order.id
+        : args.imaging_order,
     }
 
     return show.definition.url
@@ -183,7 +189,7 @@ show.url = (args: { imaging_order: string | number } | [imaging_order: string | 
 * @see app/Http/Controllers/ImagingOrdersController.php:38
 * @route '/api/imaging-orders/{imaging_order}'
 */
-show.get = (args: { imaging_order: string | number } | [imaging_order: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+show.get = (args: { imaging_order: number | { id: number } } | [imaging_order: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: show.url(args, options),
     method: 'get',
 })
@@ -193,7 +199,7 @@ show.get = (args: { imaging_order: string | number } | [imaging_order: string | 
 * @see app/Http/Controllers/ImagingOrdersController.php:38
 * @route '/api/imaging-orders/{imaging_order}'
 */
-show.head = (args: { imaging_order: string | number } | [imaging_order: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+show.head = (args: { imaging_order: number | { id: number } } | [imaging_order: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: show.url(args, options),
     method: 'head',
 })
@@ -203,7 +209,7 @@ show.head = (args: { imaging_order: string | number } | [imaging_order: string |
 * @see app/Http/Controllers/ImagingOrdersController.php:38
 * @route '/api/imaging-orders/{imaging_order}'
 */
-const showForm = (args: { imaging_order: string | number } | [imaging_order: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+const showForm = (args: { imaging_order: number | { id: number } } | [imaging_order: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
     action: show.url(args, options),
     method: 'get',
 })
@@ -213,7 +219,7 @@ const showForm = (args: { imaging_order: string | number } | [imaging_order: str
 * @see app/Http/Controllers/ImagingOrdersController.php:38
 * @route '/api/imaging-orders/{imaging_order}'
 */
-showForm.get = (args: { imaging_order: string | number } | [imaging_order: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+showForm.get = (args: { imaging_order: number | { id: number } } | [imaging_order: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
     action: show.url(args, options),
     method: 'get',
 })
@@ -223,7 +229,7 @@ showForm.get = (args: { imaging_order: string | number } | [imaging_order: strin
 * @see app/Http/Controllers/ImagingOrdersController.php:38
 * @route '/api/imaging-orders/{imaging_order}'
 */
-showForm.head = (args: { imaging_order: string | number } | [imaging_order: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+showForm.head = (args: { imaging_order: number | { id: number } } | [imaging_order: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
     action: show.url(args, {
         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
             _method: 'HEAD',
@@ -240,7 +246,7 @@ show.form = showForm
 * @see app/Http/Controllers/ImagingOrdersController.php:54
 * @route '/api/imaging-orders/{imaging_order}'
 */
-export const update = (args: { imaging_order: string | number } | [imaging_order: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
+export const update = (args: { imaging_order: number | { id: number } } | [imaging_order: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
     url: update.url(args, options),
     method: 'put',
 })
@@ -255,9 +261,13 @@ update.definition = {
 * @see app/Http/Controllers/ImagingOrdersController.php:54
 * @route '/api/imaging-orders/{imaging_order}'
 */
-update.url = (args: { imaging_order: string | number } | [imaging_order: string | number ] | string | number, options?: RouteQueryOptions) => {
+update.url = (args: { imaging_order: number | { id: number } } | [imaging_order: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { imaging_order: args }
+    }
+
+    if (typeof args === 'object' && !Array.isArray(args) && 'id' in args) {
+        args = { imaging_order: args.id }
     }
 
     if (Array.isArray(args)) {
@@ -269,7 +279,9 @@ update.url = (args: { imaging_order: string | number } | [imaging_order: string 
     args = applyUrlDefaults(args)
 
     const parsedArgs = {
-        imaging_order: args.imaging_order,
+        imaging_order: typeof args.imaging_order === 'object'
+        ? args.imaging_order.id
+        : args.imaging_order,
     }
 
     return update.definition.url
@@ -282,7 +294,7 @@ update.url = (args: { imaging_order: string | number } | [imaging_order: string 
 * @see app/Http/Controllers/ImagingOrdersController.php:54
 * @route '/api/imaging-orders/{imaging_order}'
 */
-update.put = (args: { imaging_order: string | number } | [imaging_order: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
+update.put = (args: { imaging_order: number | { id: number } } | [imaging_order: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
     url: update.url(args, options),
     method: 'put',
 })
@@ -292,7 +304,7 @@ update.put = (args: { imaging_order: string | number } | [imaging_order: string 
 * @see app/Http/Controllers/ImagingOrdersController.php:54
 * @route '/api/imaging-orders/{imaging_order}'
 */
-update.patch = (args: { imaging_order: string | number } | [imaging_order: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
+update.patch = (args: { imaging_order: number | { id: number } } | [imaging_order: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
     url: update.url(args, options),
     method: 'patch',
 })
@@ -302,7 +314,7 @@ update.patch = (args: { imaging_order: string | number } | [imaging_order: strin
 * @see app/Http/Controllers/ImagingOrdersController.php:54
 * @route '/api/imaging-orders/{imaging_order}'
 */
-const updateForm = (args: { imaging_order: string | number } | [imaging_order: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+const updateForm = (args: { imaging_order: number | { id: number } } | [imaging_order: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
     action: update.url(args, {
         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
             _method: 'PUT',
@@ -317,7 +329,7 @@ const updateForm = (args: { imaging_order: string | number } | [imaging_order: s
 * @see app/Http/Controllers/ImagingOrdersController.php:54
 * @route '/api/imaging-orders/{imaging_order}'
 */
-updateForm.put = (args: { imaging_order: string | number } | [imaging_order: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+updateForm.put = (args: { imaging_order: number | { id: number } } | [imaging_order: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
     action: update.url(args, {
         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
             _method: 'PUT',
@@ -332,7 +344,7 @@ updateForm.put = (args: { imaging_order: string | number } | [imaging_order: str
 * @see app/Http/Controllers/ImagingOrdersController.php:54
 * @route '/api/imaging-orders/{imaging_order}'
 */
-updateForm.patch = (args: { imaging_order: string | number } | [imaging_order: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+updateForm.patch = (args: { imaging_order: number | { id: number } } | [imaging_order: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
     action: update.url(args, {
         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
             _method: 'PATCH',
@@ -349,7 +361,7 @@ update.form = updateForm
 * @see app/Http/Controllers/ImagingOrdersController.php:62
 * @route '/api/imaging-orders/{imaging_order}'
 */
-export const destroy = (args: { imaging_order: string | number } | [imaging_order: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
+export const destroy = (args: { imaging_order: number | { id: number } } | [imaging_order: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: destroy.url(args, options),
     method: 'delete',
 })
@@ -364,9 +376,13 @@ destroy.definition = {
 * @see app/Http/Controllers/ImagingOrdersController.php:62
 * @route '/api/imaging-orders/{imaging_order}'
 */
-destroy.url = (args: { imaging_order: string | number } | [imaging_order: string | number ] | string | number, options?: RouteQueryOptions) => {
+destroy.url = (args: { imaging_order: number | { id: number } } | [imaging_order: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { imaging_order: args }
+    }
+
+    if (typeof args === 'object' && !Array.isArray(args) && 'id' in args) {
+        args = { imaging_order: args.id }
     }
 
     if (Array.isArray(args)) {
@@ -378,7 +394,9 @@ destroy.url = (args: { imaging_order: string | number } | [imaging_order: string
     args = applyUrlDefaults(args)
 
     const parsedArgs = {
-        imaging_order: args.imaging_order,
+        imaging_order: typeof args.imaging_order === 'object'
+        ? args.imaging_order.id
+        : args.imaging_order,
     }
 
     return destroy.definition.url
@@ -391,7 +409,7 @@ destroy.url = (args: { imaging_order: string | number } | [imaging_order: string
 * @see app/Http/Controllers/ImagingOrdersController.php:62
 * @route '/api/imaging-orders/{imaging_order}'
 */
-destroy.delete = (args: { imaging_order: string | number } | [imaging_order: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
+destroy.delete = (args: { imaging_order: number | { id: number } } | [imaging_order: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: destroy.url(args, options),
     method: 'delete',
 })
@@ -401,7 +419,7 @@ destroy.delete = (args: { imaging_order: string | number } | [imaging_order: str
 * @see app/Http/Controllers/ImagingOrdersController.php:62
 * @route '/api/imaging-orders/{imaging_order}'
 */
-const destroyForm = (args: { imaging_order: string | number } | [imaging_order: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+const destroyForm = (args: { imaging_order: number | { id: number } } | [imaging_order: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
     action: destroy.url(args, {
         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
             _method: 'DELETE',
@@ -416,7 +434,7 @@ const destroyForm = (args: { imaging_order: string | number } | [imaging_order: 
 * @see app/Http/Controllers/ImagingOrdersController.php:62
 * @route '/api/imaging-orders/{imaging_order}'
 */
-destroyForm.delete = (args: { imaging_order: string | number } | [imaging_order: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+destroyForm.delete = (args: { imaging_order: number | { id: number } } | [imaging_order: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
     action: destroy.url(args, {
         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
             _method: 'DELETE',

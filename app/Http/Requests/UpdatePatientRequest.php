@@ -5,14 +5,14 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class Updateaudit_logsRequest extends FormRequest
+class UpdatePatientRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,7 +23,13 @@ class Updateaudit_logsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'first_name' => 'required|string|max:100',
+            'last_name' => 'required|string|max:100',
+            'birth_date' => 'required|date',
+            'gender' => 'required|string|max:20',
+            'email' => 'required|email:rfc,dns',
+            'phone' => 'required|string|max:20',
+            'medical_record_number' => 'required|string|max:30',
         ];
     }
 }

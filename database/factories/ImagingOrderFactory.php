@@ -2,13 +2,13 @@
 
 namespace Database\Factories;
 
-use App\Models\imaging_orders;
+use App\Models\ImagingOrder;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<imaging_orders>
+ * @extends Factory<ImagingOrder>
  */
-class ImagingOrdersFactory extends Factory
+class ImagingOrderFactory extends Factory
 {
     /**
      * Define the model's default state.

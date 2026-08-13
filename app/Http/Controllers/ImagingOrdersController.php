@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\imaging_orders;
-use App\Http\Requests\Storeimaging_ordersRequest;
-use App\Http\Requests\Updateimaging_ordersRequest;
+use App\Http\Requests\StoreImagingOrderRequest;
+use App\Http\Requests\UpdateImagingOrderRequest;
+use App\Models\ImagingOrder;
 
 class ImagingOrdersController extends Controller
 {
@@ -27,7 +27,7 @@ class ImagingOrdersController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Storeimaging_ordersRequest $request)
+    public function store(StoreImagingOrderRequest $request)
     {
         //
     }
@@ -35,7 +35,7 @@ class ImagingOrdersController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(imaging_orders $imaging_orders)
+    public function show(ImagingOrder $imagingOrder)
     {
         //
     }
@@ -43,7 +43,7 @@ class ImagingOrdersController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(imaging_orders $imaging_orders)
+    public function edit(ImagingOrder $imagingOrder)
     {
         //
     }
@@ -51,7 +51,7 @@ class ImagingOrdersController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Updateimaging_ordersRequest $request, imaging_orders $imaging_orders)
+    public function update(UpdateImagingOrderRequest $request, ImagingOrder $imagingOrder)
     {
         //
     }
@@ -59,7 +59,7 @@ class ImagingOrdersController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(imaging_orders $imaging_orders)
+    public function destroy(ImagingOrder $imagingOrder)
     {
         //
     }

@@ -60,3 +60,11 @@ export function createPatient(payload: CreatePatientPayload): Promise<Patient> {
         body: JSON.stringify(payload),
     });
 }
+
+export function updatePatient(payload: CreatePatientPayload): Promise<Patient> {
+    const { url, method } = PatientsController.update();
+    return request<Patient>(url, {
+        method,
+        body: JSON.stringify(payload),
+    });
+}

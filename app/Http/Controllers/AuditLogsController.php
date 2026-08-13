@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\audit_logs;
-use App\Http\Requests\Storeaudit_logsRequest;
-use App\Http\Requests\Updateaudit_logsRequest;
+use App\Http\Requests\StoreAuditLogRequest;
+use App\Http\Requests\UpdateAuditLogRequest;
+use App\Models\AuditLog;
 
 class AuditLogsController extends Controller
 {
@@ -27,7 +27,7 @@ class AuditLogsController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Storeaudit_logsRequest $request)
+    public function store(StoreAuditLogRequest $request)
     {
         //
     }
@@ -35,7 +35,7 @@ class AuditLogsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(audit_logs $audit_logs)
+    public function show(AuditLog $auditLog)
     {
         //
     }
@@ -43,7 +43,7 @@ class AuditLogsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(audit_logs $audit_logs)
+    public function edit(AuditLog $auditLog)
     {
         //
     }
@@ -51,7 +51,7 @@ class AuditLogsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Updateaudit_logsRequest $request, audit_logs $audit_logs)
+    public function update(UpdateAuditLogRequest $request, AuditLog $auditLog)
     {
         //
     }
@@ -59,7 +59,7 @@ class AuditLogsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(audit_logs $audit_logs)
+    public function destroy(AuditLog $auditLog)
     {
         //
     }
