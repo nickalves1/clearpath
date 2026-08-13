@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
+use App\Models\Study;
 use App\Models\User;
-use App\Models\audit_logs;
 use Illuminate\Auth\Access\Response;
 
-class AuditLogsPolicy
+class StudyPolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -19,7 +19,7 @@ class AuditLogsPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, audit_logs $auditLogs): bool
+    public function view(User $user, Study $study): bool
     {
         return false;
     }
@@ -35,7 +35,7 @@ class AuditLogsPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, audit_logs $auditLogs): bool
+    public function update(User $user, Study $study): bool
     {
         return false;
     }
@@ -43,7 +43,7 @@ class AuditLogsPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, audit_logs $auditLogs): bool
+    public function delete(User $user, Study $study): bool
     {
         return false;
     }
@@ -51,7 +51,7 @@ class AuditLogsPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, audit_logs $auditLogs): bool
+    public function restore(User $user, Study $study): bool
     {
         return false;
     }
@@ -59,7 +59,7 @@ class AuditLogsPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, audit_logs $auditLogs): bool
+    public function forceDelete(User $user, Study $study): bool
     {
         return false;
     }

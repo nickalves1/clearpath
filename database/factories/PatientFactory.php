@@ -2,13 +2,13 @@
 
 namespace Database\Factories;
 
-use App\Models\patients;
+use App\Models\Patient;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<patients>
+ * @extends Factory<Patient>
  */
-class PatientsFactory extends Factory
+class PatientFactory extends Factory
 {
     /**
      * Define the model's default state.

@@ -2,20 +2,26 @@
 
 namespace App\Services;
 
-use App\Models\patients;
+use App\Models\Patient;
 use App\Services\Contracts\PatientsServiceInterface;
 use Illuminate\Database\Eloquent\Collection;
 
 class PatientsService implements PatientsServiceInterface
 {
-    public function store(array $data): patients
+    public function store(array $data): Patient
     {
-        return patients::create($data);
+        return Patient::create($data);
     }
 
     public function index(array $data): Collection
     {
-        return patients::all();
+        return Patient::all();
+    }
+
+    public function update(Patient $patient, array $data): Patient
+    {
+        $patient->update($data);
+
+        return $patient;
     }
 }
-

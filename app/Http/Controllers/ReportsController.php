@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\reports;
-use App\Http\Requests\StorereportsRequest;
-use App\Http\Requests\UpdatereportsRequest;
+use App\Http\Requests\StoreReportRequest;
+use App\Http\Requests\UpdateReportRequest;
+use App\Models\Report;
 
 class ReportsController extends Controller
 {
@@ -27,7 +27,7 @@ class ReportsController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorereportsRequest $request)
+    public function store(StoreReportRequest $request)
     {
         //
     }
@@ -35,7 +35,7 @@ class ReportsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(reports $reports)
+    public function show(Report $report)
     {
         //
     }
@@ -43,7 +43,7 @@ class ReportsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(reports $reports)
+    public function edit(Report $report)
     {
         //
     }
@@ -51,7 +51,7 @@ class ReportsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatereportsRequest $request, reports $reports)
+    public function update(UpdateReportRequest $request, Report $report)
     {
         //
     }
@@ -59,7 +59,7 @@ class ReportsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(reports $reports)
+    public function destroy(Report $report)
     {
         //
     }

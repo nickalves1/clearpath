@@ -2,13 +2,13 @@
 
 namespace Database\Factories;
 
-use App\Models\audit_logs;
+use App\Models\Study;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<audit_logs>
+ * @extends Factory<Study>
  */
-class AuditLogsFactory extends Factory
+class StudyFactory extends Factory
 {
     /**
      * Define the model's default state.
