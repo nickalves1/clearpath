@@ -1,5 +1,6 @@
 import PatientsController from '@/actions/App/Http/Controllers/PatientsController';
 import type { CreatePatientPayload, Patient, PaginatedResponse } from '../types/patient';
+import { ValidationError } from '@/lib/http/errors/validation-error';
 
 /**
  * Wrapper fino em cima do `fetch` nativo.
@@ -28,6 +29,11 @@ async function request<T>(url: string, options: RequestInit = {}): Promise<T> {
     if (!response.ok) {
         // Se o Laravel devolveu erros de validação (422) ou outro erro, tenta ler a mensagem.
         const body = await response.json().catch(() => null);
+
+        if (response.status ===422 && body?.message) {
+            throw new ValidationError(body.message, body.errors);
+        }
+
         throw new Error(body?.message ?? `Falha na requisição (status ${response.status})`);
     }
 
