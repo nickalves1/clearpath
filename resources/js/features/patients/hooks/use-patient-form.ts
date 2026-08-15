@@ -23,15 +23,16 @@ export function usePatientForm ({ initialValues, onSubmit }: Props){
     const [error, setError] = useState<string | null>(null);
     const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({});
 
+    function setField(field: keyof CreatePatientPayload, value: string) {
+        setForm((current) => ({ ...current, [field]: value }));
+        setFieldErrors((current) => {
+            const { [field]: _, ...rest } = current;
+            return rest;
+        });
+    }
 
     function handleChange(field: keyof CreatePatientPayload) {
-        return (event: ChangeEvent<HTMLInputElement>) => {
-            setForm((current) => ({ ...current, [field]: event.target.value }));
-            setFieldErrors((current) => {
-                const { [field]: _, ...rest } = current;
-                return rest;
-            });
-        };
+        return (event: ChangeEvent<HTMLInputElement>) => setField(field, event.target.value);
     }
 
     async function handleSubmit(event: FormEvent) {
@@ -56,5 +57,5 @@ export function usePatientForm ({ initialValues, onSubmit }: Props){
         }
     }
 
-    return {form, submitting, error, fieldErrors, handleChange, handleSubmit}
+    return {form, submitting, error, fieldErrors, handleChange, handleSubmit, setField}
 }

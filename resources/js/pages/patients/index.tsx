@@ -4,6 +4,7 @@ import { PatientsTable, usePatients, usePatientDialog, PatientFormDialog } from 
 import type {CreatePatientPayload} from '@/features/patients/types/patient';
 import { Button } from '@/components/ui/button';
 import Paginate from '@/components/paginator';
+import { toast } from 'sonner';
 
 /**
  * A "page" é intencionalmente burra: ela só junta o hook (dados + ações)
@@ -17,6 +18,9 @@ export default function PatientsIndex() {
         const result = dialog.editingPatient
         ? await editPatient(dialog.editingPatient.id, payload)
         : await addPatient(payload);
+
+        toast.success(dialog.editingPatient ? 'Paciente atualizado com sucesso!' : 'Paciente criado com sucesso!');
+
         dialog.setIsOpen(false);
         return result;
     }
