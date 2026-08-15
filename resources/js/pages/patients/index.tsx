@@ -1,10 +1,9 @@
 import { Head } from '@inertiajs/react';
 import Heading from '@/components/heading';
-import { PatientsTable, usePatients, Paginate } from '@/features/patients';
+import { PatientsTable, usePatients, usePatientDialog, PatientFormDialog } from '@/features/patients';
 import type {CreatePatientPayload} from '@/features/patients/types/patient';
 import { Button } from '@/components/ui/button';
-import { usePatientDialog } from '@/features/patients/hooks/use-patient-dialog'
-import { PatientFormDialog } from '@/features/patients/components/patient-form-dialog'
+import Paginate from '@/components/paginator';
 
 /**
  * A "page" é intencionalmente burra: ela só junta o hook (dados + ações)
