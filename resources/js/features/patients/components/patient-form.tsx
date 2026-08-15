@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import type { CreatePatientPayload, Patient } from '../types/patient';
 import { usePatientForm } from '../hooks/use-patient-form';
-import { FormField } from '../components/patient-form-field';
+import { FormField } from './patient-form-field';
 
 type Props = {
     onSubmit: (payload: CreatePatientPayload) => Promise<unknown>;
