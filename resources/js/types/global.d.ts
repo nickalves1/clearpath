@@ -12,6 +12,12 @@ declare module '@inertiajs/core' {
         sharedPageProps: {
             name: string;
             auth: Auth;
+            can: {
+                patients: {
+                    viewAny: boolean;
+                    create: boolean;
+                };
+            };
             sidebarOpen: boolean;
             [key: string]: unknown;
         };

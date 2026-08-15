@@ -2,7 +2,7 @@ import { useState, type ChangeEvent, type FormEvent } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import type { CreatePatientPayload } from '../types/patient';
+import type { CreatePatientPayload, Patient } from '../types/patient';
 
 type Props = {
     // O form não sabe chamar a API diretamente — quem decide "o que fazer
@@ -10,6 +10,7 @@ type Props = {
     // Isso é chamado de "inversão de controle": o componente só avisa "o usuário
     // enviou isso", não decide o que acontece depois.
     onSubmit: (payload: CreatePatientPayload) => Promise<unknown>;
+    initialValues?: Patient;
 };
 
 const emptyForm: CreatePatientPayload = {
@@ -22,10 +23,10 @@ const emptyForm: CreatePatientPayload = {
     email: '',
 };
 
-export function PatientForm({ onSubmit }: Props) {
+export function PatientForm({ onSubmit, initialValues }: Props) {
     // "Controlled input": o valor do <input> vive no estado do React (form),
     // não no DOM. Cada tecla digitada atualiza o estado, e o input reflete o estado.
-    const [form, setForm] = useState<CreatePatientPayload>(emptyForm);
+    const [form, setForm] = useState<CreatePatientPayload>(initialValues ?? emptyForm);
     const [submitting, setSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -42,7 +43,10 @@ export function PatientForm({ onSubmit }: Props) {
 
         try {
             await onSubmit(form);
-            setForm(emptyForm); // limpa o form após sucesso
+            
+            if (!initialValues) { // limpa o form após sucesso
+                setForm(emptyForm);
+            }
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Erro ao salvar paciente.');
         } finally {
@@ -100,7 +104,7 @@ export function PatientForm({ onSubmit }: Props) {
             {error && <p className="text-sm text-destructive">{error}</p>}
 
             <Button type="submit" disabled={submitting} className="w-fit">
-                {submitting ? 'Salvando...' : 'Adicionar paciente'}
+                {initialValues ? 'Salvar' : submitting ? 'Salvando...' : 'Adicionar paciente'}
             </Button>
         </form>
     );

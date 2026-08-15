@@ -1,5 +1,5 @@
 import PatientsController from '@/actions/App/Http/Controllers/PatientsController';
-import type { CreatePatientPayload, Patient } from '../types/patient';
+import type { CreatePatientPayload, Patient, PaginatedResponse } from '../types/patient';
 
 /**
  * Wrapper fino em cima do `fetch` nativo.
@@ -48,9 +48,9 @@ async function request<T>(url: string, options: RequestInit = {}): Promise<T> {
  * como `{ data: [...], links: {...}, meta: {...} }` e essa função vai
  * precisar extrair `body.data` em vez do array direto. Testa e me fala o que veio.
  */
-export function getPatients(): Promise<Patient[]> {
-    const { url, method } = PatientsController.index();
-    return request<Patient[]>(url, { method });
+export function getPatients(page: number): Promise<PaginatedResponse<Patient>> {
+    const { url, method } = PatientsController.index({ query: { page }});
+    return request<PaginatedResponse<Patient>>(url, { method });
 }
 
 export function createPatient(payload: CreatePatientPayload): Promise<Patient> {
@@ -61,8 +61,8 @@ export function createPatient(payload: CreatePatientPayload): Promise<Patient> {
     });
 }
 
-export function updatePatient(payload: CreatePatientPayload): Promise<Patient> {
-    const { url, method } = PatientsController.update();
+export function updatePatient(id: number, payload: CreatePatientPayload): Promise<Patient> {
+    const { url, method } = PatientsController.update(id);
     return request<Patient>(url, {
         method,
         body: JSON.stringify(payload),

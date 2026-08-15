@@ -5,5 +5,5 @@
  */
 export * from './types/patient';
 export * from './hooks/use-patients';
-export { PatientsTable } from './components/patients-table';
+export { PatientsTable, Paginate } from './components/patients-table';
 export { PatientForm } from './components/patient-form';
