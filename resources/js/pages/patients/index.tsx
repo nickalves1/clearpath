@@ -1,27 +1,47 @@
 import { Head } from '@inertiajs/react';
 import Heading from '@/components/heading';
-import { PatientForm, PatientsTable, usePatients } from '@/features/patients';
-//import { dashboard } from '@/routes';
+import { PatientsTable, usePatients, Paginate } from '@/features/patients';
+import type {CreatePatientPayload} from '@/features/patients/types/patient';
+import { Button } from '@/components/ui/button';
+import { usePatientDialog } from '@/features/patients/hooks/use-patient-dialog'
+import { PatientFormDialog } from '@/features/patients/components/patient-form-dialog'
 
 /**
  * A "page" é intencionalmente burra: ela só junta o hook (dados + ações)
  * com os componentes visuais da feature. Quase nenhuma lógica deveria morar aqui.
  */
 export default function PatientsIndex() {
-    const { patients, loading, error, addPatient } = usePatients();
+    const { data, addPatient, editPatient, goToPage } = usePatients();
+    const dialog = usePatientDialog();
+
+    const handleSubmit = async (payload: CreatePatientPayload) => {
+        const result = dialog.editingPatient
+        ? await editPatient(dialog.editingPatient.id, payload)
+        : await addPatient(payload);
+        dialog.setIsOpen(false);
+        return result;
+    }
 
     return (
         <>
             <Head title="Pacientes" />
-
             <div className="flex flex-1 flex-col gap-6 p-4">
                 <Heading title="Pacientes" description="Cadastro e listagem de pacientes" />
-
-                <PatientForm onSubmit={addPatient} />
-
-                {loading && <p className="text-sm text-muted-foreground">Carregando pacientes...</p>}
-                {error && <p className="text-sm text-destructive">{error}</p>}
-                {!loading && !error && <PatientsTable patients={patients} />}
+                <Button className="w-fit" onClick={()=>{dialog.openToCreate()}}>Novo paciente</Button>
+                <PatientFormDialog
+                    open={dialog.isOpen}
+                    onOpenChange={dialog.setIsOpen}
+                    patient={dialog.editingPatient}
+                    onSubmit={handleSubmit}
+                />  
+                {data.loading && <p className="text-sm text-muted-foreground">Carregando pacientes...</p>}
+                {data.error && <p className="text-sm text-destructive">{data.error}</p>}
+                {!data.loading && !data.error && (
+                    <>
+                        <PatientsTable patients={data.patients} onEdit={dialog.openToEdit} />
+                        <Paginate meta={data.meta} page={data.page} goToPage={goToPage}/>
+                    </>
+                )}
             </div>
         </>
     );

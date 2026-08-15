@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Models\Patient;
 use App\Services\Contracts\PatientsServiceInterface;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class PatientsService implements PatientsServiceInterface
 {
@@ -13,9 +13,9 @@ class PatientsService implements PatientsServiceInterface
         return Patient::create($data);
     }
 
-    public function index(array $data): Collection
+    public function index(array $data): LengthAwarePaginator
     {
-        return Patient::all();
+        return Patient::paginate(5);
     }
 
     public function update(Patient $patient, array $data): Patient

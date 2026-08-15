@@ -1,7 +1,10 @@
+import { Button } from '@/components/ui/button';
 import type { Patient } from '../types/patient';
+import { Pen } from 'lucide-react';
 
 type Props = {
     patients: Patient[];
+    onEdit: (patient: Patient) => void;
 };
 
 function formatDate(value: string) {
@@ -13,12 +16,12 @@ function formatDate(value: string) {
  * e renderiza. Não sabe de onde `patients` veio (API? mock? outro hook?).
  * Isso facilita reaproveitar em outra tela e testar isoladamente.
  */
-export function PatientsTable({ patients }: Props) {
+export function PatientsTable({ patients, onEdit }: Props) {
     if (patients.length === 0) {
         return (
-            <div className="rounded-xl border border-sidebar-border/70 p-6 text-center text-sm text-muted-foreground dark:border-sidebar-border">
-                Nenhum paciente cadastrado ainda.
-            </div>
+                <div className="rounded-xl border border-sidebar-border/70 p-6 text-center text-sm text-muted-foreground dark:border-sidebar-border">
+                    Nenhum paciente cadastrado ainda.
+                </div>
         );
     }
 
@@ -33,6 +36,7 @@ export function PatientsTable({ patients }: Props) {
                         <th className="px-4 py-3 font-medium">Gênero</th>
                         <th className="px-4 py-3 font-medium">Telefone</th>
                         <th className="px-4 py-3 font-medium">Email</th>
+                        <th className="px-4 py-3 font-medium"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -51,10 +55,39 @@ export function PatientsTable({ patients }: Props) {
                             <td className="px-4 py-3">{patient.gender}</td>
                             <td className="px-4 py-3">{patient.phone}</td>
                             <td className="px-4 py-3">{patient.email}</td>
+                            <td className="px-4 py-3">
+                                <Button variant="ghost" size="icon" onClick={() => onEdit(patient)}>
+                                    <Pen />
+                                </Button>
+                            </td>
                         </tr>
                     ))}
                 </tbody>
             </table>
         </div>
+    );
+}
+
+type PropsPaginate = {
+    meta: { current_page: number; last_page: number } | null;
+    page: number;
+    goToPage: (page: number) => void;
+};
+
+export function Paginate({ meta, page, goToPage }: PropsPaginate) {
+    return (
+        <>
+            <div className="flex items-center justify-center">
+                <Button variant="ghost" disabled={page <= 1} onClick={() => goToPage(page - 1)}>
+                    Anterior
+                </Button>
+                <span className="text-sm text-muted-foreground mx-5">
+                    Página {meta?.current_page} de {meta?.last_page}
+                </span>
+                <Button variant="ghost" disabled={!meta || page >= meta.last_page} onClick={() => { if (meta && page < meta.last_page) goToPage(page+1)}}>
+                    Próxima
+                </Button>
+            </div>
+        </>
     );
 }

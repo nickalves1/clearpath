@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Patient;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -40,6 +41,12 @@ class HandleInertiaRequests extends Middleware
             'name' => config('app.name'),
             'auth' => [
                 'user' => $request->user(),
+            ],
+            'can' => [
+                'patients' => [
+                    'viewAny' => $request->user()?->can('viewAny', Patient::class) ?? false,
+                    'create' => $request->user()?->can('create', Patient::class) ?? false,
+                ],
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
         ];

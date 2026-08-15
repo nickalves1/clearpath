@@ -6,12 +6,31 @@ use App\Http\Requests\StorePatientRequest;
 use App\Http\Requests\UpdatePatientRequest;
 use App\Models\Patient;
 use App\Services\Contracts\PatientsServiceInterface;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class PatientsController extends Controller
+class PatientsController extends Controller implements HasMiddleware
 {
     public function __construct(
         protected PatientsServiceInterface $patientsService
     ) {}
+
+    /**
+     * Autorização roda como middleware, antes do FormRequest e do service —
+     * assim uma request sem permissão nem chega a validar dados ou tocar no banco.
+     *
+     * @return array<int, Middleware>
+     */
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('can:viewAny,'.Patient::class, only: ['index']),
+            new Middleware('can:view,patient', only: ['show']),
+            new Middleware('can:create,'.Patient::class, only: ['store']),
+            new Middleware('can:update,patient', only: ['update']),
+            new Middleware('can:delete,patient', only: ['destroy']),
+        ];
+    }
 
     /**
      * Display a listing of the resource.

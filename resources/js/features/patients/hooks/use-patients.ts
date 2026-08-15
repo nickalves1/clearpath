@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
-import { createPatient, getPatients } from '../services/patients.service';
-import type { CreatePatientPayload, Patient } from '../types/patient';
+import { createPatient, getPatients, updatePatient } from '../services/patients.service';
+import type { CreatePatientPayload, Patient, PaginatedResponse } from '../types/patient';
 
 /**
  * Custom hook = função que começa com "use" e pode chamar outros hooks
@@ -14,8 +14,10 @@ import type { CreatePatientPayload, Patient } from '../types/patient';
  */
 export function usePatients() {
     const [patients, setPatients] = useState<Patient[]>([]);
+    const [meta, setMeta] = useState<PaginatedResponse<Patient> | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [page, setPage] = useState<number>(1);
 
     // useCallback memoriza a função entre re-renders, para não recriar uma
     // função nova a cada render (importante porque ela é dependência do useEffect abaixo).
@@ -24,14 +26,15 @@ export function usePatients() {
         setError(null);
 
         try {
-            const data = await getPatients();
-            setPatients(data);
+            const response = await getPatients(page);
+            setPatients(response.data);
+            setMeta(response);
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Erro ao carregar pacientes.');
         } finally {
             setLoading(false);
         }
-    }, []);
+    }, [page]);
 
     // useEffect com array de dependências [fetchPatients] roda a função
     // logo depois do componente montar na tela (e de novo só se fetchPatients mudar,
@@ -44,11 +47,23 @@ export function usePatients() {
     // Cria um paciente e já atualiza a lista local, sem precisar recarregar tudo.
     const addPatient = useCallback(async (payload: CreatePatientPayload) => {
         const newPatient = await createPatient(payload);
-        setPatients((current) => [...current, newPatient]);
+        await fetchPatients();
         return newPatient;
+    }, [fetchPatients]);
+
+    const editPatient = useCallback(async (id: number, payload: CreatePatientPayload) => {
+        const currentPatient = await updatePatient(id, payload);
+        setPatients((current) => 
+            current.map((patient) => (patient.id === currentPatient.id ? currentPatient : patient))
+        );
+        return currentPatient;
     }, []);
+
+    const goToPage = useCallback((page: number) => {
+        setPage(page);
+    },[]);
 
     // O componente que usar esse hook só enxerga essa "API" pública, nunca
     // sabe que por trás tem fetch, JSON.parse, etc.
-    return { patients, loading, error, refetch: fetchPatients, addPatient };
+    return { data: {patients, loading, error, meta, page}, refetch: fetchPatients, addPatient, editPatient, goToPage };
 }

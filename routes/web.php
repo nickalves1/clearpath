@@ -9,7 +9,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 Route::get('patients', fn () => inertia('patients/index'))
-    ->middleware(['auth', 'verified']) // copie o middleware que a rota dashboard já usa
+    ->middleware(['auth', 'verified', 'can:viewAny,App\Models\Patient'])
     ->name('patients.index');
 
 require __DIR__.'/settings.php';
