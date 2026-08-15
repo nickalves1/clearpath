@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { createPatient, getPatients, updatePatient } from '../services/patients.service';
 import type { CreatePatientPayload, Patient, PaginatedResponse } from '../types/patient';
+import { toast } from 'sonner';
 
 /**
  * Custom hook = função que começa com "use" e pode chamar outros hooks
@@ -30,7 +31,9 @@ export function usePatients() {
             setPatients(response.data);
             setMeta(response);
         } catch (err) {
-            setError(err instanceof Error ? err.message : 'Erro ao carregar pacientes.');
+            const message = err instanceof Error ? err.message : 'Erro ao carregar pacientes.';
+            setError(message);
+            toast.error(message);
         } finally {
             setLoading(false);
         }

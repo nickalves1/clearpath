@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StorePatientRequest extends FormRequest
 {
@@ -18,9 +19,9 @@ class StorePatientRequest extends FormRequest
             'first_name' => 'required|string|max:100',
             'last_name' => 'required|string|max:100',
             'birth_date' => 'required|date',
-            'gender' => 'required|string|max:20',
+            'gender' => ['required', Rule::in(['Masculino', 'Feminino', 'Outro', 'Prefiro não informar'])],
             'email' => 'required|email:rfc,dns',
-            'phone' => 'required|string|max:20',
+            'phone' => 'required|int|max_digits:15',
             'medical_record_number' => 'required|string|max:30',
         ];
     }

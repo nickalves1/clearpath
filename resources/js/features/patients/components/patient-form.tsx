@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import type { CreatePatientPayload, Patient } from '../types/patient';
 import { usePatientForm } from '../hooks/use-patient-form';
 import { FormField } from './patient-form-field';
+import { GenderSelect } from './patient-form-gender-select';
 
 type Props = {
     onSubmit: (payload: CreatePatientPayload) => Promise<unknown>;
@@ -10,7 +11,7 @@ type Props = {
 
 export function PatientForm({ onSubmit, initialValues }: Props) {
 
-    const { form, submitting, error, fieldErrors, handleChange, handleSubmit } = usePatientForm({ initialValues,onSubmit });
+    const { form, submitting, error, fieldErrors, handleChange, handleSubmit, setField } = usePatientForm({ initialValues,onSubmit });
 
     return (
         <form
@@ -42,36 +43,36 @@ export function PatientForm({ onSubmit, initialValues }: Props) {
                 <FormField 
                     id="birth_date" 
                     label="Nascimento" 
+                    type="date"
                     value={form.birth_date} 
                     onChange={handleChange('birth_date')} 
                     error={fieldErrors.birth_date} 
                 />
                 <FormField 
-                    id="gender" 
-                    label="Gênero" 
-                    value={form.gender} 
-                    onChange={handleChange('gender')} 
-                    error={fieldErrors.gender} 
-                />
-                <FormField 
                     id="phone" 
-                    label="Telefone" 
+                    label="Celular"
                     value={form.phone} 
                     onChange={handleChange('phone')} 
                     error={fieldErrors.phone} 
                 />
                 <FormField 
-                    id="email" 
-                    label="Email" 
-                    value={form.email} 
-                    onChange={handleChange('email')} 
-                    error={fieldErrors.email} 
+                    id="email"
+                    label="Email"
+                    type="email"
+                    value={form.email}
+                    onChange={handleChange('email')}
+                    error={fieldErrors.email}
+                />
+                <GenderSelect 
+                    genderValue={form.gender} 
+                    onChange={(value) => setField('gender', value ?? '')} 
+                    error={fieldErrors.gender} 
                 />
             </div>
 
             {error && <p className="text-sm text-destructive">{error}</p>}
 
-            <Button type="submit" disabled={submitting} className="w-fit">
+            <Button type="submit" disabled={submitting} className="w-fit mt-4">
                 {initialValues ? 'Salvar' : submitting ? 'Salvando...' : 'Adicionar paciente'}
             </Button>
         </form>
