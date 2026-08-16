@@ -15,4 +15,6 @@ interface PatientsServiceInterface
     public function index(array $data): LengthAwarePaginator;
 
     public function update(Patient $patient, array $data): Patient;
+
+    public function destroy(Patient $patient): void;
 }

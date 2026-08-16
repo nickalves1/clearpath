@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { createPatient, getPatients, updatePatient } from '../services/patients.service';
+import { createPatient, getPatients, updatePatient, destroyPatient } from '../services/patients.service';
 import type { CreatePatientPayload, Patient, PaginatedResponse } from '../types/patient';
 import { toast } from 'sonner';
 
@@ -62,11 +62,17 @@ export function usePatients() {
         return currentPatient;
     }, []);
 
+    const deletePatient = useCallback(async (patient: Patient) => {
+        await destroyPatient(patient);
+        await fetchPatients();
+        setPatients((current) => current.filter((p) => p.id !== patient.id));
+    }, [fetchPatients]);
+
     const goToPage = useCallback((page: number) => {
         setPage(page);
     },[]);
 
     // O componente que usar esse hook só enxerga essa "API" pública, nunca
     // sabe que por trás tem fetch, JSON.parse, etc.
-    return { data: {patients, loading, error, meta, page}, refetch: fetchPatients, addPatient, editPatient, goToPage };
+    return { data: {patients, loading, error, meta, page}, refetch: fetchPatients, addPatient, editPatient, goToPage, deletePatient };
 }

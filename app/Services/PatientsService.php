@@ -24,4 +24,9 @@ class PatientsService implements PatientsServiceInterface
 
         return $patient;
     }
+
+    public function destroy(Patient $patient): void
+    {
+        $patient->delete();
+    }
 }
