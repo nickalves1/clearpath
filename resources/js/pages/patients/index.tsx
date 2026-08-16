@@ -1,6 +1,6 @@
 import { Head } from '@inertiajs/react';
 import Heading from '@/components/heading';
-import { PatientsTable, usePatients, usePatientDialog, PatientFormDialog } from '@/features/patients';
+import { PatientsTable, usePatients, usePatientDialog, PatientFormDialog, usePatientDeleteDialog, PatientDeleteDialog } from '@/features/patients';
 import type {CreatePatientPayload} from '@/features/patients/types/patient';
 import { Button } from '@/components/ui/button';
 import Paginate from '@/components/paginator';
@@ -11,8 +11,9 @@ import { toast } from 'sonner';
  * com os componentes visuais da feature. Quase nenhuma lógica deveria morar aqui.
  */
 export default function PatientsIndex() {
-    const { data, addPatient, editPatient, goToPage } = usePatients();
+    const { data, addPatient, editPatient, goToPage, deletePatient } = usePatients();
     const dialog = usePatientDialog();
+    const {  patientToDelete, handleConfirmDelete,  setPatientToDelete } = usePatientDeleteDialog({deletePatient});
 
     const handleSubmit = async (payload: CreatePatientPayload) => {
         const result = dialog.editingPatient
@@ -41,7 +42,12 @@ export default function PatientsIndex() {
                 {data.error && <p className="text-sm text-destructive">{data.error}</p>}
                 {!data.loading && !data.error && (
                     <>
-                        <PatientsTable patients={data.patients} onEdit={dialog.openToEdit} />
+                        <PatientsTable patients={data.patients} onEdit={dialog.openToEdit} setToDelete={setPatientToDelete} />
+                        <PatientDeleteDialog
+                            patient={patientToDelete}
+                            onOpenChange={(open) => { if (!open) setPatientToDelete(null); }}
+                            onConfirm={handleConfirmDelete}
+                        />
                         <Paginate meta={data.meta} page={data.page} goToPage={goToPage}/>
                     </>
                 )}

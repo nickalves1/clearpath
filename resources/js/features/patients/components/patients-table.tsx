@@ -1,22 +1,18 @@
 import { Button } from '@/components/ui/button';
 import type { Patient } from '../types/patient';
-import { Pen } from 'lucide-react';
+import { Pen, Trash } from 'lucide-react';
 
 type Props = {
     patients: Patient[];
     onEdit: (patient: Patient) => void;
+    setToDelete: (patient: Patient) => void;
 };
 
 function formatDate(value: string) {
     return new Date(value).toLocaleDateString('pt-BR');
 }
 
-/**
- * Componente "burro" (presentational component): só recebe dados via props
- * e renderiza. Não sabe de onde `patients` veio (API? mock? outro hook?).
- * Isso facilita reaproveitar em outra tela e testar isoladamente.
- */
-export function PatientsTable({ patients, onEdit }: Props) {
+export function PatientsTable({ patients, onEdit, setToDelete}: Props) {
     if (patients.length === 0) {
         return (
                 <div className="rounded-xl border border-sidebar-border/70 p-6 text-center text-sm text-muted-foreground dark:border-sidebar-border">
@@ -36,7 +32,8 @@ export function PatientsTable({ patients, onEdit }: Props) {
                         <th className="px-4 py-3 font-medium">Gênero</th>
                         <th className="px-4 py-3 font-medium">Telefone</th>
                         <th className="px-4 py-3 font-medium">Email</th>
-                        <th className="px-4 py-3 font-medium"></th>
+                        <th className="py-3 font-medium"></th>
+                        <th className="py-3 font-medium"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -55,9 +52,14 @@ export function PatientsTable({ patients, onEdit }: Props) {
                             <td className="px-4 py-3">{patient.gender}</td>
                             <td className="px-4 py-3">{patient.phone}</td>
                             <td className="px-4 py-3">{patient.email}</td>
-                            <td className="px-4 py-3">
+                            <td className="py-3">
                                 <Button variant="ghost" size="icon" onClick={() => onEdit(patient)}>
                                     <Pen />
+                                </Button>
+                            </td>
+                            <td className="py-3">
+                                <Button variant="ghost" size="icon" onClick={() => setToDelete(patient)}>
+                                    <Trash />
                                 </Button>
                             </td>
                         </tr>

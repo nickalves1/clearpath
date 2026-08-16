@@ -91,6 +91,7 @@ class PatientsController extends Controller implements HasMiddleware
      */
     public function destroy(Patient $patient)
     {
-        //
+        $this->patientsService->destroy($patient);
+        return response()->json($patient, 204);
     }
 }

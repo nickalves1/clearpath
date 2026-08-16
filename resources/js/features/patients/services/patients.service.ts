@@ -74,3 +74,10 @@ export function updatePatient(id: number, payload: CreatePatientPayload): Promis
         body: JSON.stringify(payload),
     });
 }
+
+export function destroyPatient(patient: Patient): Promise<void> {
+    const { url, method } = PatientsController.destroy(patient);
+    return request<void>(url, {
+        method
+    });
+}
