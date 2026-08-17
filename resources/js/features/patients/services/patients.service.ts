@@ -3,20 +3,15 @@ import type { CreatePatientPayload, Patient, PaginatedResponse } from '../types/
 import { ValidationError } from '@/lib/http/errors/validation-error';
 
 /**
- * Wrapper fino em cima do `fetch` nativo.
- * Essa é a ÚNICA função do projeto que sabe o formato cru de uma resposta HTTP
- * (status code, JSON, erro). Hooks e componentes nunca lidam com isso direto.
- * 
- * 
- * O fluxo de uma chamada fetch tem 2 etapas, não 1:
- * await fetch(url) → devolve a resposta HTTP (status, headers...), mas ainda não o conteúdo.
- * await response.json() → aí sim converte o corpo da resposta de JSON (texto) pra objeto/array JavaScript.
- * 
- * 
+ * Thin wrapper around `fetch`. The only function in the project that knows
+ * the raw shape of an HTTP response (status code, JSON, errors) — hooks and
+ * components never deal with that directly.
+ *
+ * Throws a {@link ValidationError} on a 422 response, or a plain `Error`
+ * (using the server's message when available) for any other non-OK response.
  */
 async function request<T>(url: string, options: RequestInit = {}): Promise<T> {
     const response = await fetch(url, {
-        // Envia o cookie de sessão do Laravel (autenticação via Inertia/Fortify).
         credentials: 'same-origin',
         headers: {
             Accept: 'application/json',
@@ -27,18 +22,16 @@ async function request<T>(url: string, options: RequestInit = {}): Promise<T> {
     });
 
     if (!response.ok) {
-        // Se o Laravel devolveu erros de validação (422) ou outro erro, tenta ler a mensagem.
         const body = await response.json().catch(() => null);
 
-        if (response.status ===422 && body?.message) {
+        if (response.status === 422 && body?.message) {
             throw new ValidationError(body.message, body.errors);
         }
 
-        throw new Error(body?.message ?? `Falha na requisição (status ${response.status})`);
+        throw new Error(body?.message ?? `Request failed (status ${response.status})`);
     }
 
     if (response.status === 204) {
-        // 204 No Content (comum em destroy) não tem corpo para converter em JSON.
         return undefined as T;
     }
 
@@ -46,19 +39,17 @@ async function request<T>(url: string, options: RequestInit = {}): Promise<T> {
 }
 
 /**
- * Busca a lista de pacientes.
+ * Fetches a page of patients.
  *
- * ATENÇÃO: aqui eu assumi que `PatientsController::index` devolve um array puro
- * de pacientes (`response()->json($patients)`), sem paginação/Resource.
- * Se o seu controller usa `->paginate()` ou um API Resource, o JSON real vem
- * como `{ data: [...], links: {...}, meta: {...} }` e essa função vai
- * precisar extrair `body.data` em vez do array direto. Testa e me fala o que veio.
+ * @param page - 1-indexed page number.
+ * @param sort - Column to sort by; prefix with `-` for descending (e.g. `-first_name`).
  */
 export function getPatients(page: number, sort: string): Promise<PaginatedResponse<Patient>> {
-    const { url, method } = PatientsController.index({ query: { page, sort }});
+    const { url, method } = PatientsController.index({ query: { page, sort } });
     return request<PaginatedResponse<Patient>>(url, { method });
 }
 
+/** Creates a new patient. */
 export function createPatient(payload: CreatePatientPayload): Promise<Patient> {
     const { url, method } = PatientsController.store();
     return request<Patient>(url, {
@@ -67,6 +58,7 @@ export function createPatient(payload: CreatePatientPayload): Promise<Patient> {
     });
 }
 
+/** Updates an existing patient by id. */
 export function updatePatient(id: number, payload: CreatePatientPayload): Promise<Patient> {
     const { url, method } = PatientsController.update(id);
     return request<Patient>(url, {
@@ -75,9 +67,10 @@ export function updatePatient(id: number, payload: CreatePatientPayload): Promis
     });
 }
 
+/** Deletes a patient. */
 export function destroyPatient(patient: Patient): Promise<void> {
     const { url, method } = PatientsController.destroy(patient);
     return request<void>(url, {
-        method
+        method,
     });
 }

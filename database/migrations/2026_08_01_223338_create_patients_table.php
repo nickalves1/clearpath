@@ -20,8 +20,8 @@ return new class extends Migration
             $table->string('gender', length: 20);
             $table->string('phone', length: 20);
             $table->string('email', length: 255);
-            $table->timestamps();     // cria created_at + updated_at automaticamente
-            $table->softDeletes();    // cria deleted_at, já nullable
+            $table->timestamps();     // creates created_at + updated_at automatically
+            $table->softDeletes();    // creates deleted_at, already nullable
         });
     }
 

@@ -4,17 +4,22 @@ import { toast } from 'sonner';
 
 type Props = {
     deletePatient: (patient: Patient) => void;
-}
-export function usePatientDeleteDialog({deletePatient} : Props) {
+};
 
+/**
+ * Controls the delete confirmation dialog: which patient (if any) is pending
+ * deletion, and the confirm action that actually deletes it.
+ */
+export function usePatientDeleteDialog({ deletePatient }: Props) {
     const [patientToDelete, setPatientToDelete] = useState<Patient | null>(null);
 
+    /** Deletes the pending patient and closes the dialog. */
     async function handleConfirmDelete() {
         if (!patientToDelete) return;
         await deletePatient(patientToDelete);
-        toast.success('Paciente excluído com sucesso!');
+        toast.success('Patient deleted successfully!');
         setPatientToDelete(null);
     }
 
-    return { patientToDelete, handleConfirmDelete,  setPatientToDelete};
+    return { patientToDelete, handleConfirmDelete, setPatientToDelete };
 }

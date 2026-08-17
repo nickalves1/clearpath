@@ -22,7 +22,7 @@ class PatientFactory extends Factory
             'first_name' => fake()->firstName(),
             'last_name' => fake()->lastName(),
             'birth_date' => fake()->date(),
-            'gender' => fake()->randomElement(['female', 'male']),
+            'gender' => fake()->randomElement(['Male', 'Female', 'Other', 'Prefer not to say']),
             'phone' => fake()->numerify('###########'),
             'email' => fake()->unique()->safeEmail(),
         ];

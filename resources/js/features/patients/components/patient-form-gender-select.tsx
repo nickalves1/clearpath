@@ -7,22 +7,26 @@ type Props = {
     genderValue: string;
 };
 
-export function GenderSelect({onChange, error, genderValue} : Props){
+/**
+ * Gender field for the patient form. The options must stay in sync with the
+ * `gender` validation rules on StorePatientRequest/UpdatePatientRequest.
+ */
+export function GenderSelect({ onChange, error, genderValue }: Props) {
     return (
         <div className="grid gap-2">
-        <Label htmlFor="gender">Gênero</Label>
-        <Select value={genderValue} onValueChange={onChange}>
-            <SelectTrigger id="gender" aria-invalid={!!error}>
-                <SelectValue placeholder="Selecione" />
-            </SelectTrigger>
-            <SelectContent>
-                <SelectItem value="Masculino">Masculino</SelectItem>
-                <SelectItem value="Feminino">Feminino</SelectItem>
-                <SelectItem value="Outro">Outro</SelectItem>
-                <SelectItem value="Prefiro não informar">Prefiro não informar</SelectItem>
-            </SelectContent>
-        </Select>
-        {error && <p className="text-sm text-destructive">{error[0]}</p>}
-    </div>
-    )
+            <Label htmlFor="gender">Gender</Label>
+            <Select value={genderValue} onValueChange={onChange}>
+                <SelectTrigger id="gender" aria-invalid={!!error}>
+                    <SelectValue placeholder="Select" />
+                </SelectTrigger>
+                <SelectContent>
+                    <SelectItem value="Male">Male</SelectItem>
+                    <SelectItem value="Female">Female</SelectItem>
+                    <SelectItem value="Other">Other</SelectItem>
+                    <SelectItem value="Prefer not to say">Prefer not to say</SelectItem>
+                </SelectContent>
+            </Select>
+            {error && <p className="text-sm text-destructive">{error[0]}</p>}
+        </div>
+    );
 }
