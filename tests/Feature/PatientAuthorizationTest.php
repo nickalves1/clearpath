@@ -37,7 +37,7 @@ class PatientAuthorizationTest extends TestCase
             'first_name' => 'Ana',
             'last_name' => 'Silva',
             'birth_date' => '1990-01-01',
-            'gender' => 'female',
+            'gender' => 'Female',
             'email' => 'ana.silva@gmail.com',
             'phone' => '11999999999',
             'medical_record_number' => 'MRN-001',
@@ -54,7 +54,7 @@ class PatientAuthorizationTest extends TestCase
             'first_name' => 'Ana',
             'last_name' => 'Silva',
             'birth_date' => '1990-01-01',
-            'gender' => 'female',
+            'gender' => 'Female',
             'email' => 'ana.silva@gmail.com',
             'phone' => '11999999999',
             'medical_record_number' => 'MRN-001',
@@ -69,7 +69,7 @@ class PatientAuthorizationTest extends TestCase
         $patient = Patient::factory()->create();
 
         $response = $this->actingAs($user)->putJson("/api/patients/{$patient->id}", [
-            'first_name' => 'Novo Nome',
+            'first_name' => 'New Name',
             'last_name' => $patient->last_name,
             'birth_date' => $patient->birth_date,
             'gender' => $patient->gender,

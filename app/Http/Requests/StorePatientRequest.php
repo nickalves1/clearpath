@@ -19,7 +19,7 @@ class StorePatientRequest extends FormRequest
             'first_name' => 'required|string|max:100',
             'last_name' => 'required|string|max:100',
             'birth_date' => 'required|date',
-            'gender' => ['required', Rule::in(['Masculino', 'Feminino', 'Outro', 'Prefiro não informar'])],
+            'gender' => ['required', Rule::in(['Male', 'Female', 'Other', 'Prefer not to say'])],
             'email' => 'required|email:rfc,dns',
             'phone' => 'required|int|max_digits:15',
             'medical_record_number' => 'required|string|max:30',

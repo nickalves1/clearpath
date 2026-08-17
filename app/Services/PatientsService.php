@@ -6,15 +6,20 @@ use App\Models\Patient;
 use App\Services\Contracts\PatientsServiceInterface;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Spatie\QueryBuilder\QueryBuilder;
-use Spatie\QueryBuilder\AllowedSort;
 
 class PatientsService implements PatientsServiceInterface
 {
+    /**
+     * @param  array<string, mixed>  $data
+     */
     public function store(array $data): Patient
     {
         return Patient::create($data);
     }
 
+    /**
+     * @param  array<string, mixed>  $data
+     */
     public function index(array $data): LengthAwarePaginator
     {
         return QueryBuilder::for(Patient::class)
@@ -22,6 +27,9 @@ class PatientsService implements PatientsServiceInterface
             ->paginate(5);
     }
 
+    /**
+     * @param  array<string, mixed>  $data
+     */
     public function update(Patient $patient, array $data): Patient
     {
         $patient->update($data);

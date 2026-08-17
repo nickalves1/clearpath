@@ -6,10 +6,6 @@ import { Button } from '@/components/ui/button';
 import Paginate from '@/components/paginator';
 import { toast } from 'sonner';
 
-/**
- * A "page" é intencionalmente burra: ela só junta o hook (dados + ações)
- * com os componentes visuais da feature. Quase nenhuma lógica deveria morar aqui.
- */
 export default function PatientsIndex() {
     const { data, addPatient, editPatient, goToPage, deletePatient, orderByColumn } = usePatients();
     const dialog = usePatientDialog();
@@ -20,7 +16,7 @@ export default function PatientsIndex() {
         ? await editPatient(dialog.editingPatient.id, payload)
         : await addPatient(payload);
 
-        toast.success(dialog.editingPatient ? 'Paciente atualizado com sucesso!' : 'Paciente criado com sucesso!');
+        toast.success(dialog.editingPatient ? 'Patient updated successfully!' : 'Patient created successfully!');
 
         dialog.setIsOpen(false);
         return result;
@@ -28,17 +24,17 @@ export default function PatientsIndex() {
 
     return (
         <>
-            <Head title="Pacientes" />
+            <Head title="Patients" />
             <div className="flex flex-1 flex-col gap-6 p-4">
-                <Heading title="Pacientes" description="Cadastro e listagem de pacientes" />
-                <Button className="w-fit" onClick={()=>{dialog.openToCreate()}}>Novo paciente</Button>
+                <Heading title="Patients" description="Patient registration and listing" />
+                <Button className="w-fit" onClick={()=>{dialog.openToCreate()}}>New Patient</Button>
                 <PatientFormDialog
                     open={dialog.isOpen}
                     onOpenChange={dialog.setIsOpen}
                     patient={dialog.editingPatient}
                     onSubmit={handleSubmit}
-                />  
-                {data.loading && <p className="text-sm text-muted-foreground">Carregando pacientes...</p>}
+                />
+                {data.loading && <p className="text-sm text-muted-foreground">Loading patients...</p>}
                 {data.error && <p className="text-sm text-destructive">{data.error}</p>}
                 {!data.loading && !data.error && (
                     <>
@@ -63,10 +59,6 @@ export default function PatientsIndex() {
     );
 }
 
-// Segue o mesmo padrão que você já tem em dashboard.tsx / profile.tsx
 PatientsIndex.layout = {
-    breadcrumbs: [
-        //{ title: 'Dashboard', href: dashboard() },
-        { title: 'Pacientes', href: '/patients' },
-    ],
+    breadcrumbs: [{ title: 'Patients', href: '/patients' }],
 };

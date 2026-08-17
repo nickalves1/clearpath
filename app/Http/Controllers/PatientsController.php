@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\IndexPatientRequest;
 use App\Http\Requests\StorePatientRequest;
 use App\Http\Requests\UpdatePatientRequest;
-use App\Http\Requests\IndexPatientRequest;
 use App\Models\Patient;
 use App\Services\Contracts\PatientsServiceInterface;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -17,8 +17,7 @@ class PatientsController extends Controller implements HasMiddleware
     ) {}
 
     /**
-     * Autorização roda como middleware, antes do FormRequest e do service —
-     * assim uma request sem permissão nem chega a validar dados ou tocar no banco.
+     * Authorization runs as middleware, ahead of the FormRequest and the service.
      *
      * @return array<int, Middleware>
      */
@@ -93,6 +92,7 @@ class PatientsController extends Controller implements HasMiddleware
     public function destroy(Patient $patient)
     {
         $this->patientsService->destroy($patient);
+
         return response()->json($patient, 204);
     }
 }

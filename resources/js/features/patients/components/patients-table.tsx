@@ -12,7 +12,7 @@ type Props = {
 };
 
 function formatDate(value: string) {
-    return new Date(value).toLocaleDateString('pt-BR');
+    return new Date(value).toLocaleDateString('en-US');
 }
 
 type SortableHeaderProps = {
@@ -23,6 +23,10 @@ type SortableHeaderProps = {
     onSort: (column: string) => void;
 };
 
+/**
+ * Clickable column header that sorts by `column` and shows an arrow
+ * indicating direction when it's the active column.
+ */
 function SortableHeader({ column, label, activeColumn, direction, onSort }: SortableHeaderProps) {
     const isActive = column === activeColumn;
 
@@ -40,12 +44,15 @@ function SortableHeader({ column, label, activeColumn, direction, onSort }: Sort
     );
 }
 
+/**
+ * Sortable, paginated list of patients with per-row edit/delete actions.
+ */
 export function PatientsTable({ patients, onEdit, setToDelete, setColumnOrder, activeColumn, direction }: Props) {
     if (patients.length === 0) {
         return (
-                <div className="rounded-xl border border-sidebar-border/70 p-6 text-center text-sm text-muted-foreground dark:border-sidebar-border">
-                    Nenhum paciente cadastrado ainda.
-                </div>
+            <div className="rounded-xl border border-sidebar-border/70 p-6 text-center text-sm text-muted-foreground dark:border-sidebar-border">
+                No patients registered yet.
+            </div>
         );
     }
 
@@ -54,11 +61,11 @@ export function PatientsTable({ patients, onEdit, setToDelete, setColumnOrder, a
             <table className="w-full text-left text-sm">
                 <thead className="border-b border-sidebar-border/70 bg-muted/50 dark:border-sidebar-border">
                     <tr>
-                        <SortableHeader column="medical_record_number" label="Prontuário" activeColumn={activeColumn} direction={direction} onSort={setColumnOrder} />
-                        <SortableHeader column="first_name" label="Nome" activeColumn={activeColumn} direction={direction} onSort={setColumnOrder} />
-                        <SortableHeader column="birth_date" label="Nascimento" activeColumn={activeColumn} direction={direction} onSort={setColumnOrder} />
-                        <SortableHeader column="gender" label="Gênero" activeColumn={activeColumn} direction={direction} onSort={setColumnOrder} />
-                        <SortableHeader column="phone" label="Telefone" activeColumn={activeColumn} direction={direction} onSort={setColumnOrder} />
+                        <SortableHeader column="medical_record_number" label="Medical Record Number" activeColumn={activeColumn} direction={direction} onSort={setColumnOrder} />
+                        <SortableHeader column="first_name" label="First Name" activeColumn={activeColumn} direction={direction} onSort={setColumnOrder} />
+                        <SortableHeader column="birth_date" label="Birth Date" activeColumn={activeColumn} direction={direction} onSort={setColumnOrder} />
+                        <SortableHeader column="gender" label="Gender" activeColumn={activeColumn} direction={direction} onSort={setColumnOrder} />
+                        <SortableHeader column="phone" label="Phone" activeColumn={activeColumn} direction={direction} onSort={setColumnOrder} />
                         <SortableHeader column="email" label="Email" activeColumn={activeColumn} direction={direction} onSort={setColumnOrder} />
                         <th className="py-3 font-medium"></th>
                         <th className="py-3 font-medium"></th>
@@ -66,8 +73,6 @@ export function PatientsTable({ patients, onEdit, setToDelete, setColumnOrder, a
                 </thead>
                 <tbody>
                     {patients.map((patient) => (
-                        // `key` é obrigatório em listas no React: ajuda ele a saber
-                        // qual <tr> corresponde a qual dado entre um render e outro.
                         <tr
                             key={patient.id}
                             className="border-b border-sidebar-border/50 last:border-0 dark:border-sidebar-border/50"

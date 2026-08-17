@@ -39,7 +39,7 @@ export function AppSidebar() {
             icon: LayoutGrid,
         },
         ...(can.patients.viewAny
-            ? [{ title: 'Pacientes', href: '/patients', icon: Users }]
+            ? [{ title: 'Patients', href: '/patients', icon: Users }]
             : []),
     ];
 

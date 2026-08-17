@@ -12,6 +12,10 @@ type FormFieldProps = {
     error?: string[];
 };
 
+/**
+ * Labeled text input with an optional validation error message, used by
+ * PatientForm for its plain text fields.
+ */
 export function FormField({ id, label, type = 'text', value, onChange, error }: FormFieldProps) {
     return (
         <div className="grid gap-2">
