@@ -11,7 +11,7 @@ import { toast } from 'sonner';
  * com os componentes visuais da feature. Quase nenhuma lógica deveria morar aqui.
  */
 export default function PatientsIndex() {
-    const { data, addPatient, editPatient, goToPage, deletePatient } = usePatients();
+    const { data, addPatient, editPatient, goToPage, deletePatient, orderByColumn } = usePatients();
     const dialog = usePatientDialog();
     const {  patientToDelete, handleConfirmDelete,  setPatientToDelete } = usePatientDeleteDialog({deletePatient});
 
@@ -42,7 +42,14 @@ export default function PatientsIndex() {
                 {data.error && <p className="text-sm text-destructive">{data.error}</p>}
                 {!data.loading && !data.error && (
                     <>
-                        <PatientsTable patients={data.patients} onEdit={dialog.openToEdit} setToDelete={setPatientToDelete} />
+                        <PatientsTable
+                            patients={data.patients}
+                            onEdit={dialog.openToEdit}
+                            setToDelete={setPatientToDelete}
+                            setColumnOrder={orderByColumn}
+                            activeColumn={data.column}
+                            direction={data.direction}
+                        />
                         <PatientDeleteDialog
                             patient={patientToDelete}
                             onOpenChange={(open) => { if (!open) setPatientToDelete(null); }}

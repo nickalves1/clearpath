@@ -54,8 +54,8 @@ async function request<T>(url: string, options: RequestInit = {}): Promise<T> {
  * como `{ data: [...], links: {...}, meta: {...} }` e essa função vai
  * precisar extrair `body.data` em vez do array direto. Testa e me fala o que veio.
  */
-export function getPatients(page: number): Promise<PaginatedResponse<Patient>> {
-    const { url, method } = PatientsController.index({ query: { page }});
+export function getPatients(page: number, sort: string): Promise<PaginatedResponse<Patient>> {
+    const { url, method } = PatientsController.index({ query: { page, sort }});
     return request<PaginatedResponse<Patient>>(url, { method });
 }
 

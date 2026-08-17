@@ -3,31 +3,22 @@ import { createPatient, getPatients, updatePatient, destroyPatient } from '../se
 import type { CreatePatientPayload, Patient, PaginatedResponse } from '../types/patient';
 import { toast } from 'sonner';
 
-/**
- * Custom hook = função que começa com "use" e pode chamar outros hooks
- * (useState, useEffect...) dentro dela. É a forma do React de empacotar
- * "estado + lógica" reutilizável, fora de um componente visual.
- *
- * Aqui ele guarda 3 estados clássicos de toda tela que busca dado assíncrono:
- * - patients: os dados em si
- * - loading: está buscando agora?
- * - error: deu erro? qual mensagem mostrar?
- */
 export function usePatients() {
     const [patients, setPatients] = useState<Patient[]>([]);
     const [meta, setMeta] = useState<PaginatedResponse<Patient> | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [page, setPage] = useState<number>(1);
+    const [column, setColumn] = useState<string>("");
+    const [direction, setDirection] = useState<'asc' | 'desc'>('asc');
 
-    // useCallback memoriza a função entre re-renders, para não recriar uma
-    // função nova a cada render (importante porque ela é dependência do useEffect abaixo).
     const fetchPatients = useCallback(async () => {
         setLoading(true);
         setError(null);
 
         try {
-            const response = await getPatients(page);
+            const sort = direction === 'desc' ? `-${column}` : column;
+            const response = await getPatients(page, sort);
             setPatients(response.data);
             setMeta(response);
         } catch (err) {
@@ -37,7 +28,7 @@ export function usePatients() {
         } finally {
             setLoading(false);
         }
-    }, [page]);
+    }, [page, column, direction]);
 
     // useEffect com array de dependências [fetchPatients] roda a função
     // logo depois do componente montar na tela (e de novo só se fetchPatients mudar,
@@ -72,7 +63,14 @@ export function usePatients() {
         setPage(page);
     },[]);
 
-    // O componente que usar esse hook só enxerga essa "API" pública, nunca
-    // sabe que por trás tem fetch, JSON.parse, etc.
-    return { data: {patients, loading, error, meta, page}, refetch: fetchPatients, addPatient, editPatient, goToPage, deletePatient };
+    const orderByColumn = useCallback((newColumn: string) => {
+        if (newColumn === column) {
+            setDirection((current) => (current === 'asc' ? 'desc' : 'asc'));
+        } else {
+            setColumn(newColumn);
+            setDirection('asc');
+        }
+    }, [column]);
+
+    return { data: {patients, loading, error, meta, page, column, direction}, refetch: fetchPatients, addPatient, editPatient, goToPage, deletePatient, orderByColumn };
 }
