@@ -1,18 +1,46 @@
 import { Button } from '@/components/ui/button';
 import type { Patient } from '../types/patient';
-import { Pen, Trash } from 'lucide-react';
+import { Pen, Trash, ArrowUp, ArrowDown, ArrowUpDown } from 'lucide-react';
 
 type Props = {
     patients: Patient[];
     onEdit: (patient: Patient) => void;
     setToDelete: (patient: Patient) => void;
+    setColumnOrder: (column: string) => void;
+    activeColumn: string;
+    direction: 'asc' | 'desc';
 };
 
 function formatDate(value: string) {
     return new Date(value).toLocaleDateString('pt-BR');
 }
 
-export function PatientsTable({ patients, onEdit, setToDelete}: Props) {
+type SortableHeaderProps = {
+    column: string;
+    label: string;
+    activeColumn: string;
+    direction: 'asc' | 'desc';
+    onSort: (column: string) => void;
+};
+
+function SortableHeader({ column, label, activeColumn, direction, onSort }: SortableHeaderProps) {
+    const isActive = column === activeColumn;
+
+    return (
+        <th className="px-4 py-3 font-medium" scope="rowgroup">
+            <Button variant="ghost" size="sm" className="gap-1" onClick={() => onSort(column)}>
+                {label}
+                {isActive ? (
+                    direction === 'asc' ? <ArrowUp className="size-4" /> : <ArrowDown className="size-4" />
+                ) : (
+                    <ArrowUpDown className="size-4 text-muted-foreground" />
+                )}
+            </Button>
+        </th>
+    );
+}
+
+export function PatientsTable({ patients, onEdit, setToDelete, setColumnOrder, activeColumn, direction }: Props) {
     if (patients.length === 0) {
         return (
                 <div className="rounded-xl border border-sidebar-border/70 p-6 text-center text-sm text-muted-foreground dark:border-sidebar-border">
@@ -26,12 +54,12 @@ export function PatientsTable({ patients, onEdit, setToDelete}: Props) {
             <table className="w-full text-left text-sm">
                 <thead className="border-b border-sidebar-border/70 bg-muted/50 dark:border-sidebar-border">
                     <tr>
-                        <th className="px-4 py-3 font-medium">Prontuário</th>
-                        <th className="px-4 py-3 font-medium">Nome</th>
-                        <th className="px-4 py-3 font-medium">Nascimento</th>
-                        <th className="px-4 py-3 font-medium">Gênero</th>
-                        <th className="px-4 py-3 font-medium">Telefone</th>
-                        <th className="px-4 py-3 font-medium">Email</th>
+                        <SortableHeader column="medical_record_number" label="Prontuário" activeColumn={activeColumn} direction={direction} onSort={setColumnOrder} />
+                        <SortableHeader column="first_name" label="Nome" activeColumn={activeColumn} direction={direction} onSort={setColumnOrder} />
+                        <SortableHeader column="birth_date" label="Nascimento" activeColumn={activeColumn} direction={direction} onSort={setColumnOrder} />
+                        <SortableHeader column="gender" label="Gênero" activeColumn={activeColumn} direction={direction} onSort={setColumnOrder} />
+                        <SortableHeader column="phone" label="Telefone" activeColumn={activeColumn} direction={direction} onSort={setColumnOrder} />
+                        <SortableHeader column="email" label="Email" activeColumn={activeColumn} direction={direction} onSort={setColumnOrder} />
                         <th className="py-3 font-medium"></th>
                         <th className="py-3 font-medium"></th>
                     </tr>
