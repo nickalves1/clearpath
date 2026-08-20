@@ -3,11 +3,23 @@ import Heading from '@/components/heading';
 import { PatientsTable, usePatients, usePatientDialog, PatientFormDialog, usePatientDeleteDialog, PatientDeleteDialog, PatientFiltersDialog, usePatientFiltersDialog } from '@/features/patients';
 import type {CreatePatientPayload} from '@/features/patients/types/patient';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Search } from 'lucide-react';
 import Paginate from '@/components/paginator';
 import { toast } from 'sonner';
 
 export default function PatientsIndex() {
-    const { data, addPatient, editPatient, goToPage, deletePatient, orderByColumn, applyFilters} = usePatients();
+    const { 
+        data,
+        addPatient,
+        editPatient,
+        goToPage,
+        deletePatient,
+        orderByColumn,
+        applyFilters,
+        handleChangeSearch,
+        search
+    } = usePatients();
     const { open, setIsOpen, filters, handleChange, openDialog } = usePatientFiltersDialog();
     const dialog = usePatientDialog();
     const {  patientToDelete, handleConfirmDelete,  setPatientToDelete } = usePatientDeleteDialog({deletePatient});
@@ -31,6 +43,10 @@ export default function PatientsIndex() {
                 <div className="flex items-center gap-2">
                     <Button className="w-36" onClick={()=>{dialog.openToCreate()}}>New Patient</Button>
                     <Button className="w-36" variant="outline" onClick={()=>{openDialog()}}>Filter</Button>
+                    <div className="relative w-2xs ml-auto">
+                        <Search className="absolute left-2 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+                        <Input className="pl-8" placeholder="Search by name, phone, or MRN..." onChange={handleChangeSearch} value={search} />
+                    </div>
                 </div>
                 <PatientFiltersDialog 
                     open={open} 
