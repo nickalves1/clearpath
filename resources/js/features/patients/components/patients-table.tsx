@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import type { Patient } from '../types/patient';
 import { Pen, Trash, ArrowUp, ArrowDown, ArrowUpDown } from 'lucide-react';
 
@@ -9,6 +10,7 @@ type Props = {
     setColumnOrder: (column: string) => void;
     activeColumn: string;
     direction: 'asc' | 'desc';
+    isActiveFilter: string;
 };
 
 function formatDate(value: string) {
@@ -47,7 +49,7 @@ function SortableHeader({ column, label, activeColumn, direction, onSort }: Sort
 /**
  * Sortable, paginated list of patients with per-row edit/delete actions.
  */
-export function PatientsTable({ patients, onEdit, setToDelete, setColumnOrder, activeColumn, direction }: Props) {
+export function PatientsTable({ patients, onEdit, setToDelete, setColumnOrder, activeColumn, direction, isActiveFilter }: Props) {
     if (patients.length === 0) {
         return (
             <div className="rounded-xl border border-sidebar-border/70 p-6 text-center text-sm text-muted-foreground dark:border-sidebar-border">
@@ -55,6 +57,8 @@ export function PatientsTable({ patients, onEdit, setToDelete, setColumnOrder, a
             </div>
         );
     }
+
+    const showDeletedAt = isActiveFilter !== 'true';
 
     return (
         <div className="overflow-x-auto rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
@@ -67,36 +71,49 @@ export function PatientsTable({ patients, onEdit, setToDelete, setColumnOrder, a
                         <SortableHeader column="gender" label="Gender" activeColumn={activeColumn} direction={direction} onSort={setColumnOrder} />
                         <SortableHeader column="phone" label="Phone" activeColumn={activeColumn} direction={direction} onSort={setColumnOrder} />
                         <SortableHeader column="email" label="Email" activeColumn={activeColumn} direction={direction} onSort={setColumnOrder} />
+                        <th className="px-4 py-3 font-medium">Created At</th>
+                        {showDeletedAt && <th className="px-4 py-3 font-medium">Deleted At</th>}
                         <th className="py-3 font-medium"></th>
                         <th className="py-3 font-medium"></th>
                     </tr>
                 </thead>
                 <tbody>
-                    {patients.map((patient) => (
-                        <tr
-                            key={patient.id}
-                            className="border-b border-sidebar-border/50 last:border-0 dark:border-sidebar-border/50"
-                        >
-                            <td className="px-4 py-3">{patient.medical_record_number}</td>
-                            <td className="px-4 py-3">
-                                {patient.first_name} {patient.last_name}
-                            </td>
-                            <td className="px-4 py-3">{formatDate(patient.birth_date)}</td>
-                            <td className="px-4 py-3">{patient.gender}</td>
-                            <td className="px-4 py-3">{patient.phone}</td>
-                            <td className="px-4 py-3">{patient.email}</td>
-                            <td className="py-3">
-                                <Button variant="ghost" size="icon" onClick={() => onEdit(patient)}>
-                                    <Pen />
-                                </Button>
-                            </td>
-                            <td className="py-3">
-                                <Button variant="ghost" size="icon" onClick={() => setToDelete(patient)}>
-                                    <Trash />
-                                </Button>
-                            </td>
-                        </tr>
-                    ))}
+                    {patients.map((patient) => {
+                        const isDeleted = patient.deleted_at !== null;
+
+                        return (
+                            <tr
+                                key={patient.id}
+                                className={`border-b border-sidebar-border/50 last:border-0 dark:border-sidebar-border/50 ${isDeleted ? 'bg-muted/40 text-muted-foreground' : ''}`}
+                            >
+                                <td className="px-4 py-3">{patient.medical_record_number}</td>
+                                <td className="px-4 py-3">
+                                    <div className="flex items-center gap-2">
+                                        {patient.first_name} {patient.last_name}
+                                        {isDeleted && <Badge variant="destructive">Deleted</Badge>}
+                                    </div>
+                                </td>
+                                <td className="px-4 py-3">{formatDate(patient.birth_date)}</td>
+                                <td className="px-4 py-3">{patient.gender}</td>
+                                <td className="px-4 py-3">{patient.phone}</td>
+                                <td className="px-4 py-3">{patient.email}</td>
+                                <td className="px-4 py-3">{formatDate(patient.created_at)}</td>
+                                {showDeletedAt && (
+                                    <td className="px-4 py-3">{patient.deleted_at ? formatDate(patient.deleted_at) : '—'}</td>
+                                )}
+                                <td className="py-3">
+                                    <Button variant="ghost" size="icon" onClick={() => onEdit(patient)}>
+                                        <Pen />
+                                    </Button>
+                                </td>
+                                <td className="py-3">
+                                    <Button variant="ghost" size="icon" onClick={() => setToDelete(patient)}>
+                                        <Trash />
+                                    </Button>
+                                </td>
+                            </tr>
+                        );
+                    })}
                 </tbody>
             </table>
         </div>

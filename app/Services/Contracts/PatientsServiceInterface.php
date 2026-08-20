@@ -32,7 +32,7 @@ interface PatientsServiceInterface
     public function update(Patient $patient, array $data): Patient;
 
     /**
-     * Delete a patient.
+     * Soft-delete a patient.
      */
-    public function destroy(Patient $patient): void;
+    public function softDelete(Patient $patient): void;
 }

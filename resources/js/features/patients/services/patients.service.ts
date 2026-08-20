@@ -1,5 +1,5 @@
 import PatientsController from '@/actions/App/Http/Controllers/PatientsController';
-import type { CreatePatientPayload, Patient, PaginatedResponse } from '../types/patient';
+import type { CreatePatientPayload, Patient, PaginatedResponse, FiltersPatients } from '../types/patient';
 import { ValidationError } from '@/lib/http/errors/validation-error';
 
 /**
@@ -44,8 +44,8 @@ async function request<T>(url: string, options: RequestInit = {}): Promise<T> {
  * @param page - 1-indexed page number.
  * @param sort - Column to sort by; prefix with `-` for descending (e.g. `-first_name`).
  */
-export function getPatients(page: number, sort: string): Promise<PaginatedResponse<Patient>> {
-    const { url, method } = PatientsController.index({ query: { page, sort } });
+export function getPatients(page: number, sort: string, filters?: FiltersPatients): Promise<PaginatedResponse<Patient>> {
+    const { url, method } = PatientsController.index({ query: { page, sort, filters } });
     return request<PaginatedResponse<Patient>>(url, { method });
 }
 

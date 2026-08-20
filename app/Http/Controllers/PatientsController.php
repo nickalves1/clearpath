@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\IndexPatientRequest;
 use App\Http\Requests\StorePatientRequest;
 use App\Http\Requests\UpdatePatientRequest;
+use App\Http\Resources\PatientResource;
 use App\Models\Patient;
 use App\Services\Contracts\PatientsServiceInterface;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -37,9 +38,9 @@ class PatientsController extends Controller implements HasMiddleware
      */
     public function index(IndexPatientRequest $request)
     {
-        $patient = $this->patientsService->index($request->query());
+        $patients = $this->patientsService->index($request->query());
 
-        return response()->json($patient, 200);
+        return PatientResource::collection($patients);
     }
 
     /**
@@ -57,7 +58,7 @@ class PatientsController extends Controller implements HasMiddleware
     {
         $patient = $this->patientsService->store($request->validated());
 
-        return response()->json($patient, 201);
+        return PatientResource::make($patient)->response()->setStatusCode(201);
     }
 
     /**
@@ -83,7 +84,7 @@ class PatientsController extends Controller implements HasMiddleware
     {
         $patient = $this->patientsService->update($patient, $request->validated());
 
-        return response()->json($patient, 200);
+        return PatientResource::make($patient);
     }
 
     /**
@@ -91,8 +92,8 @@ class PatientsController extends Controller implements HasMiddleware
      */
     public function destroy(Patient $patient)
     {
-        $this->patientsService->destroy($patient);
+        $this->patientsService->softDelete($patient);
 
-        return response()->json($patient, 204);
+        return response()->json(null, 204);
     }
 }

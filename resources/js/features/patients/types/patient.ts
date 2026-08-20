@@ -1,3 +1,5 @@
+import { type FormEvent } from 'react';
+
 /**
  * Mirrors the `patients` table (migration + $fillable on the Patient model).
  * This is the contract between the front and back ends.
@@ -28,11 +30,33 @@ export type CreatePatientPayload = Pick<
     | 'email'
 >;
 
-/** Shape of a Laravel `LengthAwarePaginator` serialized to JSON. */
+/** Shape of a Laravel API Resource collection wrapping a paginated response. */
 export type PaginatedResponse<T> = {
     data: T[];
-    current_page: number;
-    last_page: number;
-    per_page: number;
-    total: number;
+    links: {
+        first: string | null;
+        last: string | null;
+        prev: string | null;
+        next: string | null;
+    };
+    meta: {
+        current_page: number;
+        from: number | null;
+        last_page: number;
+        per_page: number;
+        to: number | null;
+        total: number;
+    };
+};
+
+/** Fields to filter patients on screen patients. */
+export type FiltersPatients = {
+    is_active: string;
+    gender: string;
+    created_at: string;
+    created_at_from: string | null;
+    created_at_to: string | null;
+    deleted_at: string;
+    deleted_at_from: string | null;
+    deleted_at_to: string | null;
 };

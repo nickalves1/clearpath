@@ -1,13 +1,14 @@
 import { Head } from '@inertiajs/react';
 import Heading from '@/components/heading';
-import { PatientsTable, usePatients, usePatientDialog, PatientFormDialog, usePatientDeleteDialog, PatientDeleteDialog } from '@/features/patients';
+import { PatientsTable, usePatients, usePatientDialog, PatientFormDialog, usePatientDeleteDialog, PatientDeleteDialog, PatientFiltersDialog, usePatientFiltersDialog } from '@/features/patients';
 import type {CreatePatientPayload} from '@/features/patients/types/patient';
 import { Button } from '@/components/ui/button';
 import Paginate from '@/components/paginator';
 import { toast } from 'sonner';
 
 export default function PatientsIndex() {
-    const { data, addPatient, editPatient, goToPage, deletePatient, orderByColumn } = usePatients();
+    const { data, addPatient, editPatient, goToPage, deletePatient, orderByColumn, applyFilters} = usePatients();
+    const { open, setIsOpen, filters, handleChange, openDialog } = usePatientFiltersDialog();
     const dialog = usePatientDialog();
     const {  patientToDelete, handleConfirmDelete,  setPatientToDelete } = usePatientDeleteDialog({deletePatient});
 
@@ -27,7 +28,17 @@ export default function PatientsIndex() {
             <Head title="Patients" />
             <div className="flex flex-1 flex-col gap-6 p-4">
                 <Heading title="Patients" description="Patient registration and listing" />
-                <Button className="w-fit" onClick={()=>{dialog.openToCreate()}}>New Patient</Button>
+                <div className="flex items-center gap-2">
+                    <Button className="w-36" onClick={()=>{dialog.openToCreate()}}>New Patient</Button>
+                    <Button className="w-36" variant="outline" onClick={()=>{openDialog()}}>Filter</Button>
+                </div>
+                <PatientFiltersDialog 
+                    open={open} 
+                    onOpenChange={setIsOpen}
+                    handleChange={handleChange}
+                    filters={filters}
+                    applyFilters={applyFilters}
+                />
                 <PatientFormDialog
                     open={dialog.isOpen}
                     onOpenChange={dialog.setIsOpen}
@@ -45,6 +56,7 @@ export default function PatientsIndex() {
                             setColumnOrder={orderByColumn}
                             activeColumn={data.column}
                             direction={data.direction}
+                            isActiveFilter={filters.is_active}
                         />
                         <PatientDeleteDialog
                             patient={patientToDelete}
