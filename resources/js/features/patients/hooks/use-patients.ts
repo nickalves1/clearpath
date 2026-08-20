@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, type ChangeEvent } from 'react';
 import { createPatient, getPatients, updatePatient, destroyPatient } from '../services/patients.service';
 import type { CreatePatientPayload, Patient, PaginatedResponse, FiltersPatients } from '../types/patient';
 import { toast } from 'sonner';
@@ -27,6 +27,7 @@ export function usePatients() {
     const [column, setColumn] = useState<string>('');
     const [direction, setDirection] = useState<'asc' | 'desc'>('asc');
     const [filters, setSelectedFilters] = useState<FiltersPatients>(emptyFilters);
+    const [search, setSearch] = useState<string>('');
 
     /**
      * Fetches the current page of patients, applying the active sort column,
@@ -38,22 +39,28 @@ export function usePatients() {
 
         try {
             const sort = direction === 'desc' ? `-${column}` : column;
-            const response = await getPatients(page, sort, filters);
+            const response = await getPatients(page, sort, filters, search);
             setPatients(response.data);
             setMeta(response.meta);
         } catch (err) {
-            console.log(err);
             const message = err instanceof Error ? err.message : 'Failed to load patients.';
             setError(message);
             toast.error(message);
         } finally {
             setLoading(false);
         }
-    }, [page, column, direction, filters]);
+    }, [page, column, direction, filters, search]);
 
     useEffect(() => {
         fetchPatients();
-    }, [fetchPatients]);
+    }, [page, column, direction, filters]);
+
+    useEffect(() => {
+        const timeoutId = setTimeout(() => {
+            fetchPatients();
+        }, 300);
+        return () => clearTimeout(timeoutId);
+    }, [search]);
 
     /**
      * Creates a patient and refetches the current page to reflect it.
@@ -81,7 +88,6 @@ export function usePatients() {
     const deletePatient = useCallback(async (patient: Patient) => {
         await destroyPatient(patient);
         await fetchPatients();
-        setPatients((current) => current.filter((p) => p.id !== patient.id));
     }, [fetchPatients]);
 
     /**
@@ -109,7 +115,16 @@ export function usePatients() {
      */
     const applyFilters = useCallback((appliedFilters: FiltersPatients) => {
         setSelectedFilters(appliedFilters);
-    }, [filters]);
+        setPage(1);
+    }, []);
+
+    /**
+     * Updates the search term as the user types.
+     */
+    const handleChangeSearch = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+        setSearch(event.target.value);
+        setPage(1);
+    }, []);
 
     return {
         data: { patients, loading, error, meta, page, column, direction },
@@ -120,5 +135,7 @@ export function usePatients() {
         deletePatient,
         orderByColumn,
         applyFilters,
+        handleChangeSearch,
+        search,
     };
 }

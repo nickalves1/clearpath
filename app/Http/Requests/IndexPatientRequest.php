@@ -17,7 +17,7 @@ class IndexPatientRequest extends FormRequest
         $datePreset = ['all', 'today', 'last_7_days', 'last_30_days', 'custom'];
 
         return [
-            'column' => ['sometimes', Rule::in(['medical_record_number', 'first_name', 'last_name', 'birth_date', 'gender', 'phone', 'email'])],
+            'column' => ['sometimes', Rule::in(['medical_record_number', 'first_name', 'last_name', 'birth_date', 'gender', 'phone', 'email', 'created_at', 'deleted_at'])],
             'direction' => ['sometimes', Rule::in(['asc', 'desc'])],
 
             'filters' => ['sometimes', 'array'],
@@ -29,6 +29,8 @@ class IndexPatientRequest extends FormRequest
             'filters.deleted_at' => ['sometimes', Rule::in($datePreset)],
             'filters.deleted_at_from' => ['sometimes', 'nullable', 'date'],
             'filters.deleted_at_to' => ['sometimes', 'nullable', 'date', 'after_or_equal:filters.deleted_at_from'],
+
+            'search' => ['sometimes', 'nullable', 'string', 'max:100'],
         ];
     }
 }

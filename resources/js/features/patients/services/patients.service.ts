@@ -44,8 +44,8 @@ async function request<T>(url: string, options: RequestInit = {}): Promise<T> {
  * @param page - 1-indexed page number.
  * @param sort - Column to sort by; prefix with `-` for descending (e.g. `-first_name`).
  */
-export function getPatients(page: number, sort: string, filters?: FiltersPatients): Promise<PaginatedResponse<Patient>> {
-    const { url, method } = PatientsController.index({ query: { page, sort, filters } });
+export function getPatients(page: number, sort: string, filters?: FiltersPatients, search?: string): Promise<PaginatedResponse<Patient>> {
+    const { url, method } = PatientsController.index({ query: { page, sort, filters, search } });
     return request<PaginatedResponse<Patient>>(url, { method });
 }
 

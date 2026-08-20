@@ -1,5 +1,4 @@
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import type { Patient } from '../types/patient';
 import { Pen, Trash, ArrowUp, ArrowDown, ArrowUpDown } from 'lucide-react';
 
@@ -66,13 +65,15 @@ export function PatientsTable({ patients, onEdit, setToDelete, setColumnOrder, a
                 <thead className="border-b border-sidebar-border/70 bg-muted/50 dark:border-sidebar-border">
                     <tr>
                         <SortableHeader column="medical_record_number" label="Medical Record Number" activeColumn={activeColumn} direction={direction} onSort={setColumnOrder} />
-                        <SortableHeader column="first_name" label="First Name" activeColumn={activeColumn} direction={direction} onSort={setColumnOrder} />
+                        <SortableHeader column="first_name" label="Name" activeColumn={activeColumn} direction={direction} onSort={setColumnOrder} />
                         <SortableHeader column="birth_date" label="Birth Date" activeColumn={activeColumn} direction={direction} onSort={setColumnOrder} />
                         <SortableHeader column="gender" label="Gender" activeColumn={activeColumn} direction={direction} onSort={setColumnOrder} />
                         <SortableHeader column="phone" label="Phone" activeColumn={activeColumn} direction={direction} onSort={setColumnOrder} />
                         <SortableHeader column="email" label="Email" activeColumn={activeColumn} direction={direction} onSort={setColumnOrder} />
-                        <th className="px-4 py-3 font-medium">Created At</th>
-                        {showDeletedAt && <th className="px-4 py-3 font-medium">Deleted At</th>}
+                        <SortableHeader column="created_at" label="Created At" activeColumn={activeColumn} direction={direction} onSort={setColumnOrder} />
+                        {showDeletedAt && 
+                            <SortableHeader column="deleted_at" label="Deleted At" activeColumn={activeColumn} direction={direction} onSort={setColumnOrder} />
+                        }
                         <th className="py-3 font-medium"></th>
                         <th className="py-3 font-medium"></th>
                     </tr>
@@ -90,7 +91,6 @@ export function PatientsTable({ patients, onEdit, setToDelete, setColumnOrder, a
                                 <td className="px-4 py-3">
                                     <div className="flex items-center gap-2">
                                         {patient.first_name} {patient.last_name}
-                                        {isDeleted && <Badge variant="destructive">Deleted</Badge>}
                                     </div>
                                 </td>
                                 <td className="px-4 py-3">{formatDate(patient.birth_date)}</td>
@@ -102,14 +102,18 @@ export function PatientsTable({ patients, onEdit, setToDelete, setColumnOrder, a
                                     <td className="px-4 py-3">{patient.deleted_at ? formatDate(patient.deleted_at) : '—'}</td>
                                 )}
                                 <td className="py-3">
-                                    <Button variant="ghost" size="icon" onClick={() => onEdit(patient)}>
-                                        <Pen />
-                                    </Button>
+                                    {!patient.deleted_at && (
+                                        <Button variant="ghost" size="icon" onClick={() => onEdit(patient)}>
+                                            <Pen />
+                                        </Button>
+                                    )}
                                 </td>
                                 <td className="py-3">
-                                    <Button variant="ghost" size="icon" onClick={() => setToDelete(patient)}>
-                                        <Trash />
-                                    </Button>
+                                    {!patient.deleted_at && (
+                                        <Button variant="ghost" size="icon" onClick={() => setToDelete(patient)}>
+                                            <Trash />
+                                        </Button>
+                                    )}
                                 </td>
                             </tr>
                         );

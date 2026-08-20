@@ -24,10 +24,11 @@ class PatientsService implements PatientsServiceInterface
     public function index(array $data): LengthAwarePaginator
     {
         $query = QueryBuilder::for(Patient::class)
-            ->allowedSorts('medical_record_number', 'first_name', 'last_name', 'birth_date', 'gender', 'phone', 'email')
+            ->allowedSorts('medical_record_number', 'first_name', 'last_name', 'birth_date', 'gender', 'phone', 'email', 'created_at', 'deleted_at')
             ->withTrashed();
 
         $this->applyFilters($query, $data['filters'] ?? []);
+        $this->applySearch($query, $data['search'] ?? '');
 
         return $query->paginate(5);
     }
@@ -87,5 +88,21 @@ class PatientsService implements PatientsServiceInterface
             ]),
             default => null,
         };
+    }
+
+    /**
+     * Applies the user's search.
+     */
+    private function applySearch(QueryBuilder $query, string $search): void
+    {
+        if (empty($search)) {
+            return;
+        }
+
+        $query->where(fn ($q) => $q->whereLike('first_name', "%{$search}%")
+            ->orWhereLike('last_name', "%{$search}%")
+            ->orWhereLike('phone', "%{$search}%")
+            ->orWhereLike('medical_record_number', "%{$search}%")
+        );
     }
 }
