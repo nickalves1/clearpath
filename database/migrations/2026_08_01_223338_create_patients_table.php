@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('phone', length: 20);
             $table->string('email', length: 255);
             $table->timestamps();     // creates created_at + updated_at automatically
-            $table->softDeletes();    // creates deleted_at, already nullable
+            $table->softDeletes('deleted_at', precision: 0);    // creates deleted_at, already nullable
         });
     }
 

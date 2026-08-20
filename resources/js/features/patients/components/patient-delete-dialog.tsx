@@ -15,13 +15,13 @@ type Props = {
 export function PatientDeleteDialog({ patient, onOpenChange, onConfirm }: Props) {
     return (
         <Dialog open={!!patient} onOpenChange={onOpenChange}>
-            <DialogContent className="sm:max-w-xs">
+            <DialogContent className="sm:max-w-md">
                 <DialogHeader>
                     <DialogTitle className="text-center">Are you sure you want to delete this?</DialogTitle>
                 </DialogHeader>
-                <div className="flex items-center justify-center gap-2">
-                    <Button variant="outline" onClick={() => onOpenChange(false)}>Cancel</Button>
-                    <Button variant="destructive" onClick={onConfirm}>Confirm</Button>
+                <div className="flex items-center justify-center gap-2 max-h-20">
+                    <Button variant="outline" className="w-28" onClick={() => onOpenChange(false)}>Cancel</Button>
+                    <Button variant="destructive" className="w-28" onClick={onConfirm}>Confirm</Button>
                 </div>
             </DialogContent>
         </Dialog>

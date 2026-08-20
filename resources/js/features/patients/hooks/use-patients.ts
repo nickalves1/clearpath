@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { createPatient, getPatients, updatePatient, destroyPatient } from '../services/patients.service';
-import type { CreatePatientPayload, Patient, PaginatedResponse } from '../types/patient';
+import type { CreatePatientPayload, Patient, PaginatedResponse, FiltersPatients } from '../types/patient';
 import { toast } from 'sonner';
 
 /**
@@ -9,30 +9,36 @@ import { toast } from 'sonner';
  */
 export function usePatients() {
     const [patients, setPatients] = useState<Patient[]>([]);
-    const [meta, setMeta] = useState<PaginatedResponse<Patient> | null>(null);
+    const [meta, setMeta] = useState<PaginatedResponse<Patient>['meta'] | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [page, setPage] = useState<number>(1);
     const [column, setColumn] = useState<string>('');
     const [direction, setDirection] = useState<'asc' | 'desc'>('asc');
+    const [filters, setSelectedFilters] = useState<FiltersPatients>();
 
+    /**
+     * Fetches the current page of patients, applying the active sort column,
+     * direction, and filters.
+     */
     const fetchPatients = useCallback(async () => {
         setLoading(true);
         setError(null);
 
         try {
             const sort = direction === 'desc' ? `-${column}` : column;
-            const response = await getPatients(page, sort);
+            const response = await getPatients(page, sort, filters);
             setPatients(response.data);
-            setMeta(response);
+            setMeta(response.meta);
         } catch (err) {
+            console.log(err);
             const message = err instanceof Error ? err.message : 'Failed to load patients.';
             setError(message);
             toast.error(message);
         } finally {
             setLoading(false);
         }
-    }, [page, column, direction]);
+    }, [page, column, direction, filters]);
 
     useEffect(() => {
         fetchPatients();
@@ -87,6 +93,13 @@ export function usePatients() {
         }
     }, [column]);
 
+    /**
+     * Replaces the active filters, triggering a refetch on the next render.
+     */
+    const applyFilters = useCallback((appliedFilters: FiltersPatients) => {
+        setSelectedFilters(appliedFilters);
+    }, [filters]);
+
     return {
         data: { patients, loading, error, meta, page, column, direction },
         refetch: fetchPatients,
@@ -95,5 +108,6 @@ export function usePatients() {
         goToPage,
         deletePatient,
         orderByColumn,
+        applyFilters,
     };
 }
