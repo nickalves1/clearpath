@@ -5,7 +5,7 @@ import { FiltersPatients } from '../types/patient'
  */
 
 const emptyForm: FiltersPatients = {
-    is_active: 'all',
+    is_active: 'true',
     gender: 'all',
     created_at: 'all',
     created_at_from: null,

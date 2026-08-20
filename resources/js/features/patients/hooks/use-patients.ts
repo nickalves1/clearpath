@@ -3,6 +3,17 @@ import { createPatient, getPatients, updatePatient, destroyPatient } from '../se
 import type { CreatePatientPayload, Patient, PaginatedResponse, FiltersPatients } from '../types/patient';
 import { toast } from 'sonner';
 
+const emptyFilters: FiltersPatients = {
+    is_active: 'true',
+    gender: 'all',
+    created_at: 'all',
+    created_at_from: null,
+    created_at_to: null,
+    deleted_at: 'all',
+    deleted_at_from: null,
+    deleted_at_to: null,
+};
+
 /**
  * Fetches and manages the paginated, sortable list of patients, plus the
  * mutations (create, update, delete) that keep it in sync.
@@ -15,7 +26,7 @@ export function usePatients() {
     const [page, setPage] = useState<number>(1);
     const [column, setColumn] = useState<string>('');
     const [direction, setDirection] = useState<'asc' | 'desc'>('asc');
-    const [filters, setSelectedFilters] = useState<FiltersPatients>();
+    const [filters, setSelectedFilters] = useState<FiltersPatients>(emptyFilters);
 
     /**
      * Fetches the current page of patients, applying the active sort column,

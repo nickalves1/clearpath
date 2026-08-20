@@ -17,11 +17,14 @@ export function PatientDeleteDialog({ patient, onOpenChange, onConfirm }: Props)
         <Dialog open={!!patient} onOpenChange={onOpenChange}>
             <DialogContent className="sm:max-w-md">
                 <DialogHeader>
-                    <DialogTitle className="text-center">Are you sure you want to delete this?</DialogTitle>
+                    <DialogTitle>Delete Patient</DialogTitle>
                 </DialogHeader>
-                <div className="flex items-center justify-center gap-2 max-h-20">
-                    <Button variant="outline" className="w-28" onClick={() => onOpenChange(false)}>Cancel</Button>
-                    <Button variant="destructive" className="w-28" onClick={onConfirm}>Confirm</Button>
+                <div className="flex flex-col items-center gap-4 rounded-xl border border-sidebar-border/70 p-4 dark:border-sidebar-border">
+                    <p className="text-center text-sm">Are you sure you want to delete this?</p>
+                    <div className="flex items-center justify-center gap-2">
+                        <Button variant="outline" className="w-28" onClick={() => onOpenChange(false)}>Cancel</Button>
+                        <Button variant="destructive" className="w-28" onClick={onConfirm}>Confirm</Button>
+                    </div>
                 </div>
             </DialogContent>
         </Dialog>
