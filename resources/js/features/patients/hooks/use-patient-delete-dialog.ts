@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import type { Patient } from '../types/patient';
 import { toast } from 'sonner';
+import type { Patient } from '../types/patient';
 
 type Props = {
     deletePatient: (patient: Patient) => void;
@@ -11,11 +11,16 @@ type Props = {
  * deletion, and the confirm action that actually deletes it.
  */
 export function usePatientDeleteDialog({ deletePatient }: Props) {
-    const [patientToDelete, setPatientToDelete] = useState<Patient | null>(null);
+    const [patientToDelete, setPatientToDelete] = useState<Patient | null>(
+        null,
+    );
 
     /** Deletes the pending patient and closes the dialog. */
     async function handleConfirmDelete() {
-        if (!patientToDelete) return;
+        if (!patientToDelete) {
+            return;
+        }
+
         await deletePatient(patientToDelete);
         toast.success('Patient deleted successfully!');
         setPatientToDelete(null);

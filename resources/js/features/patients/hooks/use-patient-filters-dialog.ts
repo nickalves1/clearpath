@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FiltersPatients } from '../types/patient'
+import type { FiltersPatients } from '../types/patient';
 /**
  * Control the state and select type filters
  */
@@ -15,9 +15,8 @@ const emptyForm: FiltersPatients = {
     deleted_at_to: null,
 };
 
-export function usePatientFiltersDialog()
-{
-    const [open, setIsOpen] = useState(false)
+export function usePatientFiltersDialog() {
+    const [open, setIsOpen] = useState(false);
     const [filters, setFilters] = useState<FiltersPatients>(emptyForm);
 
     /** Opens the dialog. */
@@ -30,8 +29,9 @@ export function usePatientFiltersDialog()
      * filter value without touching the rest of `filters`.
      */
     function handleChange(field: keyof FiltersPatients) {
-         return (value: string) => setFilters((current) => ({ ...current, [field]: value }));
+        return (value: string) =>
+            setFilters((current) => ({ ...current, [field]: value }));
     }
 
-    return {open, setIsOpen, filters, setFilters, openDialog, handleChange};
+    return { open, setIsOpen, filters, setFilters, openDialog, handleChange };
 }

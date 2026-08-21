@@ -2,7 +2,11 @@ import { renderHook, act, waitFor } from '@testing-library/react';
 import type { ChangeEvent } from 'react';
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
 import * as patientsService from '../services/patients.service';
-import type { PaginatedResponse, Patient, FiltersPatients } from '../types/patient';
+import type {
+    PaginatedResponse,
+    Patient,
+    FiltersPatients,
+} from '../types/patient';
 import { usePatients } from './use-patients';
 
 vi.mock('../services/patients.service');
@@ -11,7 +15,14 @@ function makeResponse(patients: Patient[] = []): PaginatedResponse<Patient> {
     return {
         data: patients,
         links: { first: null, last: null, prev: null, next: null },
-        meta: { current_page: 1, from: 1, last_page: 1, per_page: 10, to: patients.length, total: patients.length },
+        meta: {
+            current_page: 1,
+            from: 1,
+            last_page: 1,
+            per_page: 10,
+            to: patients.length,
+            total: patients.length,
+        },
     };
 }
 
@@ -29,7 +40,9 @@ const allFilters: FiltersPatients = {
 describe('usePatients', () => {
     beforeEach(() => {
         vi.clearAllMocks();
-        vi.mocked(patientsService.getPatients).mockResolvedValue(makeResponse());
+        vi.mocked(patientsService.getPatients).mockResolvedValue(
+            makeResponse(),
+        );
     });
 
     afterEach(() => {
@@ -54,19 +67,25 @@ describe('usePatients', () => {
         expect(patientsService.getPatients).toHaveBeenCalledTimes(1);
 
         act(() => {
-            result.current.handleChangeSearch({ target: { value: 'n' } } as unknown as ChangeEvent<HTMLInputElement>);
+            result.current.handleChangeSearch({
+                target: { value: 'n' },
+            } as unknown as ChangeEvent<HTMLInputElement>);
         });
         await act(async () => {
             await vi.advanceTimersByTimeAsync(100);
         });
         act(() => {
-            result.current.handleChangeSearch({ target: { value: 'ni' } } as unknown as ChangeEvent<HTMLInputElement>);
+            result.current.handleChangeSearch({
+                target: { value: 'ni' },
+            } as unknown as ChangeEvent<HTMLInputElement>);
         });
         await act(async () => {
             await vi.advanceTimersByTimeAsync(100);
         });
         act(() => {
-            result.current.handleChangeSearch({ target: { value: 'nic' } } as unknown as ChangeEvent<HTMLInputElement>);
+            result.current.handleChangeSearch({
+                target: { value: 'nic' },
+            } as unknown as ChangeEvent<HTMLInputElement>);
         });
         await act(async () => {
             await vi.advanceTimersByTimeAsync(300);
@@ -77,7 +96,9 @@ describe('usePatients', () => {
 
     it('resets to page 1 when filters are applied', async () => {
         const { result } = renderHook(() => usePatients());
-        await waitFor(() => expect(patientsService.getPatients).toHaveBeenCalledTimes(1));
+        await waitFor(() =>
+            expect(patientsService.getPatients).toHaveBeenCalledTimes(1),
+        );
 
         act(() => {
             result.current.goToPage(3);

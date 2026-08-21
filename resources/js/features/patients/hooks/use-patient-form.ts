@@ -1,6 +1,7 @@
-import { useState, type FormEvent, type ChangeEvent } from 'react';
-import type { CreatePatientPayload, Patient } from '../types/patient';
+import { useState } from 'react';
+import type { FormEvent, ChangeEvent } from 'react';
 import { ValidationError } from '@/lib/http/errors/validation-error';
+import type { CreatePatientPayload, Patient } from '../types/patient';
 
 type Props = {
     onSubmit: (payload: CreatePatientPayload) => Promise<unknown>;
@@ -22,10 +23,14 @@ const emptyForm: CreatePatientPayload = {
  * errors, and submission.
  */
 export function usePatientForm({ initialValues, onSubmit }: Props) {
-    const [form, setForm] = useState<CreatePatientPayload>(initialValues ?? emptyForm);
+    const [form, setForm] = useState<CreatePatientPayload>(
+        initialValues ?? emptyForm,
+    );
     const [submitting, setSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({});
+    const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>(
+        {},
+    );
 
     /**
      * Updates a single field's value and clears its validation error, if any.
@@ -33,7 +38,9 @@ export function usePatientForm({ initialValues, onSubmit }: Props) {
     function setField(field: keyof CreatePatientPayload, value: string) {
         setForm((current) => ({ ...current, [field]: value }));
         setFieldErrors((current) => {
-            const { [field]: _, ...rest } = current;
+            const rest = { ...current };
+            delete rest[field];
+
             return rest;
         });
     }
@@ -42,7 +49,8 @@ export function usePatientForm({ initialValues, onSubmit }: Props) {
      * Returns an onChange handler bound to the given field, for plain text inputs.
      */
     function handleChange(field: keyof CreatePatientPayload) {
-        return (event: ChangeEvent<HTMLInputElement>) => setField(field, event.target.value);
+        return (event: ChangeEvent<HTMLInputElement>) =>
+            setField(field, event.target.value);
     }
 
     async function handleSubmit(event: FormEvent) {
@@ -60,12 +68,24 @@ export function usePatientForm({ initialValues, onSubmit }: Props) {
             if (err instanceof ValidationError) {
                 setFieldErrors(err.errors);
             } else {
-                setError(err instanceof Error ? err.message : 'Failed to save patient.');
+                setError(
+                    err instanceof Error
+                        ? err.message
+                        : 'Failed to save patient.',
+                );
             }
         } finally {
             setSubmitting(false);
         }
     }
 
-    return { form, submitting, error, fieldErrors, handleChange, handleSubmit, setField };
+    return {
+        form,
+        submitting,
+        error,
+        fieldErrors,
+        handleChange,
+        handleSubmit,
+        setField,
+    };
 }

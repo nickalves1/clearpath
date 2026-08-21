@@ -1,0 +1,325 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Method App\\Http\\Controllers\\AuditLogsController\:\:create\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/AuditLogsController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\AuditLogsController\:\:destroy\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/AuditLogsController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\AuditLogsController\:\:edit\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/AuditLogsController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\AuditLogsController\:\:index\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/AuditLogsController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\AuditLogsController\:\:show\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/AuditLogsController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\AuditLogsController\:\:store\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/AuditLogsController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\AuditLogsController\:\:update\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/AuditLogsController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\ImagingOrdersController\:\:create\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/ImagingOrdersController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\ImagingOrdersController\:\:destroy\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/ImagingOrdersController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\ImagingOrdersController\:\:edit\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/ImagingOrdersController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\ImagingOrdersController\:\:index\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/ImagingOrdersController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\ImagingOrdersController\:\:show\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/ImagingOrdersController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\ImagingOrdersController\:\:store\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/ImagingOrdersController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\ImagingOrdersController\:\:update\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/ImagingOrdersController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\PhysiciansController\:\:create\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/PhysiciansController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\PhysiciansController\:\:destroy\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/PhysiciansController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\PhysiciansController\:\:edit\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/PhysiciansController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\PhysiciansController\:\:index\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/PhysiciansController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\PhysiciansController\:\:show\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/PhysiciansController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\PhysiciansController\:\:store\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/PhysiciansController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\PhysiciansController\:\:update\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/PhysiciansController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\ReportsController\:\:create\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/ReportsController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\ReportsController\:\:destroy\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/ReportsController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\ReportsController\:\:edit\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/ReportsController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\ReportsController\:\:index\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/ReportsController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\ReportsController\:\:show\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/ReportsController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\ReportsController\:\:store\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/ReportsController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\ReportsController\:\:update\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/ReportsController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\StudiesController\:\:create\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/StudiesController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\StudiesController\:\:destroy\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/StudiesController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\StudiesController\:\:edit\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/StudiesController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\StudiesController\:\:index\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/StudiesController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\StudiesController\:\:show\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/StudiesController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\StudiesController\:\:store\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/StudiesController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\StudiesController\:\:update\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Http/Controllers/StudiesController.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\PatientResource\:\:\$birth_date\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/PatientResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\PatientResource\:\:\$created_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/PatientResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\PatientResource\:\:\$deleted_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/PatientResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\PatientResource\:\:\$email\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/PatientResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\PatientResource\:\:\$first_name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/PatientResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\PatientResource\:\:\$gender\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/PatientResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\PatientResource\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/PatientResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\PatientResource\:\:\$last_name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/PatientResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\PatientResource\:\:\$medical_record_number\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/PatientResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\PatientResource\:\:\$phone\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/PatientResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\PatientResource\:\:\$updated_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/PatientResource.php
+
+		-
+			message: '#^Method App\\Services\\Contracts\\PatientsServiceInterface\:\:index\(\) return type with generic class Illuminate\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Services/Contracts/PatientsServiceInterface.php
+
+		-
+			message: '#^Method App\\Services\\PatientsService\:\:applyDateFilter\(\) has parameter \$query with generic class Spatie\\QueryBuilder\\QueryBuilder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Services/PatientsService.php
+
+		-
+			message: '#^Method App\\Services\\PatientsService\:\:applyFilters\(\) has parameter \$query with generic class Spatie\\QueryBuilder\\QueryBuilder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Services/PatientsService.php
+
+		-
+			message: '#^Method App\\Services\\PatientsService\:\:applySearch\(\) has parameter \$query with generic class Spatie\\QueryBuilder\\QueryBuilder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Services/PatientsService.php
+
+		-
+			message: '#^Method App\\Services\\PatientsService\:\:index\(\) return type with generic class Illuminate\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Services/PatientsService.php
+
+		-
+			message: '#^Parameter \#1 \$query of method App\\Services\\PatientsService\:\:applyFilters\(\) expects Spatie\\QueryBuilder\\QueryBuilder, Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Patient\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/PatientsService.php
+
+		-
+			message: '#^Parameter \#1 \$query of method App\\Services\\PatientsService\:\:applySearch\(\) expects Spatie\\QueryBuilder\\QueryBuilder, Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Patient\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/PatientsService.php
+
+		-
+			message: '#^Parameter \#2 \$string of function explode expects string, bool\|string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: config/sanctum.php

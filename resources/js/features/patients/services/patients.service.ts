@@ -1,6 +1,11 @@
 import PatientsController from '@/actions/App/Http/Controllers/PatientsController';
-import type { CreatePatientPayload, Patient, PaginatedResponse, FiltersPatients } from '../types/patient';
 import { ValidationError } from '@/lib/http/errors/validation-error';
+import type {
+    CreatePatientPayload,
+    Patient,
+    PaginatedResponse,
+    FiltersPatients,
+} from '../types/patient';
 
 /**
  * Thin wrapper around `fetch`. The only function in the project that knows
@@ -28,7 +33,9 @@ async function request<T>(url: string, options: RequestInit = {}): Promise<T> {
             throw new ValidationError(body.message, body.errors);
         }
 
-        throw new Error(body?.message ?? `Request failed (status ${response.status})`);
+        throw new Error(
+            body?.message ?? `Request failed (status ${response.status})`,
+        );
     }
 
     if (response.status === 204) {
@@ -44,14 +51,23 @@ async function request<T>(url: string, options: RequestInit = {}): Promise<T> {
  * @param page - 1-indexed page number.
  * @param sort - Column to sort by; prefix with `-` for descending (e.g. `-first_name`).
  */
-export function getPatients(page: number, sort: string, filters?: FiltersPatients, search?: string): Promise<PaginatedResponse<Patient>> {
-    const { url, method } = PatientsController.index({ query: { page, sort, filters, search } });
+export function getPatients(
+    page: number,
+    sort: string,
+    filters?: FiltersPatients,
+    search?: string,
+): Promise<PaginatedResponse<Patient>> {
+    const { url, method } = PatientsController.index({
+        query: { page, sort, filters, search },
+    });
+
     return request<PaginatedResponse<Patient>>(url, { method });
 }
 
 /** Creates a new patient. */
 export function createPatient(payload: CreatePatientPayload): Promise<Patient> {
     const { url, method } = PatientsController.store();
+
     return request<Patient>(url, {
         method,
         body: JSON.stringify(payload),
@@ -59,8 +75,12 @@ export function createPatient(payload: CreatePatientPayload): Promise<Patient> {
 }
 
 /** Updates an existing patient by id. */
-export function updatePatient(id: number, payload: CreatePatientPayload): Promise<Patient> {
+export function updatePatient(
+    id: number,
+    payload: CreatePatientPayload,
+): Promise<Patient> {
     const { url, method } = PatientsController.update(id);
+
     return request<Patient>(url, {
         method,
         body: JSON.stringify(payload),
@@ -70,6 +90,7 @@ export function updatePatient(id: number, payload: CreatePatientPayload): Promis
 /** Deletes a patient. */
 export function destroyPatient(patient: Patient): Promise<void> {
     const { url, method } = PatientsController.destroy(patient);
+
     return request<void>(url, {
         method,
     });

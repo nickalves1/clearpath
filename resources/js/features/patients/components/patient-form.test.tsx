@@ -27,7 +27,9 @@ describe('PatientForm', () => {
     });
 
     it('shows "Save" and pre-filled fields in edit mode', () => {
-        render(<PatientForm onSubmit={vi.fn()} initialValues={existingPatient} />);
+        render(
+            <PatientForm onSubmit={vi.fn()} initialValues={existingPatient} />,
+        );
 
         expect(screen.getByText('Save')).toBeInTheDocument();
         expect(screen.getByLabelText('First Name')).toHaveValue('Nicolas');
@@ -36,13 +38,19 @@ describe('PatientForm', () => {
     it('calls onSubmit with the current form values when submitted', async () => {
         const onSubmit = vi.fn().mockResolvedValue(existingPatient);
 
-        render(<PatientForm onSubmit={onSubmit} initialValues={existingPatient} />);
+        render(
+            <PatientForm onSubmit={onSubmit} initialValues={existingPatient} />,
+        );
 
-        fireEvent.change(screen.getByLabelText('First Name'), { target: { value: 'Ana' } });
+        fireEvent.change(screen.getByLabelText('First Name'), {
+            target: { value: 'Ana' },
+        });
         fireEvent.click(screen.getByText('Save'));
 
         await waitFor(() => {
-            expect(onSubmit).toHaveBeenCalledWith(expect.objectContaining({ first_name: 'Ana' }));
+            expect(onSubmit).toHaveBeenCalledWith(
+                expect.objectContaining({ first_name: 'Ana' }),
+            );
         });
     });
 
@@ -50,13 +58,17 @@ describe('PatientForm', () => {
         const onSubmit = vi.fn().mockRejectedValue(
             new ValidationError('The given data was invalid.', {
                 first_name: ['The first name field is required.'],
-            })
+            }),
         );
 
-        render(<PatientForm onSubmit={onSubmit} initialValues={existingPatient} />);
+        render(
+            <PatientForm onSubmit={onSubmit} initialValues={existingPatient} />,
+        );
 
         fireEvent.click(screen.getByText('Save'));
 
-        expect(await screen.findByText('The first name field is required.')).toBeInTheDocument();
+        expect(
+            await screen.findByText('The first name field is required.'),
+        ).toBeInTheDocument();
     });
 });

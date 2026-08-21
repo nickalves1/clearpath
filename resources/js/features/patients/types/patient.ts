@@ -1,7 +1,10 @@
-import { type FormEvent } from 'react';
-
 /** Allowed values for `Patient.gender`, matching the backend's validation rules. */
-export const GENDER_OPTIONS = ['Male', 'Female', 'Other', 'Prefer not to say'] as const;
+export const GENDER_OPTIONS = [
+    'Male',
+    'Female',
+    'Other',
+    'Prefer not to say',
+] as const;
 
 /**
  * Mirrors the `patients` table (migration + $fillable on the Patient model).

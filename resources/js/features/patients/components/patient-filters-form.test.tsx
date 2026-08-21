@@ -22,7 +22,7 @@ describe('PatientFiltersForm', () => {
                 filters={baseFilters}
                 applyFilters={vi.fn()}
                 onOpenChange={vi.fn()}
-            />
+            />,
         );
 
         expect(screen.queryByLabelText('From')).not.toBeInTheDocument();
@@ -36,7 +36,7 @@ describe('PatientFiltersForm', () => {
                 filters={{ ...baseFilters, created_at: 'custom' }}
                 applyFilters={vi.fn()}
                 onOpenChange={vi.fn()}
-            />
+            />,
         );
 
         expect(screen.getByLabelText('From')).toBeInTheDocument();
@@ -53,7 +53,7 @@ describe('PatientFiltersForm', () => {
                 filters={baseFilters}
                 applyFilters={applyFilters}
                 onOpenChange={onOpenChange}
-            />
+            />,
         );
 
         fireEvent.click(screen.getByText('Apply'));

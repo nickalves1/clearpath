@@ -1,7 +1,7 @@
-import { type ChangeEvent } from 'react';
-import type { CreatePatientPayload } from '../types/patient';
+import type { ChangeEvent } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import type { CreatePatientPayload } from '../types/patient';
 
 type FormFieldProps = {
     id: keyof CreatePatientPayload;
@@ -16,11 +16,25 @@ type FormFieldProps = {
  * Labeled text input with an optional validation error message, used by
  * PatientForm for its plain text fields.
  */
-export function FormField({ id, label, type = 'text', value, onChange, error }: FormFieldProps) {
+export function FormField({
+    id,
+    label,
+    type = 'text',
+    value,
+    onChange,
+    error,
+}: FormFieldProps) {
     return (
         <div className="grid gap-2">
             <Label htmlFor={id}>{label}</Label>
-            <Input id={id} type={type} value={value} onChange={onChange} aria-invalid={!!error} required />
+            <Input
+                id={id}
+                type={type}
+                value={value}
+                onChange={onChange}
+                aria-invalid={!!error}
+                required
+            />
             {error && <p className="text-sm text-destructive">{error[0]}</p>}
         </div>
     );

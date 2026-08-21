@@ -1,7 +1,10 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 import * as patientsService from '@/features/patients/services/patients.service';
-import type { Patient, PaginatedResponse } from '@/features/patients/types/patient';
+import type {
+    Patient,
+    PaginatedResponse,
+} from '@/features/patients/types/patient';
 import PatientsIndex from './index';
 
 vi.mock('@/features/patients/services/patients.service');
@@ -27,14 +30,23 @@ function makeResponse(patients: Patient[]): PaginatedResponse<Patient> {
     return {
         data: patients,
         links: { first: null, last: null, prev: null, next: null },
-        meta: { current_page: 1, from: 1, last_page: 1, per_page: 10, to: patients.length, total: patients.length },
+        meta: {
+            current_page: 1,
+            from: 1,
+            last_page: 1,
+            per_page: 10,
+            to: patients.length,
+            total: patients.length,
+        },
     };
 }
 
 describe('PatientsIndex page flow', () => {
     beforeEach(() => {
         vi.clearAllMocks();
-        vi.mocked(patientsService.getPatients).mockResolvedValue(makeResponse([patient]));
+        vi.mocked(patientsService.getPatients).mockResolvedValue(
+            makeResponse([patient]),
+        );
     });
 
     it('loads and shows the patient list on the initial render', async () => {
@@ -65,11 +77,15 @@ describe('PatientsIndex page flow', () => {
         render(<PatientsIndex />);
         await screen.findByText('Nicolas Alves');
 
-        const deleteButtons = screen.getAllByRole('button').filter((button) => button.querySelector('svg.lucide-trash'));
+        const deleteButtons = screen
+            .getAllByRole('button')
+            .filter((button) => button.querySelector('svg.lucide-trash'));
         fireEvent.click(deleteButtons[0]);
 
         await waitFor(() => {
-            expect(screen.getByText('Are you sure you want to delete this?')).toBeInTheDocument();
+            expect(
+                screen.getByText('Are you sure you want to delete this?'),
+            ).toBeInTheDocument();
         });
     });
 });

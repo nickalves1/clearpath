@@ -1,6 +1,11 @@
-import type { Patient, CreatePatientPayload } from '../types/patient';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+} from '@/components/ui/dialog';
 import { PatientForm } from '@/features/patients';
+import type { Patient, CreatePatientPayload } from '../types/patient';
 
 type Props = {
     open: boolean;
@@ -14,14 +19,25 @@ type Props = {
  * `patient` selects the mode: `null` renders the form empty ("New Patient"),
  * a `Patient` pre-fills it ("Edit Patient").
  */
-export function PatientFormDialog({ open, onOpenChange, patient, onSubmit }: Props) {
+export function PatientFormDialog({
+    open,
+    onOpenChange,
+    patient,
+    onSubmit,
+}: Props) {
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>{patient ? 'Edit Patient' : 'New Patient'}</DialogTitle>
+                    <DialogTitle>
+                        {patient ? 'Edit Patient' : 'New Patient'}
+                    </DialogTitle>
                 </DialogHeader>
-                <PatientForm key={patient?.id ?? 'new'} initialValues={patient ?? undefined} onSubmit={onSubmit} />
+                <PatientForm
+                    key={patient?.id ?? 'new'}
+                    initialValues={patient ?? undefined}
+                    onSubmit={onSubmit}
+                />
             </DialogContent>
         </Dialog>
     );

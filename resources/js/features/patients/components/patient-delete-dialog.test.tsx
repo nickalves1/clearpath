@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import { describe, expect, it, vi, beforeEach  } from 'vitest';
-import type {Mock} from 'vitest';
+import { describe, expect, it, vi, beforeEach } from 'vitest';
+import type { Mock } from 'vitest';
 import type { Patient } from '../types/patient';
 import { PatientDeleteDialog } from './patient-delete-dialog';
 
@@ -27,7 +27,13 @@ describe('PatientDeleteDialog', () => {
         onConfirm = vi.fn();
         onOpenChange = vi.fn();
 
-        render(<PatientDeleteDialog patient={patient} onOpenChange={onOpenChange} onConfirm={onConfirm} />);
+        render(
+            <PatientDeleteDialog
+                patient={patient}
+                onOpenChange={onOpenChange}
+                onConfirm={onConfirm}
+            />,
+        );
     });
 
     it('calls onConfirm when the Confirm button is clicked', () => {
