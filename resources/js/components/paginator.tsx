@@ -14,13 +14,25 @@ export default function Paginate({ meta, page, goToPage }: PropsPaginate) {
     return (
         <>
             <div className="flex items-center justify-center">
-                <Button variant="ghost" disabled={page <= 1} onClick={() => goToPage(page - 1)}>
+                <Button
+                    variant="ghost"
+                    disabled={page <= 1}
+                    onClick={() => goToPage(page - 1)}
+                >
                     Previous
                 </Button>
-                <span className="text-sm text-muted-foreground mx-5">
+                <span className="mx-5 text-sm text-muted-foreground">
                     Page {meta?.current_page} of {meta?.last_page}
                 </span>
-                <Button variant="ghost" disabled={!meta || page >= meta.last_page} onClick={() => { if (meta && page < meta.last_page) goToPage(page+1)}}>
+                <Button
+                    variant="ghost"
+                    disabled={!meta || page >= meta.last_page}
+                    onClick={() => {
+                        if (meta && page < meta.last_page) {
+                            goToPage(page + 1);
+                        }
+                    }}
+                >
                     Next
                 </Button>
             </div>

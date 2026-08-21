@@ -97,8 +97,18 @@ class PatientsServiceTest extends TestCase
 
     public function test_index_searches_patients_by_name(): void
     {
-        $match = Patient::factory()->create(['first_name' => 'Nicolas']);
-        $noMatch = Patient::factory()->create(['first_name' => 'Ana']);
+        $match = Patient::factory()->create([
+            'first_name' => 'Nicolas',
+            'last_name' => 'Alves',
+            'phone' => '11900000001',
+            'medical_record_number' => 'MRN-00001',
+        ]);
+        $noMatch = Patient::factory()->create([
+            'first_name' => 'Ana',
+            'last_name' => 'Silva',
+            'phone' => '11900000002',
+            'medical_record_number' => 'MRN-00002',
+        ]);
 
         $result = (new PatientsService)->index(['search' => 'nicolas']);
         $ids = $result->pluck('id');
@@ -109,8 +119,18 @@ class PatientsServiceTest extends TestCase
 
     public function test_index_searches_patients_by_medical_record_number(): void
     {
-        $match = Patient::factory()->create(['medical_record_number' => 'MRN-99999']);
-        $noMatch = Patient::factory()->create(['medical_record_number' => 'MRN-11111']);
+        $match = Patient::factory()->create([
+            'first_name' => 'Nicolas',
+            'last_name' => 'Alves',
+            'phone' => '11900000001',
+            'medical_record_number' => 'MRN-99999',
+        ]);
+        $noMatch = Patient::factory()->create([
+            'first_name' => 'Ana',
+            'last_name' => 'Silva',
+            'phone' => '11900000002',
+            'medical_record_number' => 'MRN-11111',
+        ]);
 
         $result = (new PatientsService)->index(['search' => '99999']);
         $ids = $result->pluck('id');

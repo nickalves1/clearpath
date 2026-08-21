@@ -8,6 +8,8 @@ use App\Http\Requests\UpdatePatientRequest;
 use App\Http\Resources\PatientResource;
 use App\Models\Patient;
 use App\Services\Contracts\PatientsServiceInterface;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 
@@ -36,7 +38,7 @@ class PatientsController extends Controller implements HasMiddleware
     /**
      * Display a listing of the resource.
      */
-    public function index(IndexPatientRequest $request)
+    public function index(IndexPatientRequest $request): AnonymousResourceCollection
     {
         $patients = $this->patientsService->index($request->query());
 
@@ -46,7 +48,7 @@ class PatientsController extends Controller implements HasMiddleware
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): void
     {
         //
     }
@@ -54,7 +56,7 @@ class PatientsController extends Controller implements HasMiddleware
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorePatientRequest $request)
+    public function store(StorePatientRequest $request): JsonResponse
     {
         $patient = $this->patientsService->store($request->validated());
 
@@ -64,7 +66,7 @@ class PatientsController extends Controller implements HasMiddleware
     /**
      * Display the specified resource.
      */
-    public function show(Patient $patient)
+    public function show(Patient $patient): void
     {
         //
     }
@@ -72,7 +74,7 @@ class PatientsController extends Controller implements HasMiddleware
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Patient $patient)
+    public function edit(Patient $patient): void
     {
         //
     }
@@ -80,7 +82,7 @@ class PatientsController extends Controller implements HasMiddleware
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatePatientRequest $request, Patient $patient)
+    public function update(UpdatePatientRequest $request, Patient $patient): PatientResource
     {
         $patient = $this->patientsService->update($patient, $request->validated());
 
@@ -90,7 +92,7 @@ class PatientsController extends Controller implements HasMiddleware
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Patient $patient)
+    public function destroy(Patient $patient): JsonResponse
     {
         $this->patientsService->softDelete($patient);
 

@@ -1,5 +1,11 @@
 import { Label } from '@/components/ui/label';
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
+import {
+    Select,
+    SelectTrigger,
+    SelectValue,
+    SelectContent,
+    SelectItem,
+} from '@/components/ui/select';
 import { GENDER_OPTIONS } from '../types/patient';
 
 type Props = {
@@ -21,7 +27,9 @@ export function GenderSelect({ onChange, error, genderValue }: Props) {
                 </SelectTrigger>
                 <SelectContent>
                     {GENDER_OPTIONS.map((gender) => (
-                        <SelectItem key={gender} value={gender}>{gender}</SelectItem>
+                        <SelectItem key={gender} value={gender}>
+                            {gender}
+                        </SelectItem>
                     ))}
                 </SelectContent>
             </Select>

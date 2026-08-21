@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
-import type { CreatePatientPayload, Patient } from '../types/patient';
 import { usePatientForm } from '../hooks/use-patient-form';
+import type { CreatePatientPayload, Patient } from '../types/patient';
 import { FormField } from './patient-form-field';
 import { GenderSelect } from './patient-form-gender-select';
 
@@ -14,7 +14,15 @@ type Props = {
  * omitted, or "edit" mode (pre-filled, different submit label) otherwise.
  */
 export function PatientForm({ onSubmit, initialValues }: Props) {
-    const { form, submitting, error, fieldErrors, handleChange, handleSubmit, setField } = usePatientForm({
+    const {
+        form,
+        submitting,
+        error,
+        fieldErrors,
+        handleChange,
+        handleSubmit,
+        setField,
+    } = usePatientForm({
         initialValues,
         onSubmit,
     });
@@ -78,8 +86,12 @@ export function PatientForm({ onSubmit, initialValues }: Props) {
 
             {error && <p className="text-sm text-destructive">{error}</p>}
 
-            <Button type="submit" disabled={submitting} className="w-fit mt-4">
-                {initialValues ? 'Save' : submitting ? 'Saving...' : 'Add Patient'}
+            <Button type="submit" disabled={submitting} className="mt-4 w-fit">
+                {initialValues
+                    ? 'Save'
+                    : submitting
+                      ? 'Saving...'
+                      : 'Add Patient'}
             </Button>
         </form>
     );

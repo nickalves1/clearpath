@@ -33,10 +33,12 @@ describe('PatientsTable', () => {
                 activeColumn=""
                 direction="asc"
                 isActiveFilter="true"
-            />
+            />,
         );
 
-        expect(screen.getByText('No patients registered yet.')).toBeInTheDocument();
+        expect(
+            screen.getByText('No patients registered yet.'),
+        ).toBeInTheDocument();
     });
 
     it('hides the Deleted At column when the active filter is "true"', () => {
@@ -49,7 +51,7 @@ describe('PatientsTable', () => {
                 activeColumn=""
                 direction="asc"
                 isActiveFilter="true"
-            />
+            />,
         );
 
         expect(screen.queryByText('Deleted At')).not.toBeInTheDocument();
@@ -65,7 +67,7 @@ describe('PatientsTable', () => {
                 activeColumn=""
                 direction="asc"
                 isActiveFilter="all"
-            />
+            />,
         );
 
         expect(screen.getByText('Deleted At')).toBeInTheDocument();
@@ -74,14 +76,16 @@ describe('PatientsTable', () => {
     it('hides the edit and delete buttons for a deleted patient', () => {
         render(
             <PatientsTable
-                patients={[makePatient({ deleted_at: '2026-08-20T00:00:00.000000Z' })]}
+                patients={[
+                    makePatient({ deleted_at: '2026-08-20T00:00:00.000000Z' }),
+                ]}
                 onEdit={noop}
                 setToDelete={noop}
                 setColumnOrder={noop}
                 activeColumn=""
                 direction="asc"
                 isActiveFilter="all"
-            />
+            />,
         );
 
         // 8 sortable column headers (Deleted At column shown), 0 action buttons
@@ -98,7 +102,7 @@ describe('PatientsTable', () => {
                 activeColumn=""
                 direction="asc"
                 isActiveFilter="true"
-            />
+            />,
         );
 
         expect(screen.getAllByRole('button')).toHaveLength(2 + 7);
@@ -116,7 +120,7 @@ describe('PatientsTable', () => {
                 activeColumn=""
                 direction="asc"
                 isActiveFilter="true"
-            />
+            />,
         );
 
         fireEvent.click(screen.getByText('Name'));

@@ -20,7 +20,7 @@ return [
     'allowed_methods' => ['*'],
 
     'allowed_origins' => [
-        'http://localhost:5173/', //colocar endereço de prod 
+        'http://localhost:5173/', // colocar endereço de prod
     ],
 
     'allowed_origins_patterns' => [],

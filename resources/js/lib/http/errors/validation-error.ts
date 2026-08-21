@@ -3,7 +3,10 @@
  * validation errors alongside the top-level message.
  */
 export class ValidationError extends Error {
-    constructor(message: string, public errors: Record<string, string[]>) {
+    constructor(
+        message: string,
+        public errors: Record<string, string[]>,
+    ) {
         super(message);
         this.name = 'ValidationError';
     }
