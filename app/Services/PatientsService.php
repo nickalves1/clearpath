@@ -30,7 +30,7 @@ class PatientsService implements PatientsServiceInterface
         $this->applyFilters($query, $data['filters'] ?? []);
         $this->applySearch($query, $data['search'] ?? '');
 
-        return $query->paginate(5);
+        return $query->paginate(10);
     }
 
     /**
@@ -53,11 +53,7 @@ class PatientsService implements PatientsServiceInterface
      */
     private function applyFilters(QueryBuilder $query, array $selectedFilters): void
     {
-        if (empty($selectedFilters)) {
-            return;
-        }
-
-        $isActive = $selectedFilters['is_active'] ?? 'all';
+        $isActive = $selectedFilters['is_active'] ?? 'true';
         $query
             ->when($isActive === 'true', fn ($query) => $query->whereNull('deleted_at'))
             ->when($isActive === 'false', fn ($query) => $query->whereNotNull('deleted_at'));

@@ -1,7 +1,7 @@
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
-import { FiltersPatients } from '../types/patient'
+import { FiltersPatients, GENDER_OPTIONS } from '../types/patient'
 
 type Props = {
     handleChange: (field: keyof FiltersPatients) => (value: string) => void;
@@ -43,10 +43,9 @@ export default function PatientFiltersForm({handleChange, filters, applyFilters,
                 </SelectTrigger>
                 <SelectContent>
                     <SelectItem value="all">All</SelectItem>
-                    <SelectItem value="Male">Male</SelectItem>
-                    <SelectItem value="Female">Female</SelectItem>
-                    <SelectItem value="Other">Other</SelectItem>
-                    <SelectItem value="refer not to say">Prefer not to say</SelectItem>
+                    {GENDER_OPTIONS.map((gender) => (
+                        <SelectItem key={gender} value={gender}>{gender}</SelectItem>
+                    ))}
                 </SelectContent>
             </Select>
             <Label htmlFor="created_at">Created At</Label>
