@@ -1,5 +1,6 @@
 import { Label } from '@/components/ui/label';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
+import { GENDER_OPTIONS } from '../types/patient';
 
 type Props = {
     onChange: (value: string) => void;
@@ -8,8 +9,7 @@ type Props = {
 };
 
 /**
- * Gender field for the patient form. The options must stay in sync with the
- * `gender` validation rules on StorePatientRequest/UpdatePatientRequest.
+ * Gender field for the patient form.
  */
 export function GenderSelect({ onChange, error, genderValue }: Props) {
     return (
@@ -20,10 +20,9 @@ export function GenderSelect({ onChange, error, genderValue }: Props) {
                     <SelectValue placeholder="Select" />
                 </SelectTrigger>
                 <SelectContent>
-                    <SelectItem value="Male">Male</SelectItem>
-                    <SelectItem value="Female">Female</SelectItem>
-                    <SelectItem value="Other">Other</SelectItem>
-                    <SelectItem value="Prefer not to say">Prefer not to say</SelectItem>
+                    {GENDER_OPTIONS.map((gender) => (
+                        <SelectItem key={gender} value={gender}>{gender}</SelectItem>
+                    ))}
                 </SelectContent>
             </Select>
             {error && <p className="text-sm text-destructive">{error[0]}</p>}

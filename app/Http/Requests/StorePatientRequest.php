@@ -22,7 +22,7 @@ class StorePatientRequest extends FormRequest
             'gender' => ['required', Rule::in(['Male', 'Female', 'Other', 'Prefer not to say'])],
             'email' => 'required|email:rfc,dns',
             'phone' => 'required|int|max_digits:15',
-            'medical_record_number' => 'required|string|max:30',
+            'medical_record_number' => ['required', 'string', 'max:30', Rule::unique('patients', 'medical_record_number')],
         ];
     }
 }
