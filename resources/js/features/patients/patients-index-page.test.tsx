@@ -5,7 +5,7 @@ import type {
     Patient,
     PaginatedResponse,
 } from '@/features/patients/types/patient';
-import PatientsIndex from './index';
+import PatientsIndex from '@/pages/patients/index';
 
 vi.mock('@/features/patients/services/patients.service');
 vi.mock('@inertiajs/react', () => ({
