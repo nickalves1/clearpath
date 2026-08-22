@@ -277,44 +277,26 @@ parameters:
 			path: app/Http/Resources/PatientResource.php
 
 		-
+			message: '#^Parameter \#1 \$query of method App\\Repositories\\PatientsRepository\:\:applyFilters\(\) expects Spatie\\QueryBuilder\\QueryBuilder\<App\\Models\\Patient\>, Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Patient\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Repositories/PatientsRepository.php
+
+		-
+			message: '#^Parameter \#1 \$query of method App\\Repositories\\PatientsRepository\:\:applySearch\(\) expects Spatie\\QueryBuilder\\QueryBuilder\<App\\Models\\Patient\>, Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Patient\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Repositories/PatientsRepository.php
+
+		-
 			message: '#^Method App\\Services\\Contracts\\PatientsServiceInterface\:\:index\(\) return type with generic class Illuminate\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'
 			identifier: missingType.generics
 			count: 1
 			path: app/Services/Contracts/PatientsServiceInterface.php
 
 		-
-			message: '#^Method App\\Services\\PatientsService\:\:applyDateFilter\(\) has parameter \$query with generic class Spatie\\QueryBuilder\\QueryBuilder but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Services/PatientsService.php
-
-		-
-			message: '#^Method App\\Services\\PatientsService\:\:applyFilters\(\) has parameter \$query with generic class Spatie\\QueryBuilder\\QueryBuilder but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Services/PatientsService.php
-
-		-
-			message: '#^Method App\\Services\\PatientsService\:\:applySearch\(\) has parameter \$query with generic class Spatie\\QueryBuilder\\QueryBuilder but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Services/PatientsService.php
-
-		-
 			message: '#^Method App\\Services\\PatientsService\:\:index\(\) return type with generic class Illuminate\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'
 			identifier: missingType.generics
-			count: 1
-			path: app/Services/PatientsService.php
-
-		-
-			message: '#^Parameter \#1 \$query of method App\\Services\\PatientsService\:\:applyFilters\(\) expects Spatie\\QueryBuilder\\QueryBuilder, Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Patient\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Services/PatientsService.php
-
-		-
-			message: '#^Parameter \#1 \$query of method App\\Services\\PatientsService\:\:applySearch\(\) expects Spatie\\QueryBuilder\\QueryBuilder, Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Patient\> given\.$#'
-			identifier: argument.type
 			count: 1
 			path: app/Services/PatientsService.php
 

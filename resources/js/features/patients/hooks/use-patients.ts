@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import type { ChangeEvent } from 'react';
 import { toast } from 'sonner';
 import {
@@ -72,7 +72,17 @@ export function usePatients() {
         fetchPatients();
     }, [page, column, direction, filters]);
 
+    const isFirstSearchRender = useRef(true);
+
     useEffect(() => {
+        // Skip the mount run — the effect above already fetches once on mount,
+        // this one should only react to the user actually typing a search term.
+        if (isFirstSearchRender.current) {
+            isFirstSearchRender.current = false;
+
+            return;
+        }
+
         const timeoutId = setTimeout(() => {
             fetchPatients();
         }, 300);

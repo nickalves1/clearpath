@@ -57,6 +57,17 @@ describe('usePatients', () => {
         });
     });
 
+    it('does not fetch a second time on mount once the debounce delay passes', async () => {
+        vi.useFakeTimers();
+        renderHook(() => usePatients());
+
+        await act(async () => {
+            await vi.advanceTimersByTimeAsync(300);
+        });
+
+        expect(patientsService.getPatients).toHaveBeenCalledTimes(1);
+    });
+
     it('debounces the search, firing only one extra request after typing stops', async () => {
         vi.useFakeTimers();
         const { result } = renderHook(() => usePatients());
