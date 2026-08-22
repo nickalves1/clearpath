@@ -21,7 +21,7 @@ class UpdatePatientRequest extends FormRequest
             'birth_date' => 'required|date',
             'gender' => ['required', Rule::in(['Male', 'Female', 'Other', 'Prefer not to say'])],
             'email' => 'required|email:rfc,dns',
-            'phone' => 'required|int|max_digits:15',
+            'phone' => 'required|digits_between:1,15',
             'medical_record_number' => ['required', 'string', 'max:30', Rule::unique('patients', 'medical_record_number')->ignore($this->route('patient'))],
         ];
     }
