@@ -32,6 +32,9 @@ echo "==> Installing JS dependencies and building assets"
 docker compose exec -T laravel.test npm install
 docker compose exec -T laravel.test npm run build
 
+echo "==> Starting SonarQube temporarily (to configure a token and prove the scan works)"
+docker compose --profile sonar up -d sonarqube sonarqube-db
+
 echo "==> Waiting for SonarQube"
 until curl -s http://localhost:9000/api/system/status 2>/dev/null | grep -q '"status":"UP"'; do
     sleep 3
@@ -43,9 +46,15 @@ token=$(curl -s -u admin:admin -X POST "http://localhost:9000/api/user_tokens/ge
 echo "$token" > .sonar-token
 
 echo "==> Running the SonarQube analysis"
-docker compose --profile scan run --rm sonar-scanner -Dsonar.token="$token"
+docker compose --profile sonar --profile scan run --rm sonar-scanner -Dsonar.token="$token"
+
+echo "==> Stopping SonarQube (on-demand only — see README for how to bring it back)"
+docker compose stop sonarqube sonarqube-db
 
 echo ""
 echo "Setup complete!"
-echo "  App:       http://localhost:8000"
-echo "  SonarQube: http://localhost:9000 (admin / admin)"
+echo "  App: http://localhost:8000"
+echo ""
+echo "SonarQube and Kibana don't run by default — see the README for how to"
+echo "start them on demand. Postgres, Redis, and Elasticsearch stay up as long"
+echo "as Docker is running."

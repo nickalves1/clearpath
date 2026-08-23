@@ -24,3 +24,5 @@ yarn-error.log
 cookies.txt
 .claude/settings.local.json
 .sonar-token
+_ide_helper.php
+.phpstorm.meta.php
