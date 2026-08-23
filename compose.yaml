@@ -15,6 +15,8 @@ services:
             WWWUSER: '${WWWUSER}'
             LARAVEL_SAIL: 1
             DB_HOST: pgsql
+            REDIS_HOST: redis
+            ELASTICSEARCH_HOST: http://elasticsearch:9200
             XDEBUG_MODE: '${SAIL_XDEBUG_MODE:-off}'
             XDEBUG_CONFIG: '${SAIL_XDEBUG_CONFIG:-client_host=host.docker.internal}'
             IGNITION_LOCAL_SITES_PATH: '${PWD}'
@@ -25,6 +27,34 @@ services:
             - sail
         depends_on:
             - pgsql
+            - redis
+            - elasticsearch
+    # Processes queued Listeners (patient audit events) so `docker compose up -d`
+    # alone is a complete way to run the app, no `composer run dev` required.
+    # Same image as laravel.test, just a different entrypoint.
+    queue:
+        build:
+            context: './vendor/laravel/sail/runtimes/8.5'
+            dockerfile: Dockerfile
+            args:
+                WWWGROUP: '${WWWGROUP}'
+        image: 'sail-8.5/app'
+        command: ['php', 'artisan', 'queue:listen', '--tries=1', '--timeout=0']
+        environment:
+            WWWUSER: '${WWWUSER}'
+            LARAVEL_SAIL: 1
+            DB_HOST: pgsql
+            REDIS_HOST: redis
+            ELASTICSEARCH_HOST: http://elasticsearch:9200
+        volumes:
+            - '.:/var/www/html'
+            - 'sail-node-modules:/var/www/html/node_modules'
+        networks:
+            - sail
+        depends_on:
+            - pgsql
+            - redis
+            - elasticsearch
     pgsql:
         image: 'postgres:18-alpine'
         ports:
@@ -50,6 +80,59 @@ services:
                 - '${DB_USERNAME}'
             retries: 3
             timeout: 5s
+    redis:
+        image: 'redis:8-alpine'
+        ports:
+            - '${FORWARD_REDIS_PORT:-6379}:6379'
+        volumes:
+            - 'sail-redis:/data'
+        networks:
+            - sail
+        healthcheck:
+            test:
+                - CMD
+                - redis-cli
+                - ping
+            retries: 3
+            timeout: 5s
+    # Runs by default, like pgsql/redis — logging itself needs this up.
+    # Kibana (below) is just a viewer on top of it and stays on-demand.
+    elasticsearch:
+        image: 'docker.elastic.co/elasticsearch/elasticsearch:9.5.0'
+        environment:
+            discovery.type: single-node
+            xpack.security.enabled: 'false'
+            ES_JAVA_OPTS: '-Xms512m -Xmx512m'
+        ports:
+            - '9200:9200'
+        volumes:
+            - sail-elasticsearch:/usr/share/elasticsearch/data
+        networks:
+            - sail
+        healthcheck:
+            test:
+                - CMD-SHELL
+                - "curl -s http://localhost:9200/_cluster/health | grep -q '\"status\":\"green\"\\|\"status\":\"yellow\"'"
+            retries: 10
+            timeout: 5s
+    # On-demand only — Kibana is purely a viewer over Elasticsearch, it plays
+    # no part in whether logging itself works. Start with:
+    # docker compose --profile kibana up -d kibana
+    kibana:
+        image: 'docker.elastic.co/kibana/kibana:9.5.0'
+        environment:
+            ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+        ports:
+            - '5601:5601'
+        networks:
+            - sail
+        depends_on:
+            - elasticsearch
+        profiles:
+            - kibana
+    # On-demand only (doesn't start with `docker compose up`) — SonarQube is
+    # memory-hungry, only run it while actively scanning/demoing this piece.
+    # Start with: docker compose --profile sonar up -d
     sonarqube:
         image: sonarqube:community
         ports:
@@ -66,6 +149,8 @@ services:
             - sail
         depends_on:
             - sonarqube-db
+        profiles:
+            - sonar
     sonarqube-db:
         image: 'postgres:18-alpine'
         environment:
@@ -76,6 +161,8 @@ services:
             - sonarqube_db:/var/lib/postgresql
         networks:
             - sail
+        profiles:
+            - sonar
     # On-demand only (doesn't start with `docker compose up`).
     # Run with: docker compose --profile scan run --rm sonar-scanner -Dsonar.token=YOUR_TOKEN
     sonar-scanner:
@@ -96,6 +183,10 @@ networks:
         driver: bridge
 volumes:
     sail-pgsql:
+        driver: local
+    sail-redis:
+        driver: local
+    sail-elasticsearch:
         driver: local
     sail-node-modules:
         driver: local

@@ -4,6 +4,7 @@ namespace Tests\Feature\Auth;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
 use Laravel\Fortify\Features;
 use Tests\TestCase;
@@ -55,6 +56,7 @@ class AuthenticationTest extends TestCase
 
     public function test_users_can_not_authenticate_with_invalid_password()
     {
+        Log::spy();
         $user = User::factory()->create();
 
         $this->post(route('login.store'), [
@@ -63,6 +65,10 @@ class AuthenticationTest extends TestCase
         ]);
 
         $this->assertGuest();
+        Log::shouldHaveReceived('warning')->once()->with('Failed login attempt', [
+            'guard' => 'web',
+            'ip' => '127.0.0.1',
+        ]);
     }
 
     public function test_users_can_logout()

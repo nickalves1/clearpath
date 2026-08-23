@@ -1,5 +1,7 @@
 <?php
 
+use App\Logging\CloudWatchLoggerFactory;
+use App\Logging\ElasticsearchLoggerFactory;
 use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogUdpHandler;
@@ -129,6 +131,23 @@ return [
         'null' => [
             'driver' => 'monolog',
             'handler' => NullHandler::class,
+        ],
+
+        'elasticsearch' => [
+            'driver' => 'custom',
+            'via' => ElasticsearchLoggerFactory::class,
+            'host' => env('ELASTICSEARCH_HOST', 'http://localhost:9200'),
+            'index' => env('ELASTICSEARCH_INDEX', 'clearpath-patients'),
+            'level' => env('LOG_LEVEL', 'debug'),
+        ],
+
+        'cloudwatch' => [
+            'driver' => 'custom',
+            'via' => CloudWatchLoggerFactory::class,
+            'group' => env('CLOUDWATCH_LOG_GROUP', '/clearpath/patients'),
+            'stream' => env('CLOUDWATCH_LOG_STREAM', 'app'),
+            'retention' => (int) env('CLOUDWATCH_LOG_RETENTION_DAYS', 7),
+            'level' => env('LOG_LEVEL', 'debug'),
         ],
 
         'emergency' => [

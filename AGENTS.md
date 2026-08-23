@@ -214,14 +214,3 @@ Use Wayfinder to generate TypeScript functions for Laravel routes. Import from `
 - IMPORTANT: Activate `inertia-react-development` when working with Inertia React client-side patterns.
 
 </laravel-boost-guidelines>
-
-## Clean Code & Architecture
-
-- IMPORTANT: Activate `clearpath-architecture` when building or modifying a backend or
-  frontend feature (Controller, Service, Repository, Model, migration, Form Request, Policy,
-  React components/hooks/services), when adding or changing an API endpoint, or when a
-  change touches domain events, value objects, API versioning, Swagger documentation, or a
-  BFF-shaped endpoint.
-
-When in doubt about a pattern for a new feature, open the equivalent `patients` file first
-and match it, rather than inventing a new approach.
