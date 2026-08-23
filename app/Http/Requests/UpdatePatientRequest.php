@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Support\CurrentTenant;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -22,7 +23,14 @@ class UpdatePatientRequest extends FormRequest
             'gender' => ['required', Rule::in(['Male', 'Female', 'Other', 'Prefer not to say'])],
             'email' => 'required|email:rfc,dns',
             'phone' => 'required|digits_between:1,15',
-            'medical_record_number' => ['required', 'string', 'max:30', Rule::unique('patients', 'medical_record_number')->ignore($this->route('patient'))],
+            'medical_record_number' => [
+                'required',
+                'string',
+                'max:30',
+                Rule::unique('patients', 'medical_record_number')
+                    ->where('tenant_id', app(CurrentTenant::class)->id())
+                    ->ignore($this->route('patient')),
+            ],
         ];
     }
 }

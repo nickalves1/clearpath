@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Physician;
+use App\Models\Tenant;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,7 +19,7 @@ class PhysicianFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'tenant_id' => Tenant::query()->value('id') ?? Tenant::factory(),
         ];
     }
 }
