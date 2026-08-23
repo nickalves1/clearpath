@@ -18,7 +18,7 @@ class PatientAuditLoggingTest extends TestCase
 {
     public function test_log_patient_created_logs_the_patient_user_and_ip(): void
     {
-        $patient = Patient::factory()->make(['id' => 42]);
+        $patient = Patient::factory()->make(['id' => 42, 'tenant_id' => 1]);
         Log::shouldReceive('info')->once()->with('Patient created', [
             'patient_id' => 42,
             'caused_by_user_id' => 7,
@@ -30,7 +30,7 @@ class PatientAuditLoggingTest extends TestCase
 
     public function test_log_patient_updated_logs_the_patient_user_ip_and_changed_fields(): void
     {
-        $patient = Patient::factory()->make(['id' => 42]);
+        $patient = Patient::factory()->make(['id' => 42, 'tenant_id' => 1]);
         Log::shouldReceive('info')->once()->with('Patient updated', [
             'patient_id' => 42,
             'caused_by_user_id' => 7,
@@ -48,7 +48,7 @@ class PatientAuditLoggingTest extends TestCase
 
     public function test_log_patient_deleted_logs_the_patient_user_and_ip(): void
     {
-        $patient = Patient::factory()->make(['id' => 42]);
+        $patient = Patient::factory()->make(['id' => 42, 'tenant_id' => 1]);
         Log::shouldReceive('info')->once()->with('Patient deleted', [
             'patient_id' => 42,
             'caused_by_user_id' => 7,

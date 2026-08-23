@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Patient;
+use App\Models\Tenant;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -25,6 +26,7 @@ class PatientFactory extends Factory
             'gender' => fake()->randomElement(['Male', 'Female', 'Other', 'Prefer not to say']),
             'phone' => fake()->numerify('###########'),
             'email' => fake()->unique()->safeEmail(),
+            'tenant_id' => Tenant::query()->value('id') ?? Tenant::factory(),
         ];
     }
 }

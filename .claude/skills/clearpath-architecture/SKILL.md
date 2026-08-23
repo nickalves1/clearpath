@@ -1,6 +1,6 @@
 ---
 name: clearpath-architecture
-description: "Apply this skill whenever building or modifying a CRUD/resource feature in the Clearpath project — backend (Controller, Service, Repository, Model, migration, Form Request, Policy) or frontend (React components, hooks, services under resources/js/features). Also apply when adding or changing an API endpoint, when a state change should fire a domain event, when a structured scalar field (phone, email, medical record number) needs a Value Object, or when documenting an endpoint for Swagger/OpenAPI. These are Clearpath-specific conventions layered on top of general Laravel best practices — use alongside laravel-best-practices, not instead of it."
+description: "Apply this skill whenever building or modifying a CRUD/resource feature in the Clearpath project — backend (Controller, Service, Repository, Model, migration, Form Request, Policy) or frontend (React components, hooks, services under resources/js/features). Also apply when adding or changing an API endpoint, when a state change should fire a domain event, when a structured scalar field (phone, email, medical record number) needs a Value Object, when a new model holds clinic-owned data that must be scoped per tenant, or when documenting an endpoint for Swagger/OpenAPI. These are Clearpath-specific conventions layered on top of general Laravel best practices — use alongside laravel-best-practices, not instead of it."
 license: MIT
 metadata:
   author: clearpath
@@ -24,7 +24,9 @@ expected level of detail. Inline comments stay reserved for non-obvious "why".
 
 ## Backend structure (per feature)
 
-- `app/Models/{Model}.php`
+- `app/Models/{Model}.php` — if it holds clinic-owned data (i.e. it should never be visible
+  across tenants), `use BelongsToTenant;` and give the migration a `tenant_id` column. See
+  Multi-tenancy below.
 - `database/migrations/..._create_{models}_table.php`, `database/factories/{Model}Factory.php`,
   and a `database/seeders/{Models}Seeder.php` — every new feature ships with all three,
   same as `create_patients_table.php` / `PatientFactory.php` / `PatientsSeeder.php`.
@@ -79,6 +81,20 @@ Structured scalar fields (phone, email, medical record number, etc.) are a Value
 `app/ValueObjects/`, not a raw string. The Value Object validates its own format in the
 constructor and exposes typed accessors; cast to/from it on the Eloquent model via a custom
 cast where practical.
+
+## Multi-tenancy
+
+Every model holding clinic-owned data (`Patient`, `Physician`, `ImagingOrder`, `Study`,
+`Report`) belongs to a `Tenant` and `use App\Concerns\BelongsToTenant;`. That trait applies a
+global Eloquent scope (filters every query to the current tenant) and a `creating` hook
+(stamps new records with it) — no Controller, Service, or Repository filters by tenant
+manually. The current tenant is resolved once, from the authenticated user, by
+`App\Listeners\SetCurrentTenant` reacting to Laravel's own `Authenticated` event, and held in
+the `App\Support\CurrentTenant` singleton for the rest of the request. `User` and `Tenant`
+themselves are never scoped this way — login has to find a user by email before any tenant is
+known. A cross-tenant record lookup resolves to a 404 (via route-model binding failing to find
+the row), not a 403 — it shouldn't confirm another tenant's record even exists. See
+`tests/Feature/TenantIsolationTest.php` for the expected test coverage on a new scoped model.
 
 ## API Versioning
 

@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Casts\AsEmail;
 use App\Casts\AsMedicalRecordNumber;
 use App\Casts\AsPhone;
+use App\Concerns\BelongsToTenant;
 use Database\Factories\PatientFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,6 +15,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 #[Fillable(['first_name', 'last_name', 'birth_date', 'gender', 'phone', 'email', 'medical_record_number'])]
 class Patient extends Model
 {
+    use BelongsToTenant;
+
     /** @use HasFactory<PatientFactory> */
     use HasFactory;
 

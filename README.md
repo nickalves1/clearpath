@@ -12,6 +12,7 @@ A technical case study built as a portfolio/interview piece modeled on [Clearpat
 - **Validation & responses**: Form Requests for input validation, API Resources for response shaping — no ad-hoc array building in controllers
 - **Domain Events**: `PatientCreated` / `PatientUpdated` / `PatientDeleted`, dispatched from the Service layer and consumed by queued Listeners — audit logging is fully decoupled from the request/response cycle. Events carry a lightweight model reference (`SerializesModels`), not the serialized patient record, so PHI isn't duplicated into the queue payload
 - **Value Objects**: structured PII fields (`phone`, `email`, `medical_record_number`) are never a raw string — each is a `App\ValueObjects` class that validates its own format in the constructor, wired to the model via a custom Eloquent cast (`App\Casts`). Invalid data can't reach the database through any code path, not just the HTTP layer
+- **Multi-tenancy**: every clinical model (`Patient`, `Physician`, `ImagingOrder`, `Study`, `Report`) is scoped to a `Tenant` via a shared `BelongsToTenant` trait — a global Eloquent scope filters every query, and a `creating` hook stamps new records, both driven by a request-scoped `CurrentTenant` singleton set from Laravel's own `Authenticated` event. No Controller, Service, or Repository has to remember to filter by tenant; cross-tenant record access resolves to a 404, not a 403, so it doesn't confirm another tenant's data even exists
 - **Testing**: PHPUnit (unit + feature, factories, both happy and failure paths) with the queue and log channels forced to safe, isolated drivers in CI — tests never touch a real external service
 - **Static analysis & security scanning**: self-hosted SonarQube (Community Edition), scanning PHP and TypeScript for bugs, vulnerabilities, and code smells; Larastan for type-level static analysis
 
@@ -41,7 +42,7 @@ Both categories land in the same place — same `LOG_STACK` switch, same Kibana/
 
 ### Roadmap
 
-Repository Pattern, Domain Events, Value Objects, and API versioning are implemented; the following build on the same conventions and are planned next: **Swagger/OpenAPI** documentation, a **BFF** layer for a second client (a patient-facing app consuming the clinic's API), and **multi-tenant** data scoping — matching Clearpath's real business model, where each health system/imaging center is a tenant with its own patients and staff.
+Repository Pattern, Domain Events, Value Objects, API versioning, and multi-tenant data isolation are implemented; the following build on the same conventions and are planned next: self-service **company registration** (a public sign-up creates a `Tenant` and its first admin `User` together) and **team invitations** (an admin invites teammates by email with a role attached to the invite, rather than the registrant self-selecting one), **Swagger/OpenAPI** documentation, and a **BFF** layer for a second client — a patient-facing app consuming the clinic's API, matching Clearpath's real business model where each health system/imaging center is a tenant with its own patients and staff.
 
 ---
 
