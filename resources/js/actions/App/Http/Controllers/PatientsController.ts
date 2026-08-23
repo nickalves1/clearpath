@@ -2,7 +2,7 @@ import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFo
 /**
 * @see \App\Http\Controllers\PatientsController::index
 * @see app/Http/Controllers/PatientsController.php:41
-* @route '/api/patients'
+* @route '/api/v1/patients'
 */
 export const index = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: index.url(options),
@@ -11,13 +11,13 @@ export const index = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 
 index.definition = {
     methods: ["get","head"],
-    url: '/api/patients',
+    url: '/api/v1/patients',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
 * @see \App\Http\Controllers\PatientsController::index
 * @see app/Http/Controllers/PatientsController.php:41
-* @route '/api/patients'
+* @route '/api/v1/patients'
 */
 index.url = (options?: RouteQueryOptions) => {
     return index.definition.url + queryParams(options)
@@ -26,7 +26,7 @@ index.url = (options?: RouteQueryOptions) => {
 /**
 * @see \App\Http\Controllers\PatientsController::index
 * @see app/Http/Controllers/PatientsController.php:41
-* @route '/api/patients'
+* @route '/api/v1/patients'
 */
 index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: index.url(options),
@@ -36,7 +36,7 @@ index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 /**
 * @see \App\Http\Controllers\PatientsController::index
 * @see app/Http/Controllers/PatientsController.php:41
-* @route '/api/patients'
+* @route '/api/v1/patients'
 */
 index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: index.url(options),
@@ -46,7 +46,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 /**
 * @see \App\Http\Controllers\PatientsController::index
 * @see app/Http/Controllers/PatientsController.php:41
-* @route '/api/patients'
+* @route '/api/v1/patients'
 */
 const indexForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
     action: index.url(options),
@@ -56,7 +56,7 @@ const indexForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => (
 /**
 * @see \App\Http\Controllers\PatientsController::index
 * @see app/Http/Controllers/PatientsController.php:41
-* @route '/api/patients'
+* @route '/api/v1/patients'
 */
 indexForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
     action: index.url(options),
@@ -66,7 +66,7 @@ indexForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
 /**
 * @see \App\Http\Controllers\PatientsController::index
 * @see app/Http/Controllers/PatientsController.php:41
-* @route '/api/patients'
+* @route '/api/v1/patients'
 */
 indexForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
     action: index.url({
@@ -83,7 +83,7 @@ index.form = indexForm
 /**
 * @see \App\Http\Controllers\PatientsController::store
 * @see app/Http/Controllers/PatientsController.php:59
-* @route '/api/patients'
+* @route '/api/v1/patients'
 */
 export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: store.url(options),
@@ -92,13 +92,13 @@ export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => (
 
 store.definition = {
     methods: ["post"],
-    url: '/api/patients',
+    url: '/api/v1/patients',
 } satisfies RouteDefinition<["post"]>
 
 /**
 * @see \App\Http\Controllers\PatientsController::store
 * @see app/Http/Controllers/PatientsController.php:59
-* @route '/api/patients'
+* @route '/api/v1/patients'
 */
 store.url = (options?: RouteQueryOptions) => {
     return store.definition.url + queryParams(options)
@@ -107,7 +107,7 @@ store.url = (options?: RouteQueryOptions) => {
 /**
 * @see \App\Http\Controllers\PatientsController::store
 * @see app/Http/Controllers/PatientsController.php:59
-* @route '/api/patients'
+* @route '/api/v1/patients'
 */
 store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: store.url(options),
@@ -117,7 +117,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 /**
 * @see \App\Http\Controllers\PatientsController::store
 * @see app/Http/Controllers/PatientsController.php:59
-* @route '/api/patients'
+* @route '/api/v1/patients'
 */
 const storeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
     action: store.url(options),
@@ -127,7 +127,7 @@ const storeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => 
 /**
 * @see \App\Http\Controllers\PatientsController::store
 * @see app/Http/Controllers/PatientsController.php:59
-* @route '/api/patients'
+* @route '/api/v1/patients'
 */
 storeForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
     action: store.url(options),
@@ -139,7 +139,7 @@ store.form = storeForm
 /**
 * @see \App\Http\Controllers\PatientsController::show
 * @see app/Http/Controllers/PatientsController.php:69
-* @route '/api/patients/{patient}'
+* @route '/api/v1/patients/{patient}'
 */
 export const show = (args: { patient: number | { id: number } } | [patient: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: show.url(args, options),
@@ -148,13 +148,13 @@ export const show = (args: { patient: number | { id: number } } | [patient: numb
 
 show.definition = {
     methods: ["get","head"],
-    url: '/api/patients/{patient}',
+    url: '/api/v1/patients/{patient}',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
 * @see \App\Http\Controllers\PatientsController::show
 * @see app/Http/Controllers/PatientsController.php:69
-* @route '/api/patients/{patient}'
+* @route '/api/v1/patients/{patient}'
 */
 show.url = (args: { patient: number | { id: number } } | [patient: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
@@ -187,7 +187,7 @@ show.url = (args: { patient: number | { id: number } } | [patient: number | { id
 /**
 * @see \App\Http\Controllers\PatientsController::show
 * @see app/Http/Controllers/PatientsController.php:69
-* @route '/api/patients/{patient}'
+* @route '/api/v1/patients/{patient}'
 */
 show.get = (args: { patient: number | { id: number } } | [patient: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: show.url(args, options),
@@ -197,7 +197,7 @@ show.get = (args: { patient: number | { id: number } } | [patient: number | { id
 /**
 * @see \App\Http\Controllers\PatientsController::show
 * @see app/Http/Controllers/PatientsController.php:69
-* @route '/api/patients/{patient}'
+* @route '/api/v1/patients/{patient}'
 */
 show.head = (args: { patient: number | { id: number } } | [patient: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: show.url(args, options),
@@ -207,7 +207,7 @@ show.head = (args: { patient: number | { id: number } } | [patient: number | { i
 /**
 * @see \App\Http\Controllers\PatientsController::show
 * @see app/Http/Controllers/PatientsController.php:69
-* @route '/api/patients/{patient}'
+* @route '/api/v1/patients/{patient}'
 */
 const showForm = (args: { patient: number | { id: number } } | [patient: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
     action: show.url(args, options),
@@ -217,7 +217,7 @@ const showForm = (args: { patient: number | { id: number } } | [patient: number 
 /**
 * @see \App\Http\Controllers\PatientsController::show
 * @see app/Http/Controllers/PatientsController.php:69
-* @route '/api/patients/{patient}'
+* @route '/api/v1/patients/{patient}'
 */
 showForm.get = (args: { patient: number | { id: number } } | [patient: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
     action: show.url(args, options),
@@ -227,7 +227,7 @@ showForm.get = (args: { patient: number | { id: number } } | [patient: number | 
 /**
 * @see \App\Http\Controllers\PatientsController::show
 * @see app/Http/Controllers/PatientsController.php:69
-* @route '/api/patients/{patient}'
+* @route '/api/v1/patients/{patient}'
 */
 showForm.head = (args: { patient: number | { id: number } } | [patient: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
     action: show.url(args, {
@@ -244,7 +244,7 @@ show.form = showForm
 /**
 * @see \App\Http\Controllers\PatientsController::update
 * @see app/Http/Controllers/PatientsController.php:85
-* @route '/api/patients/{patient}'
+* @route '/api/v1/patients/{patient}'
 */
 export const update = (args: { patient: number | { id: number } } | [patient: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
     url: update.url(args, options),
@@ -253,13 +253,13 @@ export const update = (args: { patient: number | { id: number } } | [patient: nu
 
 update.definition = {
     methods: ["put","patch"],
-    url: '/api/patients/{patient}',
+    url: '/api/v1/patients/{patient}',
 } satisfies RouteDefinition<["put","patch"]>
 
 /**
 * @see \App\Http\Controllers\PatientsController::update
 * @see app/Http/Controllers/PatientsController.php:85
-* @route '/api/patients/{patient}'
+* @route '/api/v1/patients/{patient}'
 */
 update.url = (args: { patient: number | { id: number } } | [patient: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
@@ -292,7 +292,7 @@ update.url = (args: { patient: number | { id: number } } | [patient: number | { 
 /**
 * @see \App\Http\Controllers\PatientsController::update
 * @see app/Http/Controllers/PatientsController.php:85
-* @route '/api/patients/{patient}'
+* @route '/api/v1/patients/{patient}'
 */
 update.put = (args: { patient: number | { id: number } } | [patient: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
     url: update.url(args, options),
@@ -302,7 +302,7 @@ update.put = (args: { patient: number | { id: number } } | [patient: number | { 
 /**
 * @see \App\Http\Controllers\PatientsController::update
 * @see app/Http/Controllers/PatientsController.php:85
-* @route '/api/patients/{patient}'
+* @route '/api/v1/patients/{patient}'
 */
 update.patch = (args: { patient: number | { id: number } } | [patient: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
     url: update.url(args, options),
@@ -312,7 +312,7 @@ update.patch = (args: { patient: number | { id: number } } | [patient: number | 
 /**
 * @see \App\Http\Controllers\PatientsController::update
 * @see app/Http/Controllers/PatientsController.php:85
-* @route '/api/patients/{patient}'
+* @route '/api/v1/patients/{patient}'
 */
 const updateForm = (args: { patient: number | { id: number } } | [patient: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
     action: update.url(args, {
@@ -327,7 +327,7 @@ const updateForm = (args: { patient: number | { id: number } } | [patient: numbe
 /**
 * @see \App\Http\Controllers\PatientsController::update
 * @see app/Http/Controllers/PatientsController.php:85
-* @route '/api/patients/{patient}'
+* @route '/api/v1/patients/{patient}'
 */
 updateForm.put = (args: { patient: number | { id: number } } | [patient: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
     action: update.url(args, {
@@ -342,7 +342,7 @@ updateForm.put = (args: { patient: number | { id: number } } | [patient: number 
 /**
 * @see \App\Http\Controllers\PatientsController::update
 * @see app/Http/Controllers/PatientsController.php:85
-* @route '/api/patients/{patient}'
+* @route '/api/v1/patients/{patient}'
 */
 updateForm.patch = (args: { patient: number | { id: number } } | [patient: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
     action: update.url(args, {
@@ -359,7 +359,7 @@ update.form = updateForm
 /**
 * @see \App\Http\Controllers\PatientsController::destroy
 * @see app/Http/Controllers/PatientsController.php:95
-* @route '/api/patients/{patient}'
+* @route '/api/v1/patients/{patient}'
 */
 export const destroy = (args: { patient: number | { id: number } } | [patient: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: destroy.url(args, options),
@@ -368,13 +368,13 @@ export const destroy = (args: { patient: number | { id: number } } | [patient: n
 
 destroy.definition = {
     methods: ["delete"],
-    url: '/api/patients/{patient}',
+    url: '/api/v1/patients/{patient}',
 } satisfies RouteDefinition<["delete"]>
 
 /**
 * @see \App\Http\Controllers\PatientsController::destroy
 * @see app/Http/Controllers/PatientsController.php:95
-* @route '/api/patients/{patient}'
+* @route '/api/v1/patients/{patient}'
 */
 destroy.url = (args: { patient: number | { id: number } } | [patient: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
@@ -407,7 +407,7 @@ destroy.url = (args: { patient: number | { id: number } } | [patient: number | {
 /**
 * @see \App\Http\Controllers\PatientsController::destroy
 * @see app/Http/Controllers/PatientsController.php:95
-* @route '/api/patients/{patient}'
+* @route '/api/v1/patients/{patient}'
 */
 destroy.delete = (args: { patient: number | { id: number } } | [patient: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: destroy.url(args, options),
@@ -417,7 +417,7 @@ destroy.delete = (args: { patient: number | { id: number } } | [patient: number 
 /**
 * @see \App\Http\Controllers\PatientsController::destroy
 * @see app/Http/Controllers/PatientsController.php:95
-* @route '/api/patients/{patient}'
+* @route '/api/v1/patients/{patient}'
 */
 const destroyForm = (args: { patient: number | { id: number } } | [patient: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
     action: destroy.url(args, {
@@ -432,7 +432,7 @@ const destroyForm = (args: { patient: number | { id: number } } | [patient: numb
 /**
 * @see \App\Http\Controllers\PatientsController::destroy
 * @see app/Http/Controllers/PatientsController.php:95
-* @route '/api/patients/{patient}'
+* @route '/api/v1/patients/{patient}'
 */
 destroyForm.delete = (args: { patient: number | { id: number } } | [patient: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
     action: destroy.url(args, {

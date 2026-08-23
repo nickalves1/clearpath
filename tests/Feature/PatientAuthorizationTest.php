@@ -16,7 +16,7 @@ class PatientAuthorizationTest extends TestCase
     {
         $user = User::factory()->create(['role' => 'radiologist']);
 
-        $response = $this->actingAs($user)->getJson('/api/patients');
+        $response = $this->actingAs($user)->getJson('/api/v1/patients');
 
         $response->assertOk();
     }
@@ -25,7 +25,7 @@ class PatientAuthorizationTest extends TestCase
     {
         $user = User::factory()->create(['role' => 'receptionist']);
 
-        $response = $this->actingAs($user)->getJson('/api/patients');
+        $response = $this->actingAs($user)->getJson('/api/v1/patients');
 
         $response->assertForbidden();
     }
@@ -34,7 +34,7 @@ class PatientAuthorizationTest extends TestCase
     {
         $user = User::factory()->create(['role' => 'radiologist']);
 
-        $response = $this->actingAs($user)->postJson('/api/patients', [
+        $response = $this->actingAs($user)->postJson('/api/v1/patients', [
             'first_name' => 'Ana',
             'last_name' => 'Silva',
             'birth_date' => '1990-01-01',
@@ -51,7 +51,7 @@ class PatientAuthorizationTest extends TestCase
     {
         $user = User::factory()->create(['role' => 'receptionist']);
 
-        $response = $this->actingAs($user)->postJson('/api/patients', [
+        $response = $this->actingAs($user)->postJson('/api/v1/patients', [
             'first_name' => 'Ana',
             'last_name' => 'Silva',
             'birth_date' => '1990-01-01',
@@ -69,7 +69,7 @@ class PatientAuthorizationTest extends TestCase
         $user = User::factory()->create(['role' => 'receptionist']);
         $patient = Patient::factory()->create();
 
-        $response = $this->actingAs($user)->putJson("/api/patients/{$patient->id}", [
+        $response = $this->actingAs($user)->putJson("/api/v1/patients/{$patient->id}", [
             'first_name' => 'New Name',
             'last_name' => $patient->last_name,
             'birth_date' => $patient->birth_date,
@@ -88,7 +88,7 @@ class PatientAuthorizationTest extends TestCase
         $user = User::factory()->create(['role' => 'receptionist']);
         $patient = Patient::factory()->create();
 
-        $this->actingAs($user)->putJson("/api/patients/{$patient->id}", [
+        $this->actingAs($user)->putJson("/api/v1/patients/{$patient->id}", [
             'first_name' => 'New Name',
             'last_name' => $patient->last_name,
             'birth_date' => $patient->birth_date,
@@ -113,7 +113,7 @@ class PatientAuthorizationTest extends TestCase
         $user = User::factory()->create(['role' => 'receptionist']);
         $patient = Patient::factory()->create();
 
-        $response = $this->actingAs($user)->putJson("/api/patients/{$patient->id}", [
+        $response = $this->actingAs($user)->putJson("/api/v1/patients/{$patient->id}", [
             'first_name' => 'New Name',
             'last_name' => $patient->last_name,
             'birth_date' => $patient->birth_date,

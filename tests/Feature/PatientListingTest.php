@@ -16,7 +16,7 @@ class PatientListingTest extends TestCase
         Patient::factory()->count(13)->create();
         $user = User::factory()->create(['role' => 'radiologist']);
 
-        $response = $this->actingAs($user)->getJson('/api/patients');
+        $response = $this->actingAs($user)->getJson('/api/v1/patients');
 
         $response->assertOk();
         $response->assertJsonCount(10, 'data');
@@ -28,7 +28,7 @@ class PatientListingTest extends TestCase
         Patient::factory()->count(13)->create();
         $user = User::factory()->create(['role' => 'radiologist']);
 
-        $response = $this->actingAs($user)->getJson('/api/patients?page=2');
+        $response = $this->actingAs($user)->getJson('/api/v1/patients?page=2');
 
         $response->assertOk();
         $response->assertJsonCount(3, 'data');
@@ -40,7 +40,7 @@ class PatientListingTest extends TestCase
         Patient::factory()->create(['first_name' => 'Ana']);
         $user = User::factory()->create(['role' => 'radiologist']);
 
-        $response = $this->actingAs($user)->getJson('/api/patients?sort=first_name');
+        $response = $this->actingAs($user)->getJson('/api/v1/patients?sort=first_name');
 
         $response->assertOk();
         $response->assertJsonPath('data.0.first_name', 'Ana');
@@ -53,7 +53,7 @@ class PatientListingTest extends TestCase
         Patient::factory()->create(['first_name' => 'Ana']);
         $user = User::factory()->create(['role' => 'radiologist']);
 
-        $response = $this->actingAs($user)->getJson('/api/patients?sort=-first_name');
+        $response = $this->actingAs($user)->getJson('/api/v1/patients?sort=-first_name');
 
         $response->assertOk();
         $response->assertJsonPath('data.0.first_name', 'Zeca');

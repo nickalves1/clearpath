@@ -20,7 +20,7 @@ class PatientSearchTest extends TestCase
         $male = Patient::factory()->create(['gender' => 'Male']);
         $female = Patient::factory()->create(['gender' => 'Female']);
 
-        $response = $this->actingAs($user)->getJson('/api/patients?filters[gender]=Male');
+        $response = $this->actingAs($user)->getJson('/api/v1/patients?filters[gender]=Male');
 
         $response->assertOk();
         $response->assertJsonFragment(['id' => $male->id]);
@@ -31,7 +31,7 @@ class PatientSearchTest extends TestCase
     {
         $user = User::factory()->create(['role' => 'radiologist']);
 
-        $response = $this->actingAs($user)->getJson('/api/patients?filters[gender]=Invalid');
+        $response = $this->actingAs($user)->getJson('/api/v1/patients?filters[gender]=Invalid');
 
         $response->assertUnprocessable();
     }
@@ -44,7 +44,7 @@ class PatientSearchTest extends TestCase
 
         $user = User::factory()->create(['role' => 'radiologist']);
 
-        $response = $this->actingAs($user)->getJson('/api/patients?filters[is_active]=true');
+        $response = $this->actingAs($user)->getJson('/api/v1/patients?filters[is_active]=true');
 
         $response->assertOk();
         $response->assertJsonFragment(['id' => $active->id]);
@@ -59,7 +59,7 @@ class PatientSearchTest extends TestCase
 
         $user = User::factory()->create(['role' => 'radiologist']);
 
-        $response = $this->actingAs($user)->getJson('/api/patients?filters[is_active]=false');
+        $response = $this->actingAs($user)->getJson('/api/v1/patients?filters[is_active]=false');
 
         $response->assertOk();
         $response->assertJsonFragment(['id' => $inactive->id]);
@@ -76,7 +76,7 @@ class PatientSearchTest extends TestCase
         $from = now()->subDays(5)->toDateString();
         $to = now()->toDateString();
 
-        $response = $this->actingAs($user)->getJson("/api/patients?filters[created_at]=custom&filters[created_at_from]={$from}&filters[created_at_to]={$to}");
+        $response = $this->actingAs($user)->getJson("/api/v1/patients?filters[created_at]=custom&filters[created_at_from]={$from}&filters[created_at_to]={$to}");
 
         $response->assertOk();
         $response->assertJsonFragment(['id' => $inRange->id]);
@@ -87,7 +87,7 @@ class PatientSearchTest extends TestCase
     {
         $user = User::factory()->create(['role' => 'radiologist']);
 
-        $response = $this->actingAs($user)->getJson('/api/patients?filters[created_at]=not_a_real_preset');
+        $response = $this->actingAs($user)->getJson('/api/v1/patients?filters[created_at]=not_a_real_preset');
 
         $response->assertUnprocessable();
     }
@@ -101,7 +101,7 @@ class PatientSearchTest extends TestCase
 
         $user = User::factory()->create(['role' => 'radiologist']);
 
-        $response = $this->actingAs($user)->getJson('/api/patients?filters[is_active]=all&filters[deleted_at]=today');
+        $response = $this->actingAs($user)->getJson('/api/v1/patients?filters[is_active]=all&filters[deleted_at]=today');
 
         $response->assertOk();
         $response->assertJsonFragment(['id' => $deletedToday->id]);
@@ -125,7 +125,7 @@ class PatientSearchTest extends TestCase
 
         $user = User::factory()->create(['role' => 'radiologist']);
 
-        $response = $this->actingAs($user)->getJson('/api/patients?search=nicolas');
+        $response = $this->actingAs($user)->getJson('/api/v1/patients?search=nicolas');
 
         $response->assertOk();
         $response->assertJsonFragment(['id' => $match->id]);
@@ -149,7 +149,7 @@ class PatientSearchTest extends TestCase
 
         $user = User::factory()->create(['role' => 'radiologist']);
 
-        $response = $this->actingAs($user)->getJson('/api/patients?search=99999');
+        $response = $this->actingAs($user)->getJson('/api/v1/patients?search=99999');
 
         $response->assertOk();
         $response->assertJsonFragment(['id' => $match->id]);

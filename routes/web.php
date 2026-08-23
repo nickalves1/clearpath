@@ -10,6 +10,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 Route::get('patients', fn () => inertia('patients/index'))
     ->middleware(['auth', 'verified', 'can:viewAny,App\Models\Patient'])
-    ->name('patients.index');
+    ->name('patients.page');
 
 require __DIR__.'/settings.php';

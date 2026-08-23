@@ -15,7 +15,7 @@ class PatientCrudTest extends TestCase
     {
         $user = User::factory()->create(['role' => 'radiologist']);
 
-        $response = $this->actingAs($user)->postJson('/api/patients', [
+        $response = $this->actingAs($user)->postJson('/api/v1/patients', [
             'first_name' => 'Ana',
             'last_name' => 'Silva',
             'birth_date' => '1990-01-01',
@@ -33,7 +33,7 @@ class PatientCrudTest extends TestCase
     {
         $user = User::factory()->create(['role' => 'radiologist']);
 
-        $response = $this->actingAs($user)->postJson('/api/patients', [
+        $response = $this->actingAs($user)->postJson('/api/v1/patients', [
             'last_name' => 'Silva',
             'birth_date' => '1990-01-01',
             'gender' => 'Female',
@@ -52,7 +52,7 @@ class PatientCrudTest extends TestCase
 
         $user = User::factory()->create(['role' => 'radiologist']);
 
-        $response = $this->actingAs($user)->postJson('/api/patients', [
+        $response = $this->actingAs($user)->postJson('/api/v1/patients', [
             'first_name' => 'Ana',
             'last_name' => 'Silva',
             'birth_date' => '1990-01-01',
@@ -71,7 +71,7 @@ class PatientCrudTest extends TestCase
         $patient = Patient::factory()->create(['first_name' => 'Ana']);
         $user = User::factory()->create(['role' => 'radiologist']);
 
-        $response = $this->actingAs($user)->putJson("/api/patients/{$patient->id}", [
+        $response = $this->actingAs($user)->putJson("/api/v1/patients/{$patient->id}", [
             'first_name' => 'Ana Maria',
             'last_name' => $patient->last_name,
             'birth_date' => $patient->birth_date,
@@ -90,7 +90,7 @@ class PatientCrudTest extends TestCase
         $patient = Patient::factory()->create();
         $user = User::factory()->create(['role' => 'radiologist']);
 
-        $response = $this->actingAs($user)->putJson("/api/patients/{$patient->id}", [
+        $response = $this->actingAs($user)->putJson("/api/v1/patients/{$patient->id}", [
             'first_name' => $patient->first_name,
             'last_name' => $patient->last_name,
             'birth_date' => $patient->birth_date,
@@ -109,7 +109,7 @@ class PatientCrudTest extends TestCase
         $patient = Patient::factory()->create();
         $user = User::factory()->create(['role' => 'radiologist']);
 
-        $response = $this->actingAs($user)->deleteJson("/api/patients/{$patient->id}");
+        $response = $this->actingAs($user)->deleteJson("/api/v1/patients/{$patient->id}");
 
         $response->assertNoContent();
         $this->assertSoftDeleted('patients', ['id' => $patient->id]);
@@ -120,9 +120,9 @@ class PatientCrudTest extends TestCase
         $patient = Patient::factory()->create();
         $user = User::factory()->create(['role' => 'radiologist']);
 
-        $this->actingAs($user)->deleteJson("/api/patients/{$patient->id}")->assertNoContent();
+        $this->actingAs($user)->deleteJson("/api/v1/patients/{$patient->id}")->assertNoContent();
 
-        $response = $this->actingAs($user)->getJson('/api/patients');
+        $response = $this->actingAs($user)->getJson('/api/v1/patients');
 
         $response->assertOk();
         $response->assertJsonMissing(['id' => $patient->id]);

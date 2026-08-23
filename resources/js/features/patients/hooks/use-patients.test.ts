@@ -105,6 +105,23 @@ describe('usePatients', () => {
         expect(patientsService.getPatients).toHaveBeenCalledTimes(2);
     });
 
+    it('exposes the applied filters, unaffected by anything that has not called applyFilters yet', async () => {
+        const { result } = renderHook(() => usePatients());
+        await waitFor(() =>
+            expect(patientsService.getPatients).toHaveBeenCalledTimes(1),
+        );
+
+        expect(result.current.filters.is_active).toBe('true');
+
+        act(() => {
+            result.current.applyFilters(allFilters);
+        });
+
+        await waitFor(() =>
+            expect(result.current.filters.is_active).toBe('all'),
+        );
+    });
+
     it('resets to page 1 when filters are applied', async () => {
         const { result } = renderHook(() => usePatients());
         await waitFor(() =>
