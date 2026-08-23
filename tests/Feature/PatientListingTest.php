@@ -14,7 +14,7 @@ class PatientListingTest extends TestCase
     public function test_the_first_page_returns_ten_patients(): void
     {
         Patient::factory()->count(13)->create();
-        $user = User::factory()->create(['role' => 'radiologist']);
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->getJson('/api/v1/patients');
 
@@ -26,7 +26,7 @@ class PatientListingTest extends TestCase
     public function test_the_second_page_returns_the_remaining_patients(): void
     {
         Patient::factory()->count(13)->create();
-        $user = User::factory()->create(['role' => 'radiologist']);
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->getJson('/api/v1/patients?page=2');
 
@@ -38,7 +38,7 @@ class PatientListingTest extends TestCase
     {
         Patient::factory()->create(['first_name' => 'Zeca']);
         Patient::factory()->create(['first_name' => 'Ana']);
-        $user = User::factory()->create(['role' => 'radiologist']);
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->getJson('/api/v1/patients?sort=first_name');
 
@@ -51,7 +51,7 @@ class PatientListingTest extends TestCase
     {
         Patient::factory()->create(['first_name' => 'Zeca']);
         Patient::factory()->create(['first_name' => 'Ana']);
-        $user = User::factory()->create(['role' => 'radiologist']);
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->getJson('/api/v1/patients?sort=-first_name');
 
