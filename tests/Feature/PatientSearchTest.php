@@ -16,7 +16,7 @@ class PatientSearchTest extends TestCase
      */
     public function test_radiologist_can_filter_patients(): void
     {
-        $user = User::factory()->create(['role' => 'radiologist']);
+        $user = User::factory()->create();
         $male = Patient::factory()->create(['gender' => 'Male']);
         $female = Patient::factory()->create(['gender' => 'Female']);
 
@@ -29,7 +29,7 @@ class PatientSearchTest extends TestCase
 
     public function test_radiologist_receives_validation_error_for_invalid_gender_filter(): void
     {
-        $user = User::factory()->create(['role' => 'radiologist']);
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->getJson('/api/v1/patients?filters[gender]=Invalid');
 
@@ -42,7 +42,7 @@ class PatientSearchTest extends TestCase
         $inactive = Patient::factory()->create();
         $inactive->delete();
 
-        $user = User::factory()->create(['role' => 'radiologist']);
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->getJson('/api/v1/patients?filters[is_active]=true');
 
@@ -57,7 +57,7 @@ class PatientSearchTest extends TestCase
         $inactive = Patient::factory()->create();
         $inactive->delete();
 
-        $user = User::factory()->create(['role' => 'radiologist']);
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->getJson('/api/v1/patients?filters[is_active]=false');
 
@@ -71,7 +71,7 @@ class PatientSearchTest extends TestCase
         $inRange = Patient::factory()->create(['created_at' => now()->subDays(2)]);
         $outOfRange = Patient::factory()->create(['created_at' => now()->subDays(20)]);
 
-        $user = User::factory()->create(['role' => 'radiologist']);
+        $user = User::factory()->create();
 
         $from = now()->subDays(5)->toDateString();
         $to = now()->toDateString();
@@ -85,7 +85,7 @@ class PatientSearchTest extends TestCase
 
     public function test_radiologist_receives_validation_error_for_invalid_created_at_preset(): void
     {
-        $user = User::factory()->create(['role' => 'radiologist']);
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->getJson('/api/v1/patients?filters[created_at]=not_a_real_preset');
 
@@ -99,7 +99,7 @@ class PatientSearchTest extends TestCase
 
         $notDeleted = Patient::factory()->create();
 
-        $user = User::factory()->create(['role' => 'radiologist']);
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->getJson('/api/v1/patients?filters[is_active]=all&filters[deleted_at]=today');
 
@@ -123,7 +123,7 @@ class PatientSearchTest extends TestCase
             'medical_record_number' => 'MRN-00002',
         ]);
 
-        $user = User::factory()->create(['role' => 'radiologist']);
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->getJson('/api/v1/patients?search=nicolas');
 
@@ -147,7 +147,7 @@ class PatientSearchTest extends TestCase
             'medical_record_number' => 'MRN-11111',
         ]);
 
-        $user = User::factory()->create(['role' => 'radiologist']);
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->getJson('/api/v1/patients?search=99999');
 

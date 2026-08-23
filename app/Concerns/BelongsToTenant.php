@@ -11,6 +11,12 @@ use Illuminate\Database\Eloquent\Model;
  */
 trait BelongsToTenant
 {
+    /**
+     * Applies a global scope so every query for this model is filtered to
+     * the current tenant automatically, and stamps new records with it on
+     * creation — no Controller, Service, or Repository has to remember to
+     * filter or set the tenant manually.
+     */
     protected static function bootBelongsToTenant(): void
     {
         static::addGlobalScope('tenant', function (Builder $builder) {

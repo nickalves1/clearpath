@@ -42,7 +42,11 @@ Both categories land in the same place — same `LOG_STACK` switch, same Kibana/
 
 ### Roadmap
 
-Repository Pattern, Domain Events, Value Objects, API versioning, and multi-tenant data isolation are implemented; the following build on the same conventions and are planned next: self-service **company registration** (a public sign-up creates a `Tenant` and its first admin `User` together) and **team invitations** (an admin invites teammates by email with a role attached to the invite, rather than the registrant self-selecting one), **Swagger/OpenAPI** documentation, and a **BFF** layer for a second client — a patient-facing app consuming the clinic's API, matching Clearpath's real business model where each health system/imaging center is a tenant with its own patients and staff.
+Repository Pattern, Domain Events, Value Objects, API versioning, and multi-tenant data
+isolation are implemented. The full roadmap — every phase, what's in progress, what's next —
+is tracked publicly on the [project board](https://github.com/users/nickalves1/projects/1).
+Each completed phase gets its own [release](https://github.com/nickalves1/clearpath/releases)
+with what shipped and why.
 
 ---
 

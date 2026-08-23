@@ -21,13 +21,13 @@ class DatabaseSeeder extends Seeder
             'name' => 'Saint Mary Admin',
             'email' => 'test@example.com',
             'tenant_id' => $hospitalA->id,
-        ]);
+        ])->syncRoles(['admin']);
 
         User::factory()->create([
             'name' => 'Riverside Admin',
             'email' => 'test2@example.com',
             'tenant_id' => $hospitalB->id,
-        ]);
+        ])->syncRoles(['admin']);
 
         Patient::factory()->count(5)->create(['tenant_id' => $hospitalA->id]);
         Patient::factory()->count(5)->create(['tenant_id' => $hospitalB->id]);

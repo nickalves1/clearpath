@@ -16,7 +16,7 @@ Route::prefix('v1')->group(function () {
         Route::apiResource('imaging-orders', ImagingOrdersController::class);
     });
 
-    Route::middleware(['auth:sanctum', 'radiologist'])->group(function () {
+    Route::middleware(['auth:sanctum', 'can:sign-reports'])->group(function () {
         Route::post('imaging-reports/{report}/sign', [ReportsController::class, 'sign']);
     });
 });

@@ -26,7 +26,7 @@ class PatientFactory extends Factory
             'gender' => fake()->randomElement(['Male', 'Female', 'Other', 'Prefer not to say']),
             'phone' => fake()->numerify('###########'),
             'email' => fake()->unique()->safeEmail(),
-            'tenant_id' => Tenant::query()->value('id') ?? Tenant::factory(),
+            'tenant_id' => fn () => Tenant::query()->value('id') ?? Tenant::factory(),
         ];
     }
 }

@@ -17,7 +17,7 @@ class TenantIsolationTest extends TestCase
         $tenantA = Tenant::factory()->create();
         $tenantB = Tenant::factory()->create();
 
-        $userA = User::factory()->create(['role' => 'radiologist', 'tenant_id' => $tenantA->id]);
+        $userA = User::factory()->create(['tenant_id' => $tenantA->id]);
         Patient::factory()->create(['tenant_id' => $tenantA->id]);
         $patientB = Patient::factory()->create(['tenant_id' => $tenantB->id]);
 
@@ -32,7 +32,7 @@ class TenantIsolationTest extends TestCase
         $tenantA = Tenant::factory()->create();
         $tenantB = Tenant::factory()->create();
 
-        $userA = User::factory()->create(['role' => 'radiologist', 'tenant_id' => $tenantA->id]);
+        $userA = User::factory()->create(['tenant_id' => $tenantA->id]);
         $patientB = Patient::factory()->create(['tenant_id' => $tenantB->id]);
 
         $response = $this->actingAs($userA)->putJson("/api/v1/patients/{$patientB->id}", [
@@ -51,7 +51,7 @@ class TenantIsolationTest extends TestCase
     public function test_creating_a_patient_assigns_the_authenticated_users_tenant(): void
     {
         $tenant = Tenant::factory()->create();
-        $user = User::factory()->create(['role' => 'radiologist', 'tenant_id' => $tenant->id]);
+        $user = User::factory()->create(['tenant_id' => $tenant->id]);
 
         $response = $this->actingAs($user)->postJson('/api/v1/patients', [
             'first_name' => 'Ana',
@@ -76,7 +76,7 @@ class TenantIsolationTest extends TestCase
         $tenantB = Tenant::factory()->create();
 
         Patient::factory()->create(['tenant_id' => $tenantA->id, 'medical_record_number' => 'MRN-001']);
-        $userB = User::factory()->create(['role' => 'radiologist', 'tenant_id' => $tenantB->id]);
+        $userB = User::factory()->create(['tenant_id' => $tenantB->id]);
 
         $response = $this->actingAs($userB)->postJson('/api/v1/patients', [
             'first_name' => 'Carlos',

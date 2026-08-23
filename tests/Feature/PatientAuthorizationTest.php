@@ -14,7 +14,7 @@ class PatientAuthorizationTest extends TestCase
 
     public function test_radiologist_can_list_patients(): void
     {
-        $user = User::factory()->create(['role' => 'radiologist']);
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->getJson('/api/v1/patients');
 
@@ -23,7 +23,7 @@ class PatientAuthorizationTest extends TestCase
 
     public function test_non_radiologist_cannot_list_patients(): void
     {
-        $user = User::factory()->create(['role' => 'receptionist']);
+        $user = User::factory()->receptionist()->create();
 
         $response = $this->actingAs($user)->getJson('/api/v1/patients');
 
@@ -32,7 +32,7 @@ class PatientAuthorizationTest extends TestCase
 
     public function test_radiologist_can_create_patient(): void
     {
-        $user = User::factory()->create(['role' => 'radiologist']);
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->postJson('/api/v1/patients', [
             'first_name' => 'Ana',
@@ -49,7 +49,7 @@ class PatientAuthorizationTest extends TestCase
 
     public function test_non_radiologist_cannot_create_patient(): void
     {
-        $user = User::factory()->create(['role' => 'receptionist']);
+        $user = User::factory()->receptionist()->create();
 
         $response = $this->actingAs($user)->postJson('/api/v1/patients', [
             'first_name' => 'Ana',
@@ -66,7 +66,7 @@ class PatientAuthorizationTest extends TestCase
 
     public function test_non_radiologist_cannot_update_patient(): void
     {
-        $user = User::factory()->create(['role' => 'receptionist']);
+        $user = User::factory()->receptionist()->create();
         $patient = Patient::factory()->create();
 
         $response = $this->actingAs($user)->putJson("/api/v1/patients/{$patient->id}", [
@@ -85,7 +85,7 @@ class PatientAuthorizationTest extends TestCase
     public function test_denied_action_is_logged_with_user_ability_and_resource_but_no_patient_data(): void
     {
         Log::spy();
-        $user = User::factory()->create(['role' => 'receptionist']);
+        $user = User::factory()->receptionist()->create();
         $patient = Patient::factory()->create();
 
         $this->actingAs($user)->putJson("/api/v1/patients/{$patient->id}", [
@@ -110,7 +110,7 @@ class PatientAuthorizationTest extends TestCase
     public function test_denied_action_still_returns_403_when_the_logging_backend_is_unreachable(): void
     {
         Log::shouldReceive('warning')->once()->andThrow(new \RuntimeException('Elasticsearch unreachable'));
-        $user = User::factory()->create(['role' => 'receptionist']);
+        $user = User::factory()->receptionist()->create();
         $patient = Patient::factory()->create();
 
         $response = $this->actingAs($user)->putJson("/api/v1/patients/{$patient->id}", [
@@ -128,7 +128,7 @@ class PatientAuthorizationTest extends TestCase
 
     public function test_non_radiologist_is_blocked_from_the_patients_page(): void
     {
-        $user = User::factory()->create(['role' => 'receptionist']);
+        $user = User::factory()->receptionist()->create();
 
         $response = $this->actingAs($user)->get('/patients');
 
@@ -137,7 +137,7 @@ class PatientAuthorizationTest extends TestCase
 
     public function test_radiologist_can_visit_the_patients_page(): void
     {
-        $user = User::factory()->create(['role' => 'radiologist']);
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->get('/patients');
 

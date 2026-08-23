@@ -13,7 +13,7 @@ class PatientCrudTest extends TestCase
 
     public function test_radiologist_can_create_a_patient_with_valid_data(): void
     {
-        $user = User::factory()->create(['role' => 'radiologist']);
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->postJson('/api/v1/patients', [
             'first_name' => 'Ana',
@@ -31,7 +31,7 @@ class PatientCrudTest extends TestCase
 
     public function test_creating_a_patient_without_first_name_fails_validation(): void
     {
-        $user = User::factory()->create(['role' => 'radiologist']);
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->postJson('/api/v1/patients', [
             'last_name' => 'Silva',
@@ -50,7 +50,7 @@ class PatientCrudTest extends TestCase
     {
         Patient::factory()->create(['medical_record_number' => 'MRN-DUPLICATE']);
 
-        $user = User::factory()->create(['role' => 'radiologist']);
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->postJson('/api/v1/patients', [
             'first_name' => 'Ana',
@@ -69,7 +69,7 @@ class PatientCrudTest extends TestCase
     public function test_radiologist_can_update_a_patient_with_valid_data(): void
     {
         $patient = Patient::factory()->create(['first_name' => 'Ana']);
-        $user = User::factory()->create(['role' => 'radiologist']);
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->putJson("/api/v1/patients/{$patient->id}", [
             'first_name' => 'Ana Maria',
@@ -88,7 +88,7 @@ class PatientCrudTest extends TestCase
     public function test_updating_a_patient_with_an_invalid_email_fails_validation(): void
     {
         $patient = Patient::factory()->create();
-        $user = User::factory()->create(['role' => 'radiologist']);
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->putJson("/api/v1/patients/{$patient->id}", [
             'first_name' => $patient->first_name,
@@ -107,7 +107,7 @@ class PatientCrudTest extends TestCase
     public function test_radiologist_can_delete_a_patient(): void
     {
         $patient = Patient::factory()->create();
-        $user = User::factory()->create(['role' => 'radiologist']);
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->deleteJson("/api/v1/patients/{$patient->id}");
 
@@ -118,7 +118,7 @@ class PatientCrudTest extends TestCase
     public function test_deleted_patient_does_not_appear_in_the_default_listing(): void
     {
         $patient = Patient::factory()->create();
-        $user = User::factory()->create(['role' => 'radiologist']);
+        $user = User::factory()->create();
 
         $this->actingAs($user)->deleteJson("/api/v1/patients/{$patient->id}")->assertNoContent();
 

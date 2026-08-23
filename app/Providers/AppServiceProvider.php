@@ -30,6 +30,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->configureDefaults();
         $this->logAuthorizationDenials();
+        $this->grantAdminEverything();
     }
 
     /**
@@ -83,6 +84,17 @@ class AppServiceProvider extends ServiceProvider
             } catch (\Throwable) {
                 //
             }
+        });
+    }
+
+    /**
+     * Lets the admin role bypass every Policy/Gate check, instead of having
+     * to be granted each permission individually as new ones are added.
+     */
+    protected function grantAdminEverything(): void
+    {
+        Gate::before(function (User $user, string $ability) {
+            return $user->hasRole('admin') ? true : null;
         });
     }
 }
