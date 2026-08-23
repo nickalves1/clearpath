@@ -7,6 +7,7 @@ A technical case study built as a portfolio/interview piece modeled on [Clearpat
 ### Backend
 
 - **Laravel 13** / PHP 8.4, layered architecture per feature: `Controller → Service → Repository`, each layer depending on the one below through an interface bound via `#[Bind]` (dependency inversion, no manual service provider wiring)
+- **API versioning**: every API route lives under `/api/v1/...` — the clinic-facing web app and a future patient-facing client can evolve independently once a `v2` is ever needed, without a breaking change to whoever's already integrated
 - **Authorization**: Policy classes + route middleware (`can:` gates), role-based (e.g. radiologist-only actions)
 - **Validation & responses**: Form Requests for input validation, API Resources for response shaping — no ad-hoc array building in controllers
 - **Domain Events**: `PatientCreated` / `PatientUpdated` / `PatientDeleted`, dispatched from the Service layer and consumed by queued Listeners — audit logging is fully decoupled from the request/response cycle. Events carry a lightweight model reference (`SerializesModels`), not the serialized patient record, so PHI isn't duplicated into the queue payload
@@ -40,7 +41,7 @@ Both categories land in the same place — same `LOG_STACK` switch, same Kibana/
 
 ### Roadmap
 
-Repository Pattern, Domain Events, and Value Objects are implemented; the following build on the same conventions and are planned next: **API versioning** (`/api/v1`), **Swagger/OpenAPI** documentation, a **BFF** layer for a second client, and **multi-tenant** data scoping — matching Clearpath's real business model, where each health system/imaging center is a tenant with its own patients and staff.
+Repository Pattern, Domain Events, Value Objects, and API versioning are implemented; the following build on the same conventions and are planned next: **Swagger/OpenAPI** documentation, a **BFF** layer for a second client (a patient-facing app consuming the clinic's API), and **multi-tenant** data scoping — matching Clearpath's real business model, where each health system/imaging center is a tenant with its own patients and staff.
 
 ---
 

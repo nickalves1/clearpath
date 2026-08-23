@@ -175,6 +175,7 @@ export function usePatients() {
 
     return {
         data: { patients, loading, error, meta, page, column, direction },
+        filters,
         refetch: fetchPatients,
         addPatient,
         editPatient,

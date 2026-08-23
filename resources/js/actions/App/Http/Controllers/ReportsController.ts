@@ -2,7 +2,7 @@ import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFo
 /**
 * @see \App\Http\Controllers\ReportsController::sign
 * @see app/Http/Controllers/ReportsController.php:0
-* @route '/api/imaging-reports/{report}/sign'
+* @route '/api/v1/imaging-reports/{report}/sign'
 */
 export const sign = (args: { report: string | number } | [report: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: sign.url(args, options),
@@ -11,13 +11,13 @@ export const sign = (args: { report: string | number } | [report: string | numbe
 
 sign.definition = {
     methods: ["post"],
-    url: '/api/imaging-reports/{report}/sign',
+    url: '/api/v1/imaging-reports/{report}/sign',
 } satisfies RouteDefinition<["post"]>
 
 /**
 * @see \App\Http\Controllers\ReportsController::sign
 * @see app/Http/Controllers/ReportsController.php:0
-* @route '/api/imaging-reports/{report}/sign'
+* @route '/api/v1/imaging-reports/{report}/sign'
 */
 sign.url = (args: { report: string | number } | [report: string | number ] | string | number, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
@@ -44,7 +44,7 @@ sign.url = (args: { report: string | number } | [report: string | number ] | str
 /**
 * @see \App\Http\Controllers\ReportsController::sign
 * @see app/Http/Controllers/ReportsController.php:0
-* @route '/api/imaging-reports/{report}/sign'
+* @route '/api/v1/imaging-reports/{report}/sign'
 */
 sign.post = (args: { report: string | number } | [report: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: sign.url(args, options),
@@ -54,7 +54,7 @@ sign.post = (args: { report: string | number } | [report: string | number ] | st
 /**
 * @see \App\Http\Controllers\ReportsController::sign
 * @see app/Http/Controllers/ReportsController.php:0
-* @route '/api/imaging-reports/{report}/sign'
+* @route '/api/v1/imaging-reports/{report}/sign'
 */
 const signForm = (args: { report: string | number } | [report: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
     action: sign.url(args, options),
@@ -64,7 +64,7 @@ const signForm = (args: { report: string | number } | [report: string | number ]
 /**
 * @see \App\Http\Controllers\ReportsController::sign
 * @see app/Http/Controllers/ReportsController.php:0
-* @route '/api/imaging-reports/{report}/sign'
+* @route '/api/v1/imaging-reports/{report}/sign'
 */
 signForm.post = (args: { report: string | number } | [report: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
     action: sign.url(args, options),

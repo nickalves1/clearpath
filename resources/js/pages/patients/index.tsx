@@ -20,6 +20,7 @@ import type { CreatePatientPayload } from '@/features/patients/types/patient';
 export default function PatientsIndex() {
     const {
         data,
+        filters: appliedFilters,
         addPatient,
         editPatient,
         goToPage,
@@ -117,7 +118,7 @@ export default function PatientsIndex() {
                             setColumnOrder={orderByColumn}
                             activeColumn={data.column}
                             direction={data.direction}
-                            isActiveFilter={filters.is_active}
+                            isActiveFilter={appliedFilters.is_active}
                         />
                         <PatientDeleteDialog
                             patient={patientToDelete}
