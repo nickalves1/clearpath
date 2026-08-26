@@ -34,17 +34,19 @@ export default function Register({ passwordRules }: Props) {
         password.length === 0
             ? ''
             : isPasswordValid
-                ? 'border-green-500 focus-visible:border-green-500'
-                : 'border-red-500 focus-visible:border-red-500';
+              ? 'border-green-500 focus-visible:border-green-500'
+              : 'border-red-500 focus-visible:border-red-500';
 
     const passwordConfirmationBorderClass =
         passwordConfirmation.length === 0
             ? ''
             : passwordsMatch
-                ? 'border-green-500 focus-visible:border-green-500'
-                : 'border-red-500 focus-visible:border-red-500';
+              ? 'border-green-500 focus-visible:border-green-500'
+              : 'border-red-500 focus-visible:border-red-500';
 
-    function handleCreateAccountClick(event: React.MouseEvent<HTMLButtonElement>) {
+    function handleCreateAccountClick(
+        event: React.MouseEvent<HTMLButtonElement>,
+    ) {
         if (!isPasswordValid) {
             event.preventDefault();
             passwordRef.current?.focus();
@@ -71,7 +73,9 @@ export default function Register({ passwordRules }: Props) {
                     <>
                         <div className="grid gap-6">
                             <div className="grid gap-2">
-                                <Label htmlFor="company_name">Company name</Label>
+                                <Label htmlFor="company_name">
+                                    Company name
+                                </Label>
                                 <Input
                                     id="company_name"
                                     type="text"
@@ -127,7 +131,9 @@ export default function Register({ passwordRules }: Props) {
                                     required
                                     tabIndex={4}
                                     autoComplete="new-password"
-                                    onChange={(e) => setPassword(e.target.value)}
+                                    onChange={(e) =>
+                                        setPassword(e.target.value)
+                                    }
                                     name="password"
                                     placeholder="Password"
                                     passwordrules={passwordRules}
@@ -135,7 +141,9 @@ export default function Register({ passwordRules }: Props) {
                                 />
                                 <InputError message={errors.password} />
                                 {password.length > 0 && (
-                                    <PasswordStrengthIndicator password={password} />
+                                    <PasswordStrengthIndicator
+                                        password={password}
+                                    />
                                 )}
                             </div>
 

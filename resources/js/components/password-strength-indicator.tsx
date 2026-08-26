@@ -27,14 +27,14 @@ export function PasswordStrengthIndicator({ password }: Props) {
             {requirements.map((requirement) => (
                 <div
                     key={requirement.label}
-                    className="flex flex-row items-center pl-5 pt-1"
+                    className="flex flex-row items-center pt-1 pl-5"
                 >
                     {requirement.met ? (
                         <Check color="green" size={12} />
                     ) : (
                         <X color="red" size={12} />
                     )}
-                    <p className="text-sm pl-1 text-gray-700/60">
+                    <p className="pl-1 text-sm text-gray-700/60">
                         {requirement.label}
                     </p>
                 </div>
