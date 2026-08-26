@@ -44,15 +44,19 @@ class AppServiceProvider extends ServiceProvider
             app()->isProduction(),
         );
 
-        Password::defaults(fn (): ?Password => app()->isProduction()
-            ? Password::min(12)
+        Password::defaults(function (): Password {
+            $rule = Password::min(12)
                 ->mixedCase()
                 ->letters()
                 ->numbers()
-                ->symbols()
-                ->uncompromised()
-            : null,
-        );
+                ->symbols();
+
+            // uncompromised() calls an external API (k-anonymity check against
+            // known breaches) — skipped in tests so the suite doesn't depend
+            // on network access, but the complexity rules always apply so the
+            // policy matches what the registration UI guides users toward.
+            return app()->environment('testing') ? $rule : $rule->uncompromised();
+        });
     }
 
     /**

@@ -17,6 +17,12 @@ class TenantFactory extends Factory
     {
         return [
             'name' => fake()->unique()->company(),
+            'npi' => fake()->numerify('##########'),
+            'phone' => fake()->numerify('###########'),
+            'address_line' => fake()->streetAddress(),
+            'city' => fake()->city(),
+            'state' => fake()->randomElement(['CA', 'FL', 'IL', 'NY', 'TX', 'WA']),
+            'postal_code' => fake()->postcode(),
         ];
     }
 }
