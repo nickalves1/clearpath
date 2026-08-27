@@ -1,5 +1,34 @@
-import { Pen, Trash, ArrowUp, ArrowDown, ArrowUpDown } from 'lucide-react';
+import {
+    columnVisibilityFeature,
+    createColumnHelper,
+    tableFeatures,
+    useTable,
+} from '@tanstack/react-table';
+import type { ColumnVisibilityState } from '@tanstack/react-table';
+import {
+    ArrowDown,
+    ArrowUp,
+    ArrowUpDown,
+    ChevronDown,
+    Pen,
+    Trash,
+} from 'lucide-react';
+import { useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';
+import {
+    DropdownMenu,
+    DropdownMenuCheckboxItem,
+    DropdownMenuContent,
+    DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@/components/ui/table';
 import type { Patient } from '../types/patient';
 
 type Props = {
@@ -16,7 +45,27 @@ function formatDate(value: string) {
     return new Date(value).toLocaleDateString('en-US');
 }
 
-type SortableHeaderProps = {
+const COLUMN_LABELS: Record<string, string> = {
+    medical_record_number: 'Medical Record Number',
+    name: 'Name',
+    birth_date: 'Birth Date',
+    gender: 'Gender',
+    phone: 'Phone',
+    email: 'Email',
+    created_at: 'Created At',
+    deleted_at: 'Deleted At',
+};
+
+// Server-side sorting and pagination already live in usePatients — this
+// table only needs to render one already-fetched page, so the only
+// TanStack Table feature actually in use is column visibility.
+const features = tableFeatures({
+    columnVisibilityFeature,
+});
+
+const columnHelper = createColumnHelper<typeof features, Patient>();
+
+type SortButtonProps = {
     column: string;
     label: string;
     activeColumn: string;
@@ -28,35 +77,33 @@ type SortableHeaderProps = {
  * Clickable column header that sorts by `column` and shows an arrow
  * indicating direction when it's the active column.
  */
-function SortableHeader({
+function SortButton({
     column,
     label,
     activeColumn,
     direction,
     onSort,
-}: SortableHeaderProps) {
+}: SortButtonProps) {
     const isActive = column === activeColumn;
 
     return (
-        <th className="px-4 py-3 font-medium" scope="rowgroup">
-            <Button
-                variant="ghost"
-                size="sm"
-                className="gap-1"
-                onClick={() => onSort(column)}
-            >
-                {label}
-                {isActive ? (
-                    direction === 'asc' ? (
-                        <ArrowUp className="size-4" />
-                    ) : (
-                        <ArrowDown className="size-4" />
-                    )
+        <Button
+            variant="ghost"
+            size="sm"
+            className="gap-1"
+            onClick={() => onSort(column)}
+        >
+            {label}
+            {isActive ? (
+                direction === 'asc' ? (
+                    <ArrowUp className="size-4" />
                 ) : (
-                    <ArrowUpDown className="size-4 text-muted-foreground" />
-                )}
-            </Button>
-        </th>
+                    <ArrowDown className="size-4" />
+                )
+            ) : (
+                <ArrowUpDown className="size-4 text-muted-foreground" />
+            )}
+        </Button>
     );
 }
 
@@ -72,6 +119,171 @@ export function PatientsTable({
     direction,
     isActiveFilter,
 }: Props) {
+    const [columnVisibility, setColumnVisibility] =
+        useState<ColumnVisibilityState>({
+            deleted_at: isActiveFilter !== 'true',
+        });
+
+    // The "Is Active" filter still decides the Deleted At column's default
+    // visibility whenever it changes — the Columns menu lets the user
+    // override that in between filter changes. Adjusted during render
+    // (not an effect) per React's guidance for state derived from props.
+    const [prevIsActiveFilter, setPrevIsActiveFilter] =
+        useState(isActiveFilter);
+
+    if (isActiveFilter !== prevIsActiveFilter) {
+        setPrevIsActiveFilter(isActiveFilter);
+        setColumnVisibility((current) => ({
+            ...current,
+            deleted_at: isActiveFilter !== 'true',
+        }));
+    }
+
+    const columns = useMemo(
+        () =>
+            columnHelper.columns([
+                columnHelper.accessor('medical_record_number', {
+                    header: () => (
+                        <SortButton
+                            column="medical_record_number"
+                            label={COLUMN_LABELS.medical_record_number}
+                            activeColumn={activeColumn}
+                            direction={direction}
+                            onSort={setColumnOrder}
+                        />
+                    ),
+                    enableHiding: false,
+                }),
+                columnHelper.display({
+                    id: 'name',
+                    header: () => (
+                        <SortButton
+                            column="first_name"
+                            label={COLUMN_LABELS.name}
+                            activeColumn={activeColumn}
+                            direction={direction}
+                            onSort={setColumnOrder}
+                        />
+                    ),
+                    cell: ({ row }) =>
+                        `${row.original.first_name} ${row.original.last_name}`,
+                    enableHiding: false,
+                }),
+                columnHelper.accessor('birth_date', {
+                    header: () => (
+                        <SortButton
+                            column="birth_date"
+                            label={COLUMN_LABELS.birth_date}
+                            activeColumn={activeColumn}
+                            direction={direction}
+                            onSort={setColumnOrder}
+                        />
+                    ),
+                    cell: ({ getValue }) => formatDate(getValue()),
+                }),
+                columnHelper.accessor('gender', {
+                    header: () => (
+                        <SortButton
+                            column="gender"
+                            label={COLUMN_LABELS.gender}
+                            activeColumn={activeColumn}
+                            direction={direction}
+                            onSort={setColumnOrder}
+                        />
+                    ),
+                }),
+                columnHelper.accessor('phone', {
+                    header: () => (
+                        <SortButton
+                            column="phone"
+                            label={COLUMN_LABELS.phone}
+                            activeColumn={activeColumn}
+                            direction={direction}
+                            onSort={setColumnOrder}
+                        />
+                    ),
+                }),
+                columnHelper.accessor('email', {
+                    header: () => (
+                        <SortButton
+                            column="email"
+                            label={COLUMN_LABELS.email}
+                            activeColumn={activeColumn}
+                            direction={direction}
+                            onSort={setColumnOrder}
+                        />
+                    ),
+                }),
+                columnHelper.accessor('created_at', {
+                    header: () => (
+                        <SortButton
+                            column="created_at"
+                            label={COLUMN_LABELS.created_at}
+                            activeColumn={activeColumn}
+                            direction={direction}
+                            onSort={setColumnOrder}
+                        />
+                    ),
+                    cell: ({ getValue }) => formatDate(getValue()),
+                }),
+                columnHelper.accessor('deleted_at', {
+                    header: () => (
+                        <SortButton
+                            column="deleted_at"
+                            label={COLUMN_LABELS.deleted_at}
+                            activeColumn={activeColumn}
+                            direction={direction}
+                            onSort={setColumnOrder}
+                        />
+                    ),
+                    cell: ({ getValue }) => {
+                        const value = getValue();
+
+                        return value ? formatDate(value) : '—';
+                    },
+                }),
+                columnHelper.display({
+                    id: 'edit',
+                    enableHiding: false,
+                    cell: ({ row }) =>
+                        !row.original.deleted_at && (
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => onEdit(row.original)}
+                            >
+                                <Pen />
+                            </Button>
+                        ),
+                }),
+                columnHelper.display({
+                    id: 'delete',
+                    enableHiding: false,
+                    cell: ({ row }) =>
+                        !row.original.deleted_at && (
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => setToDelete(row.original)}
+                            >
+                                <Trash />
+                            </Button>
+                        ),
+                }),
+            ]),
+        [activeColumn, direction, setColumnOrder, onEdit, setToDelete],
+    );
+
+    const table = useTable({
+        features,
+        data: patients,
+        columns,
+        onColumnVisibilityChange: setColumnVisibility,
+        state: {
+            columnVisibility,
+        },
+    });
+
     if (patients.length === 0) {
         return (
             <div className="rounded-xl border border-sidebar-border/70 p-6 text-center text-sm text-muted-foreground dark:border-sidebar-border">
@@ -80,135 +292,72 @@ export function PatientsTable({
         );
     }
 
-    const showDeletedAt = isActiveFilter !== 'true';
-
     return (
-        <div className="overflow-x-auto rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-            <table className="w-full text-left text-sm">
-                <thead className="border-b border-sidebar-border/70 bg-muted/50 dark:border-sidebar-border">
-                    <tr>
-                        <SortableHeader
-                            column="medical_record_number"
-                            label="Medical Record Number"
-                            activeColumn={activeColumn}
-                            direction={direction}
-                            onSort={setColumnOrder}
-                        />
-                        <SortableHeader
-                            column="first_name"
-                            label="Name"
-                            activeColumn={activeColumn}
-                            direction={direction}
-                            onSort={setColumnOrder}
-                        />
-                        <SortableHeader
-                            column="birth_date"
-                            label="Birth Date"
-                            activeColumn={activeColumn}
-                            direction={direction}
-                            onSort={setColumnOrder}
-                        />
-                        <SortableHeader
-                            column="gender"
-                            label="Gender"
-                            activeColumn={activeColumn}
-                            direction={direction}
-                            onSort={setColumnOrder}
-                        />
-                        <SortableHeader
-                            column="phone"
-                            label="Phone"
-                            activeColumn={activeColumn}
-                            direction={direction}
-                            onSort={setColumnOrder}
-                        />
-                        <SortableHeader
-                            column="email"
-                            label="Email"
-                            activeColumn={activeColumn}
-                            direction={direction}
-                            onSort={setColumnOrder}
-                        />
-                        <SortableHeader
-                            column="created_at"
-                            label="Created At"
-                            activeColumn={activeColumn}
-                            direction={direction}
-                            onSort={setColumnOrder}
-                        />
-                        {showDeletedAt && (
-                            <SortableHeader
-                                column="deleted_at"
-                                label="Deleted At"
-                                activeColumn={activeColumn}
-                                direction={direction}
-                                onSort={setColumnOrder}
-                            />
-                        )}
-                        <th className="py-3 font-medium"></th>
-                        <th className="py-3 font-medium"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {patients.map((patient) => {
-                        const isDeleted = patient.deleted_at !== null;
+        <div className="space-y-2">
+            <div className="flex justify-end">
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <Button variant="outline" size="sm">
+                            Columns <ChevronDown />
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                        {table
+                            .getAllColumns()
+                            .filter((column) => column.getCanHide())
+                            .map((column) => (
+                                <DropdownMenuCheckboxItem
+                                    key={column.id}
+                                    checked={column.getIsVisible()}
+                                    onCheckedChange={(value) =>
+                                        column.toggleVisibility(!!value)
+                                    }
+                                >
+                                    {COLUMN_LABELS[column.id] ?? column.id}
+                                </DropdownMenuCheckboxItem>
+                            ))}
+                    </DropdownMenuContent>
+                </DropdownMenu>
+            </div>
+            <div className="overflow-x-auto rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
+                <Table>
+                    <TableHeader>
+                        {table.getHeaderGroups().map((headerGroup) => (
+                            <TableRow key={headerGroup.id}>
+                                {headerGroup.headers.map((header) => (
+                                    <TableHead key={header.id}>
+                                        {header.isPlaceholder ? null : (
+                                            <table.FlexRender header={header} />
+                                        )}
+                                    </TableHead>
+                                ))}
+                            </TableRow>
+                        ))}
+                    </TableHeader>
+                    <TableBody>
+                        {table.getRowModel().rows.map((row) => {
+                            const isDeleted = row.original.deleted_at !== null;
 
-                        return (
-                            <tr
-                                key={patient.id}
-                                className={`border-b border-sidebar-border/50 last:border-0 dark:border-sidebar-border/50 ${isDeleted ? 'bg-muted/40 text-muted-foreground' : ''}`}
-                            >
-                                <td className="px-4 py-3">
-                                    {patient.medical_record_number}
-                                </td>
-                                <td className="px-4 py-3">
-                                    <div className="flex items-center gap-2">
-                                        {patient.first_name} {patient.last_name}
-                                    </div>
-                                </td>
-                                <td className="px-4 py-3">
-                                    {formatDate(patient.birth_date)}
-                                </td>
-                                <td className="px-4 py-3">{patient.gender}</td>
-                                <td className="px-4 py-3">{patient.phone}</td>
-                                <td className="px-4 py-3">{patient.email}</td>
-                                <td className="px-4 py-3">
-                                    {formatDate(patient.created_at)}
-                                </td>
-                                {showDeletedAt && (
-                                    <td className="px-4 py-3">
-                                        {patient.deleted_at
-                                            ? formatDate(patient.deleted_at)
-                                            : '—'}
-                                    </td>
-                                )}
-                                <td className="py-3">
-                                    {!patient.deleted_at && (
-                                        <Button
-                                            variant="ghost"
-                                            size="icon"
-                                            onClick={() => onEdit(patient)}
-                                        >
-                                            <Pen />
-                                        </Button>
-                                    )}
-                                </td>
-                                <td className="py-3">
-                                    {!patient.deleted_at && (
-                                        <Button
-                                            variant="ghost"
-                                            size="icon"
-                                            onClick={() => setToDelete(patient)}
-                                        >
-                                            <Trash />
-                                        </Button>
-                                    )}
-                                </td>
-                            </tr>
-                        );
-                    })}
-                </tbody>
-            </table>
+                            return (
+                                <TableRow
+                                    key={row.id}
+                                    className={
+                                        isDeleted
+                                            ? 'bg-muted/40 text-muted-foreground'
+                                            : ''
+                                    }
+                                >
+                                    {row.getVisibleCells().map((cell) => (
+                                        <TableCell key={cell.id}>
+                                            <table.FlexRender cell={cell} />
+                                        </TableCell>
+                                    ))}
+                                </TableRow>
+                            );
+                        })}
+                    </TableBody>
+                </Table>
+            </div>
         </div>
     );
 }
