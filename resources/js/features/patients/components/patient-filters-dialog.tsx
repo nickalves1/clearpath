@@ -13,6 +13,7 @@ type Props = {
     handleChange: (field: keyof FiltersPatients) => (value: string) => void;
     filters: FiltersPatients;
     applyFilters: (filters: FiltersPatients) => void;
+    resetFilters: () => void;
 };
 
 export function PatientFiltersDialog({
@@ -21,6 +22,7 @@ export function PatientFiltersDialog({
     handleChange,
     filters,
     applyFilters,
+    resetFilters,
 }: Props) {
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
@@ -33,6 +35,7 @@ export function PatientFiltersDialog({
                     filters={filters}
                     applyFilters={applyFilters}
                     onOpenChange={onOpenChange}
+                    resetFilters={resetFilters}
                 />
             </DialogContent>
         </Dialog>

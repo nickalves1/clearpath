@@ -22,6 +22,14 @@ function makePatient(overrides: Partial<Patient> = {}): Patient {
 
 const noop = () => {};
 
+const paginationProps = {
+    search: '',
+    onSearchChange: noop,
+    meta: null,
+    page: 1,
+    goToPage: noop,
+};
+
 describe('PatientsTable', () => {
     it('shows a message when there are no patients', () => {
         render(
@@ -33,6 +41,7 @@ describe('PatientsTable', () => {
                 activeColumn=""
                 direction="asc"
                 isActiveFilter="true"
+                {...paginationProps}
             />,
         );
 
@@ -51,6 +60,7 @@ describe('PatientsTable', () => {
                 activeColumn=""
                 direction="asc"
                 isActiveFilter="true"
+                {...paginationProps}
             />,
         );
 
@@ -67,6 +77,7 @@ describe('PatientsTable', () => {
                 activeColumn=""
                 direction="asc"
                 isActiveFilter="all"
+                {...paginationProps}
             />,
         );
 
@@ -85,10 +96,13 @@ describe('PatientsTable', () => {
                 activeColumn=""
                 direction="asc"
                 isActiveFilter="all"
+                {...paginationProps}
             />,
         );
 
-        // Columns menu trigger + 8 sortable column headers (Deleted At column shown), 0 action buttons
+        // Columns menu trigger + 8 sortable column headers (Deleted At
+        // column shown), 0 action buttons — pagination renders links, not
+        // buttons
         expect(screen.getAllByRole('button')).toHaveLength(1 + 8);
     });
 
@@ -102,10 +116,12 @@ describe('PatientsTable', () => {
                 activeColumn=""
                 direction="asc"
                 isActiveFilter="true"
+                {...paginationProps}
             />,
         );
 
-        // Columns menu trigger + 7 sortable column headers, 2 action buttons
+        // Columns menu trigger + 7 sortable column headers, 2 action
+        // buttons — pagination renders links, not buttons
         expect(screen.getAllByRole('button')).toHaveLength(1 + 2 + 7);
     });
 
@@ -121,6 +137,7 @@ describe('PatientsTable', () => {
                 activeColumn=""
                 direction="asc"
                 isActiveFilter="true"
+                {...paginationProps}
             />,
         );
 

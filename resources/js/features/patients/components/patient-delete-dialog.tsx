@@ -27,7 +27,7 @@ export function PatientDeleteDialog({
 }: Props) {
     return (
         <AlertDialog open={!!patient} onOpenChange={onOpenChange}>
-            <AlertDialogContent>
+            <AlertDialogContent onOverlayClick={() => onOpenChange(false)}>
                 <AlertDialogHeader>
                     <AlertDialogTitle>Delete Patient</AlertDialogTitle>
                     <AlertDialogDescription>

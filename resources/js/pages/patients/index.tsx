@@ -1,10 +1,7 @@
 import { Head } from '@inertiajs/react';
-import { Search } from 'lucide-react';
 import { toast } from 'sonner';
 import Heading from '@/components/heading';
-import Paginate from '@/components/paginator';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import {
     PatientsTable,
     usePatients,
@@ -30,7 +27,7 @@ export default function PatientsIndex() {
         handleChangeSearch,
         search,
     } = usePatients();
-    const { open, setIsOpen, filters, handleChange, openDialog } =
+    const { open, setIsOpen, filters, handleChange, openDialog, resetFilters } =
         usePatientFiltersDialog();
     const dialog = usePatientDialog();
     const { patientToDelete, handleConfirmDelete, setPatientToDelete } =
@@ -60,40 +57,13 @@ export default function PatientsIndex() {
                     title="Patients"
                     description="Patient registration and listing"
                 />
-                <div className="flex items-center gap-2">
-                    <Button
-                        className="w-36"
-                        onClick={() => {
-                            dialog.openToCreate();
-                        }}
-                    >
-                        New Patient
-                    </Button>
-                    <Button
-                        className="w-36"
-                        variant="outline"
-                        onClick={() => {
-                            openDialog();
-                        }}
-                    >
-                        Filter
-                    </Button>
-                    <div className="relative ml-auto w-2xs">
-                        <Search className="absolute top-1/2 left-2 size-4 -translate-y-1/2 text-muted-foreground" />
-                        <Input
-                            className="pl-8"
-                            placeholder="Search by name, phone, or MRN..."
-                            onChange={handleChangeSearch}
-                            value={search}
-                        />
-                    </div>
-                </div>
                 <PatientFiltersDialog
                     open={open}
                     onOpenChange={setIsOpen}
                     handleChange={handleChange}
                     filters={filters}
                     applyFilters={applyFilters}
+                    resetFilters={resetFilters}
                 />
                 <PatientFormDialog
                     open={dialog.isOpen}
@@ -101,15 +71,10 @@ export default function PatientsIndex() {
                     patient={dialog.editingPatient}
                     onSubmit={handleSubmit}
                 />
-                {data.loading && (
-                    <p className="text-sm text-muted-foreground">
-                        Loading patients...
-                    </p>
-                )}
                 {data.error && (
                     <p className="text-sm text-destructive">{data.error}</p>
                 )}
-                {!data.loading && !data.error && (
+                {!data.error && (
                     <>
                         <PatientsTable
                             patients={data.patients}
@@ -119,6 +84,32 @@ export default function PatientsIndex() {
                             activeColumn={data.column}
                             direction={data.direction}
                             isActiveFilter={appliedFilters.is_active}
+                            search={search}
+                            onSearchChange={handleChangeSearch}
+                            meta={data.meta}
+                            page={data.page}
+                            goToPage={goToPage}
+                            toolbarActions={
+                                <>
+                                    <Button
+                                        className="w-36"
+                                        onClick={() => {
+                                            dialog.openToCreate();
+                                        }}
+                                    >
+                                        New Patient
+                                    </Button>
+                                    <Button
+                                        className="w-36"
+                                        variant="outline"
+                                        onClick={() => {
+                                            openDialog();
+                                        }}
+                                    >
+                                        Filter
+                                    </Button>
+                                </>
+                            }
                         />
                         <PatientDeleteDialog
                             patient={patientToDelete}
@@ -128,11 +119,6 @@ export default function PatientsIndex() {
                                 }
                             }}
                             onConfirm={handleConfirmDelete}
-                        />
-                        <Paginate
-                            meta={data.meta}
-                            page={data.page}
-                            goToPage={goToPage}
                         />
                     </>
                 )}

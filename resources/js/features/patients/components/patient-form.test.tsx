@@ -20,7 +20,7 @@ const existingPatient: Patient = {
 
 describe('PatientForm', () => {
     it('shows "Add Patient" and empty fields in create mode', () => {
-        render(<PatientForm onSubmit={vi.fn()} />);
+        render(<PatientForm onSubmit={vi.fn()} onCancel={vi.fn()} />);
 
         expect(screen.getByText('Add Patient')).toBeInTheDocument();
         expect(screen.getByLabelText('First Name')).toHaveValue('');
@@ -28,7 +28,11 @@ describe('PatientForm', () => {
 
     it('shows "Save" and pre-filled fields in edit mode', () => {
         render(
-            <PatientForm onSubmit={vi.fn()} initialValues={existingPatient} />,
+            <PatientForm
+                onSubmit={vi.fn()}
+                onCancel={vi.fn()}
+                initialValues={existingPatient}
+            />,
         );
 
         expect(screen.getByText('Save')).toBeInTheDocument();
@@ -39,7 +43,11 @@ describe('PatientForm', () => {
         const onSubmit = vi.fn().mockResolvedValue(existingPatient);
 
         render(
-            <PatientForm onSubmit={onSubmit} initialValues={existingPatient} />,
+            <PatientForm
+                onSubmit={onSubmit}
+                onCancel={vi.fn()}
+                initialValues={existingPatient}
+            />,
         );
 
         fireEvent.change(screen.getByLabelText('First Name'), {
@@ -62,7 +70,11 @@ describe('PatientForm', () => {
         );
 
         render(
-            <PatientForm onSubmit={onSubmit} initialValues={existingPatient} />,
+            <PatientForm
+                onSubmit={onSubmit}
+                onCancel={vi.fn()}
+                initialValues={existingPatient}
+            />,
         );
 
         fireEvent.click(screen.getByText('Save'));
@@ -70,5 +82,15 @@ describe('PatientForm', () => {
         expect(
             await screen.findByText('The first name field is required.'),
         ).toBeInTheDocument();
+    });
+
+    it('calls onCancel when the Cancel button is clicked', () => {
+        const onCancel = vi.fn();
+
+        render(<PatientForm onSubmit={vi.fn()} onCancel={onCancel} />);
+
+        fireEvent.click(screen.getByText('Cancel'));
+
+        expect(onCancel).toHaveBeenCalled();
     });
 });
