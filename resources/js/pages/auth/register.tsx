@@ -1,5 +1,6 @@
 import { Form, Head } from '@inertiajs/react';
 import { useRef, useState } from 'react';
+import { FormField } from '@/components/form-field';
 import InputError from '@/components/input-error';
 import PasswordInput from '@/components/password-input';
 import {
@@ -8,7 +9,6 @@ import {
 } from '@/components/password-strength-indicator';
 import TextLink from '@/components/text-link';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import { login } from '@/routes';
@@ -72,55 +72,37 @@ export default function Register({ passwordRules }: Props) {
                 {({ processing, errors }) => (
                     <>
                         <div className="grid gap-6">
-                            <div className="grid gap-2">
-                                <Label htmlFor="company_name">
-                                    Company name
-                                </Label>
-                                <Input
-                                    id="company_name"
-                                    type="text"
-                                    required
-                                    autoFocus
-                                    tabIndex={1}
-                                    autoComplete="organization"
-                                    name="company_name"
-                                    placeholder="Company name"
-                                />
-                                <InputError
-                                    message={errors.company_name}
-                                    className="mt-2"
-                                />
-                            </div>
-                            <div className="grid gap-2">
-                                <Label htmlFor="name">Name</Label>
-                                <Input
-                                    id="name"
-                                    type="text"
-                                    required
-                                    tabIndex={2}
-                                    autoComplete="name"
-                                    name="name"
-                                    placeholder="Full name"
-                                />
-                                <InputError
-                                    message={errors.name}
-                                    className="mt-2"
-                                />
-                            </div>
-
-                            <div className="grid gap-2">
-                                <Label htmlFor="email">Email address</Label>
-                                <Input
-                                    id="email"
-                                    type="email"
-                                    required
-                                    tabIndex={3}
-                                    autoComplete="email"
-                                    name="email"
-                                    placeholder="email@example.com"
-                                />
-                                <InputError message={errors.email} />
-                            </div>
+                            <FormField
+                                id="company_name"
+                                label="Company name"
+                                type="text"
+                                autoFocus
+                                tabIndex={1}
+                                autoComplete="organization"
+                                name="company_name"
+                                placeholder="Company name"
+                                error={errors.company_name}
+                            />
+                            <FormField
+                                id="name"
+                                label="Name"
+                                type="text"
+                                tabIndex={2}
+                                autoComplete="name"
+                                name="name"
+                                placeholder="Full name"
+                                error={errors.name}
+                            />
+                            <FormField
+                                id="email"
+                                label="Email address"
+                                type="email"
+                                tabIndex={3}
+                                autoComplete="email"
+                                name="email"
+                                placeholder="email@example.com"
+                                error={errors.email}
+                            />
 
                             <div className="grid gap-2">
                                 <Label htmlFor="password">Password</Label>

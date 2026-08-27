@@ -1,10 +1,13 @@
-import { Button } from '@/components/ui/button';
 import {
-    Dialog,
-    DialogContent,
-    DialogHeader,
-    DialogTitle,
-} from '@/components/ui/dialog';
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 import type { Patient } from '../types/patient';
 
 type Props = {
@@ -23,33 +26,24 @@ export function PatientDeleteDialog({
     onConfirm,
 }: Props) {
     return (
-        <Dialog open={!!patient} onOpenChange={onOpenChange}>
-            <DialogContent className="sm:max-w-md">
-                <DialogHeader>
-                    <DialogTitle>Delete Patient</DialogTitle>
-                </DialogHeader>
-                <div className="flex flex-col items-center gap-4 rounded-xl border border-sidebar-border/70 p-4 dark:border-sidebar-border">
-                    <p className="text-center text-sm">
+        <AlertDialog open={!!patient} onOpenChange={onOpenChange}>
+            <AlertDialogContent>
+                <AlertDialogHeader>
+                    <AlertDialogTitle>Delete Patient</AlertDialogTitle>
+                    <AlertDialogDescription>
                         Are you sure you want to delete this?
-                    </p>
-                    <div className="flex items-center justify-center gap-2">
-                        <Button
-                            variant="outline"
-                            className="w-28"
-                            onClick={() => onOpenChange(false)}
-                        >
-                            Cancel
-                        </Button>
-                        <Button
-                            variant="destructive"
-                            className="w-28"
-                            onClick={onConfirm}
-                        >
-                            Confirm
-                        </Button>
-                    </div>
-                </div>
-            </DialogContent>
-        </Dialog>
+                    </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction
+                        variant="destructive"
+                        onClick={onConfirm}
+                    >
+                        Confirm
+                    </AlertDialogAction>
+                </AlertDialogFooter>
+            </AlertDialogContent>
+        </AlertDialog>
     );
 }

@@ -88,8 +88,8 @@ describe('PatientsTable', () => {
             />,
         );
 
-        // 8 sortable column headers (Deleted At column shown), 0 action buttons
-        expect(screen.getAllByRole('button')).toHaveLength(8);
+        // Columns menu trigger + 8 sortable column headers (Deleted At column shown), 0 action buttons
+        expect(screen.getAllByRole('button')).toHaveLength(1 + 8);
     });
 
     it('shows the edit and delete buttons for an active patient', () => {
@@ -105,7 +105,8 @@ describe('PatientsTable', () => {
             />,
         );
 
-        expect(screen.getAllByRole('button')).toHaveLength(2 + 7);
+        // Columns menu trigger + 7 sortable column headers, 2 action buttons
+        expect(screen.getAllByRole('button')).toHaveLength(1 + 2 + 7);
     });
 
     it('calls setColumnOrder with the column name when a header is clicked', () => {
