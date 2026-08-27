@@ -45,13 +45,22 @@ function AlertDialogOverlay({
 function AlertDialogContent({
   className,
   size = "default",
+  onOverlayClick,
   ...props
 }: React.ComponentProps<typeof AlertDialogPrimitive.Content> & {
   size?: "default" | "sm"
+  /**
+   * Radix deliberately omits onPointerDownOutside/onInteractOutside from
+   * AlertDialogContent (unlike Dialog) so a destructive confirmation can't
+   * be dismissed by an accidental outside click. This lets a caller opt
+   * back into that behavior via the overlay's own click, which Radix
+   * doesn't restrict.
+   */
+  onOverlayClick?: () => void
 }) {
   return (
     <AlertDialogPortal>
-      <AlertDialogOverlay />
+      <AlertDialogOverlay onClick={onOverlayClick} />
       <AlertDialogPrimitive.Content
         data-slot="alert-dialog-content"
         data-size={size}
@@ -89,7 +98,7 @@ function AlertDialogFooter({
     <div
       data-slot="alert-dialog-footer"
       className={cn(
-        "flex flex-col-reverse gap-2 group-data-[size=sm]/alert-dialog-content:grid group-data-[size=sm]/alert-dialog-content:grid-cols-2 sm:flex-row sm:justify-end",
+        "-mx-6 -mb-6 mt-2 flex flex-col-reverse gap-2 rounded-b-lg border-t bg-muted/50 px-6 py-4 group-data-[size=sm]/alert-dialog-content:grid group-data-[size=sm]/alert-dialog-content:grid-cols-2 sm:flex-row sm:justify-end",
         className
       )}
       {...props}

@@ -37,6 +37,7 @@ export function PatientFormDialog({
                     key={patient?.id ?? 'new'}
                     initialValues={patient ?? undefined}
                     onSubmit={onSubmit}
+                    onCancel={() => onOpenChange(false)}
                 />
             </DialogContent>
         </Dialog>

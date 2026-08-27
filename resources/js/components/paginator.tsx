@@ -1,4 +1,12 @@
-import { Button } from '@/components/ui/button';
+import {
+    Pagination,
+    PaginationContent,
+    PaginationEllipsis,
+    PaginationItem,
+    PaginationLink,
+    PaginationNext,
+    PaginationPrevious,
+} from '@/components/ui/pagination';
 
 type PropsPaginate = {
     meta: { current_page: number; last_page: number } | null;
@@ -6,36 +14,113 @@ type PropsPaginate = {
     goToPage: (page: number) => void;
 };
 
+type PageEntry = number | 'ellipsis';
+
 /**
- * Previous/next pager for an Eloquent-style paginated response.
- * Both buttons are disabled at their respective bounds.
+ * Builds the list of page numbers to render, collapsing the middle into an
+ * ellipsis once there are too many pages to show all at once. Always keeps
+ * the first page, the last page, and one neighbor on each side of `current`.
+ */
+function getPageNumbers(current: number, last: number): PageEntry[] {
+    const neighbors = 1;
+    const middle: number[] = [];
+
+    for (
+        let page = Math.max(2, current - neighbors);
+        page <= Math.min(last - 1, current + neighbors);
+        page++
+    ) {
+        middle.push(page);
+    }
+
+    const pages: PageEntry[] = [1];
+
+    if (middle[0] > 2) {
+        pages.push('ellipsis');
+    }
+
+    pages.push(...middle);
+
+    if (middle[middle.length - 1] < last - 1) {
+        pages.push('ellipsis');
+    }
+
+    if (last > 1) {
+        pages.push(last);
+    }
+
+    return pages;
+}
+
+/**
+ * Numbered pager for an Eloquent-style paginated response.
  */
 export default function Paginate({ meta, page, goToPage }: PropsPaginate) {
+    const lastPage = meta?.last_page ?? 1;
+    const pageNumbers = getPageNumbers(page, lastPage);
+    const canGoPrevious = page > 1;
+    const canGoNext = page < lastPage;
+
     return (
-        <>
-            <div className="flex items-center justify-center">
-                <Button
-                    variant="ghost"
-                    disabled={page <= 1}
-                    onClick={() => goToPage(page - 1)}
-                >
-                    Previous
-                </Button>
-                <span className="mx-5 text-sm text-muted-foreground">
-                    Page {meta?.current_page} of {meta?.last_page}
-                </span>
-                <Button
-                    variant="ghost"
-                    disabled={!meta || page >= meta.last_page}
-                    onClick={() => {
-                        if (meta && page < meta.last_page) {
-                            goToPage(page + 1);
+        <Pagination>
+            <PaginationContent>
+                <PaginationItem>
+                    <PaginationPrevious
+                        href="#"
+                        aria-disabled={!canGoPrevious}
+                        className={
+                            canGoPrevious
+                                ? undefined
+                                : 'pointer-events-none opacity-50'
                         }
-                    }}
-                >
-                    Next
-                </Button>
-            </div>
-        </>
+                        onClick={(event) => {
+                            event.preventDefault();
+
+                            if (canGoPrevious) {
+                                goToPage(page - 1);
+                            }
+                        }}
+                    />
+                </PaginationItem>
+                {pageNumbers.map((entry, index) =>
+                    entry === 'ellipsis' ? (
+                        <PaginationItem key={`ellipsis-${index}`}>
+                            <PaginationEllipsis />
+                        </PaginationItem>
+                    ) : (
+                        <PaginationItem key={entry}>
+                            <PaginationLink
+                                href="#"
+                                isActive={entry === page}
+                                onClick={(event) => {
+                                    event.preventDefault();
+                                    goToPage(entry);
+                                }}
+                            >
+                                {entry}
+                            </PaginationLink>
+                        </PaginationItem>
+                    ),
+                )}
+                <PaginationItem>
+                    <PaginationNext
+                        href="#"
+                        aria-disabled={!canGoNext}
+                        className={
+                            canGoNext
+                                ? undefined
+                                : 'pointer-events-none opacity-50'
+                        }
+                        onClick={(event) => {
+                            event.preventDefault();
+
+                            if (canGoNext) {
+                                goToPage(page + 1);
+                            }
+                        }}
+                    />
+                </PaginationItem>
+            </PaginationContent>
+        </Pagination>
     );
 }

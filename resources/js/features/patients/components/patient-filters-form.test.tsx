@@ -22,6 +22,7 @@ describe('PatientFiltersForm', () => {
                 filters={baseFilters}
                 applyFilters={vi.fn()}
                 onOpenChange={vi.fn()}
+                resetFilters={vi.fn()}
             />,
         );
 
@@ -36,6 +37,7 @@ describe('PatientFiltersForm', () => {
                 filters={{ ...baseFilters, created_at: 'custom' }}
                 applyFilters={vi.fn()}
                 onOpenChange={vi.fn()}
+                resetFilters={vi.fn()}
             />,
         );
 
@@ -53,6 +55,7 @@ describe('PatientFiltersForm', () => {
                 filters={baseFilters}
                 applyFilters={applyFilters}
                 onOpenChange={onOpenChange}
+                resetFilters={vi.fn()}
             />,
         );
 

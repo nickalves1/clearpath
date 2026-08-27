@@ -33,5 +33,18 @@ export function usePatientFiltersDialog() {
             setFilters((current) => ({ ...current, [field]: value }));
     }
 
-    return { open, setIsOpen, filters, setFilters, openDialog, handleChange };
+    /** Clears all filters back to their defaults, without applying them. */
+    function resetFilters() {
+        setFilters(emptyForm);
+    }
+
+    return {
+        open,
+        setIsOpen,
+        filters,
+        setFilters,
+        openDialog,
+        handleChange,
+        resetFilters,
+    };
 }

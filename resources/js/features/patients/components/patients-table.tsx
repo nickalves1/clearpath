@@ -13,7 +13,10 @@ import {
     Pen,
     Trash,
 } from 'lucide-react';
+import { Search } from 'lucide-react';
+import type { ChangeEvent, ReactNode } from 'react';
 import { useMemo, useState } from 'react';
+import Paginate from '@/components/paginator';
 import { Button } from '@/components/ui/button';
 import {
     DropdownMenu,
@@ -21,6 +24,7 @@ import {
     DropdownMenuContent,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { Input } from '@/components/ui/input';
 import {
     Table,
     TableBody,
@@ -29,7 +33,7 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
-import type { Patient } from '../types/patient';
+import type { Patient, PaginatedResponse } from '../types/patient';
 
 type Props = {
     patients: Patient[];
@@ -39,6 +43,12 @@ type Props = {
     activeColumn: string;
     direction: 'asc' | 'desc';
     isActiveFilter: string;
+    search: string;
+    onSearchChange: (event: ChangeEvent<HTMLInputElement>) => void;
+    meta: PaginatedResponse<Patient>['meta'] | null;
+    page: number;
+    goToPage: (page: number) => void;
+    toolbarActions?: ReactNode;
 };
 
 function formatDate(value: string) {
@@ -90,7 +100,7 @@ function SortButton({
         <Button
             variant="ghost"
             size="sm"
-            className="gap-1"
+            className="gap-1 px-0 has-[>svg]:px-0"
             onClick={() => onSort(column)}
         >
             {label}
@@ -118,6 +128,12 @@ export function PatientsTable({
     activeColumn,
     direction,
     isActiveFilter,
+    search,
+    onSearchChange,
+    meta,
+    page,
+    goToPage,
+    toolbarActions,
 }: Props) {
     const [columnVisibility, setColumnVisibility] =
         useState<ColumnVisibilityState>({
@@ -284,17 +300,19 @@ export function PatientsTable({
         },
     });
 
-    if (patients.length === 0) {
-        return (
-            <div className="rounded-xl border border-sidebar-border/70 p-6 text-center text-sm text-muted-foreground dark:border-sidebar-border">
-                No patients registered yet.
-            </div>
-        );
-    }
-
     return (
         <div className="space-y-2">
-            <div className="flex justify-end">
+            <div className="flex items-center gap-2">
+                {toolbarActions}
+                <div className="relative ml-auto w-64">
+                    <Search className="absolute top-1/2 left-2 size-4 -translate-y-1/2 text-muted-foreground" />
+                    <Input
+                        className="pl-8"
+                        placeholder="Search by name, phone, or MRN..."
+                        onChange={onSearchChange}
+                        value={search}
+                    />
+                </div>
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button variant="outline" size="sm">
@@ -335,29 +353,45 @@ export function PatientsTable({
                         ))}
                     </TableHeader>
                     <TableBody>
-                        {table.getRowModel().rows.map((row) => {
-                            const isDeleted = row.original.deleted_at !== null;
-
-                            return (
-                                <TableRow
-                                    key={row.id}
-                                    className={
-                                        isDeleted
-                                            ? 'bg-muted/40 text-muted-foreground'
-                                            : ''
+                        {patients.length === 0 ? (
+                            <TableRow>
+                                <TableCell
+                                    colSpan={
+                                        table.getHeaderGroups()[0]?.headers
+                                            .length
                                     }
+                                    className="h-24 text-center text-muted-foreground"
                                 >
-                                    {row.getVisibleCells().map((cell) => (
-                                        <TableCell key={cell.id}>
-                                            <table.FlexRender cell={cell} />
-                                        </TableCell>
-                                    ))}
-                                </TableRow>
-                            );
-                        })}
+                                    No patients registered yet.
+                                </TableCell>
+                            </TableRow>
+                        ) : (
+                            table.getRowModel().rows.map((row) => {
+                                const isDeleted =
+                                    row.original.deleted_at !== null;
+
+                                return (
+                                    <TableRow
+                                        key={row.id}
+                                        className={
+                                            isDeleted
+                                                ? 'bg-muted/40 text-muted-foreground'
+                                                : ''
+                                        }
+                                    >
+                                        {row.getVisibleCells().map((cell) => (
+                                            <TableCell key={cell.id}>
+                                                <table.FlexRender cell={cell} />
+                                            </TableCell>
+                                        ))}
+                                    </TableRow>
+                                );
+                            })
+                        )}
                     </TableBody>
                 </Table>
             </div>
+            <Paginate meta={meta} page={page} goToPage={goToPage} />
         </div>
     );
 }
